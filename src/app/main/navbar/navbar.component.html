@@ -1,0 +1,13 @@
+<nav class="scrolled" (scroll)="onScroll($event)" [class.scrolled]="changeNav === true">
+    <div class="img-container">
+        <img [src]="imagePath()" alt="">
+    </div>
+    <div class="content-container">
+        <ul>
+            <li><a [class.changecol]="changeNav === true">Rólunk</a></li>
+            <li><a routerLink="/cars" [class.changecol]="changeNav === true">Gépjárművek</a></li>
+            <li><a routerLink="/contact" href="" [class.changecol]="changeNav === true">Kapcsolat</a></li>
+            <li><a routerLink="/login" [class.changecol]="changeNav === true" id="username">Bejelentkezés</a></li>
+        </ul>
+    </div>
+</nav>

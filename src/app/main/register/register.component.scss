@@ -1,0 +1,121 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px;
+    padding-top: 20vh;
+
+    h2 {
+        font-weight: 500;
+    }
+
+    form {
+        
+        padding: 15px;
+        border: 1px solid #DCE0E0;
+        border-radius: 10px;
+        margin: 20px;
+        width: 500px;
+
+        display: flex;
+        flex-direction: column;
+        
+        #required {
+            color: red;
+        }
+
+        .name-container, .address-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            input[type='text']{
+                width: 220px;
+            }
+
+            input[name='postcode'], input[name='housenum'] {
+                width: 110px;
+            }
+            input[name='city'],input[name='address']{
+                width: 350px;
+            }
+        }
+
+        input[type='text'], input[type='number'], input[type='date'] {
+            display: block;
+            border-radius: 5px;
+            border: 1px solid #DCE0E0;
+            padding: 7px;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 17px;
+            font-weight: normal;
+        }
+
+        input[type='text']:focus, input[type='number']:focus, input[type='date']:focus{
+            border: 1px solid black;
+            outline: 1px solid black;
+        }
+
+        input[type='file'] {
+            text-align: center;
+        }
+
+        input[type='file']::file-selector-button, input[type='file']::-webkit-file-selector-button {
+            display: none;
+        }
+
+        #license-front-label, #license-back-label {
+            padding: 7px;
+            margin-bottom: 15px;
+            border: 1px solid #DCE0E0;
+            border-radius: 5px;
+            display: inline-block;
+            cursor: pointer;
+            padding: 7px;
+            text-align: center;
+
+            transition: .3s;
+        }
+
+        #license-front-label:hover, #license-back-label:hover {
+            padding: 8px;
+            border: 1px solid black;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 5px;
+            border: none;
+            outline: none;
+            background-color: #C7F9CC;
+            font-size: 17px;
+            border-radius: 5px;
+            transition: .3s;
+        }
+
+        button:hover {
+            background-color: #99c09d;
+            cursor: pointer;
+        }
+
+        #login-redirect {
+            font-size: 15px;
+            color: #5b5b5b;
+            margin-top: 15px;
+            text-align: center;
+            
+            #redirect-href {
+                color: #99c09d;
+                text-decoration: underline;
+                cursor: pointer;
+                transition: .3s;
+            }
+
+            #redirect-href:hover {
+                color: #6f8b72;
+            }
+        }
+    }
+}
