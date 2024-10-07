@@ -5,6 +5,7 @@ import { ContactComponent } from './main/contact/contact.component';
 import { LoginComponent } from './main/login/login.component';
 import { RegisterComponent } from './main/register/register.component';
 import { CarAboutComponent } from './main/cars/car-about/car-about.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const header:string = "TurboRent | "
 
@@ -14,6 +15,7 @@ export const routes: Routes = [
     { path: 'contact', component: ContactComponent, title: header + "Kapcsolat" },
     { path: 'login', component: LoginComponent, title: header + "Bejelentkezés" },
     { path: 'register', component: RegisterComponent, title: header + "Regisztráció"},
+    { path: 'dashboard', component: DashboardComponent, title: header + "Dashboard" },
 
     { path: 'about', component: CarAboutComponent }
 ];
