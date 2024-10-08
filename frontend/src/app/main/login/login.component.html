@@ -3,11 +3,11 @@
 <div class="container">
     <h2>Belépés a fiókba</h2>
     
-    <form action="">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <label for="email">E-mail <span id="required">*</span></label>
-        <input type="text" name="email" id="email" required email>
+        <input type="text" name="email" id="email" formControlName="email">
         <label for="name">Jelszó <span id="required">*</span></label>
-        <input type="text" name="password" id="password" required>
+        <input type="password" name="password" id="password" formControlName="password">
 
         <button>Bejelentkezés</button>
         <p id="registration-redirect">Még nem regisztráltál? <a routerLink="/register" id="redirect-href">kattints ide</a> a regisztrációhoz!</p>

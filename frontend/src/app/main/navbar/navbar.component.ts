@@ -9,19 +9,20 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  changeNav:boolean = false;
+  // changeNav:boolean = false;
   imagePath = signal('turborent-nav.png')
 
-  @HostListener("window:scroll")
-  onScroll(event:any) {
-    const vert = window.scrollY
-    const shouldChangeNav = vert > 10;
+  // @HostListener("window:scroll")
+  // onScroll(event:any) {
+  //   const vert = window.scrollY
+  //   const shouldChangeNav = vert > 10;
+  //   console.log(vert)
     
-    if (shouldChangeNav !== this.changeNav) {
-      this.changeNav = shouldChangeNav;
-      this.imagePath.set(shouldChangeNav ? 'turborent-nav-black.png' : 'turborent-nav.png');
-    }
-  }
+  //   if (shouldChangeNav !== this.changeNav) {
+  //     this.changeNav = shouldChangeNav;
+  //     this.imagePath.set(shouldChangeNav ? 'turborent-nav-black.png' : 'turborent-nav.png');
+  //   }
+  // }
 }
 
 // import { HostListener } from '@angular/core';
