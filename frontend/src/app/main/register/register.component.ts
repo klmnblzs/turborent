@@ -44,11 +44,13 @@ export class RegisterComponent {
     dateofbirth: new FormControl('', {
       validators: [Validators.required]
     }),
-    password: new FormControl('', {
-      validators: [Validators.required]
-    }),
-    passwordConfirm: new FormControl('', {
-      validators: [Validators.required]
+    passwords: new FormGroup({
+      password: new FormControl('', {
+        validators: [Validators.required]
+      }),
+      passwordConfirm: new FormControl('', {
+        validators: [Validators.required]
+      })
     })
   })
 
