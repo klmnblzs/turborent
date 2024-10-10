@@ -29,11 +29,14 @@
                 li {
                     padding: 20px;
                     transition: .3s;
-                    font-size: 25px;
+                    font-size: 15px;
+                    font-weight: bold;
+                    text-transform: uppercase;
 
                     i {
                         font-size: 20px;
-                        margin-right: 5px;
+                        margin-right: 10px;
+                        transform: translateY(px);
                     }
                 }
                 li:hover {
