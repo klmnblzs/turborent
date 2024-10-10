@@ -4,18 +4,18 @@
     <div class="filter-container">
         <select name="brand" id="brand">
             <option value="">Bármely márka</option>
-            <!-- <option value="skoda">Skoda</option>
+            <option value="skoda">Skoda</option>
             <option value="vw">Volkswagen</option>
-            <option value="renault">Renault</option> -->
-            @for (brand of getBrandList(); track $index) {
+            <option value="renault">Renault</option>
+            <!-- @for (brand of getBrandList(); track $index) {
                 <option [value]="brand.toLowerCase()">{{ brand }}</option>
-            }
+            } -->
         </select>
         <select name="type" id="type">
             <option value="">Bármely típus</option>
-            @for (type of getTypeList(); track $index) {
+            <!-- @for (type of getTypeList(); track $index) {
                 <option [value]="type.toLowerCase()">{{ type }}</option>
-            }
+            } -->
         </select>
         <select name="order-by" id="order-by">
             <option value="asc">Ár szerint növekvő</option>
@@ -26,8 +26,8 @@
     </div>
 
     <div class="cars-container">
-        @for (car of getCarList(); track car.id) {
-            <app-car [car]="car" (click)="onClickCard(car.id)"></app-car>
+        @for (car of cars; track car.id) {
+            <app-car [carData]="car"></app-car>
         }
     </div>
 </div>

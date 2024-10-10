@@ -1,6 +1,4 @@
-import { Component, inject, input } from '@angular/core';
-import { carData } from './car.model';
-import { CarsService } from '../cars.service';
+import { Component, input } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
@@ -11,6 +9,9 @@ import { DecimalPipe } from '@angular/common';
   styleUrl: './car.component.scss'
 })
 export class CarComponent {
-  carsService = inject(CarsService);
-  car = input.required<carData>();
+  carData=input.required<any>()
+
+  onClick() {
+    console.log(this.carData());
+  }
 }

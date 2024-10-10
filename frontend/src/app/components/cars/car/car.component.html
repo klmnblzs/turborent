@@ -1,0 +1,14 @@
+<div class="cars-container">
+    <a (click)="onClick()">
+        <div class="car-card">
+            <div class="car-image">
+                <img [src]="carData().car_img_path" alt="">
+            </div>
+            <div class="car-data">
+                <h2>{{ carData().brand }} {{ carData().model }} {{ carData().cc }} </h2>
+                <p id="type">{{ carData().category }}</p>
+                <p><span id="price">{{ carData().price_per_day | number }}</span> Huf / nap</p>
+            </div>
+        </div>
+    </a>
+</div>

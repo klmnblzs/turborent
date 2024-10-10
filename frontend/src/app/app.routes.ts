@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { CarsComponent } from './main/cars/cars.component';
-import { ContactComponent } from './main/contact/contact.component';
-import { LoginComponent } from './main/login/login.component';
-import { RegisterComponent } from './main/register/register.component';
-import { CarAboutComponent } from './main/cars/car-about/car-about.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { CarsComponent } from './components/cars/cars.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { CarAboutComponent } from './components/cars/car-about/car-about.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const header:string = "TurboRent | "
 
