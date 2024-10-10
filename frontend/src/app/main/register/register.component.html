@@ -1,0 +1,60 @@
+<div class="container">
+    <h2>Fiók létrehozása</h2>
+    
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="name-container">
+            <div>
+                <label for="firstname">Vezetéknév <span id="required">*</span></label>
+                <input type="text" name="firstname" id="firstname" formControlName="firstname">
+            </div>
+            <div>
+                <label for="lastname">Keresztnév <span id="required">*</span></label>
+                <input type="text" name="lastname" id="lastname" formControlName="lastname">
+            </div>
+        </div>
+        <label for="email">E-mail <span id="required">*</span></label>
+        <input type="text" name="email" id="email" formControlName="email">
+        <label for="phone">Telefonszám <span id="required">*</span></label>
+        <input type="text" name="phone" id="phone" formControlName="phone">
+        <!-- <label for="phone">Jogosítvány száma <span id="required">*</span></label>
+        <input type="text" name="license-number" id="license-number" required> -->
+        <input type="file" accept="image" class="hidden" name="license-picture-front" id="license-picture-front" formControlName="licensePictureFront">
+        <label for="license-picture-front" id="license-front-label">Jogosítvány előlapi kép feltöltése <span id="required">*</span></label>
+
+        <input type="file" accept="image" name="license-picture-back" id="license-picture-back" formControlName="licensePictureBack">
+        <label for="license-picture-back" id="license-back-label">Jogosítvány hátlapi kép feltöltése <span id="required">*</span></label>
+
+        <div class="address-container">
+            <div>
+                <label for="city">Város <span id="required">*</span></label>
+                <input type="text" name="city" id="city" formControlName="city">
+            </div>
+            <div>
+                <label for="postcode">Irányítószám<span id="required">*</span></label>
+                <input type="number" name="postcode" id="postcode" formControlName="postcode">
+            </div>
+        </div>
+        <div class="address-container">
+            <div>
+                <label for="address">Cím <span id="required">*</span></label>
+                <input type="text" name="address" id="address" formControlName="address">
+            </div>
+            <div>
+                <label for="housenum">Házszám <span id="required">*</span></label>
+                <input type="number" name="housenum" id="housenum" formControlName="housenum">
+            </div>
+        </div>
+        
+        <label for="dateofbirth">Születési dátum <span id="required">*</span></label>
+        <input type="date" name="dateofbirth" id="dateofbirth" formControlName="dateofbirth">
+
+        <label for="name">Jelszó <span id="required">*</span></label>
+        <input type="text" name="password" id="password" formControlName="password">
+
+        <label for="password-confirm">Jelszó ismétlése <span id="required">*</span></label>
+        <input type="text" name="password-confirm" id="password-confirm" formControlName="passwordConfirm">
+
+        <button>Regisztráció</button>
+        <p id="login-redirect">Már van fiókod? <a routerLink="/login" id="redirect-href">kattints ide</a> a bejelentkezéshez!</p>
+    </form>
+</div>

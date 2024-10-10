@@ -1,0 +1,17 @@
+
+<div class="container">
+    <h2>Lépjen velünk kapcsolatba!</h2>
+    
+    <form action="" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <label for="name">Név <span id="required">*</span></label>
+        <input type="text" name="name" id="name" formControlName="name">
+        <label for="email">E-mail <span id="required">*</span></label>
+        <input type="text" name="email" id="email" formControlName="email">
+        <label for="name">Tárgy <span id="required">*</span></label>
+        <input type="text" name="subject" id="subject" formControlName="subject">
+        <label for="name">Üzenet <span id="required">*</span></label>
+        <textarea name="message" id="message" formControlName="message"></textarea>
+
+        <button>Elküldés</button>
+    </form>
+</div>
