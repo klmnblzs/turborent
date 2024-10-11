@@ -57,10 +57,12 @@
             margin-bottom: 10px;
 
             p {
-                color: red;
+                color: rgb(168, 168, 168);
+                transition: .3s;
             }
             .valid-criteria {
                 color: green;
+                transition: .3s;
             }
         }
         
