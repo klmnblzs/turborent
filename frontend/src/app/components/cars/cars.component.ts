@@ -15,20 +15,47 @@ import { NavbarComponent } from "../navbar/navbar.component";
 export class CarsComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
   private carsService = inject(CarsService)
+
   cars:any;
+  brands:any;
+  categories:any;
+
+  onClick(carId:number) {
+    console.log(this.cars.find( (car:any)=>car.id==carId) )
+  }
 
   ngOnInit(): void {
     const subscription = this.carsService.getCarList().subscribe({
-      next: (res) => {
-        this.cars=res
+      next: (cars) => {
+        this.cars=cars
       },
       error: (err) => {
         console.log("ERROR:" + err)
       }
     })
 
+    const getBrands = this.carsService.getBrandList().subscribe({
+      next: (brands) => {
+        this.brands=brands;
+      },
+      error: (err) => {
+        console.log("ERROR: " + err)
+      }
+    })
+
+    const getCategories = this.carsService.getCategoryList().subscribe({
+      next: (categories) => {
+        this.categories=categories;
+      },
+      error: (err) => {
+        console.log("ERROR: " + err)
+      }
+    })
+
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe()
+      getBrands.unsubscribe()
+      getCategories.unsubscribe()
     })
   }
 }

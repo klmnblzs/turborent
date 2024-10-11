@@ -12,6 +12,6 @@ export class CarComponent {
   carData=input.required<any>()
 
   onClick() {
-    console.log(this.carData());
+    return false
   }
 }
