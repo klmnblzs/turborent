@@ -8,16 +8,18 @@
         <input type="text" name="email" id="email" placeholder="peldapeter@gmail.com" formControlName="email" [class.invalid]="this.form.controls.email.invalid && this.form.controls.email.touched">
         <label for="name">Jelszó <span id="required">*</span></label>
         <input [type]="showPassword ? 'text' : 'password'" name="password" id="password" formControlName="password" [class.invalid]="this.form.controls.password.invalid && this.form.controls.password.touched">
-        <button id="show-password" (click)="this.showPassword = !this.showPassword">Jelszó mutatása</button>
-        <ul class="criteria">
-            <li><p [class.valid-criteria]="this.form.controls.password.value!.length >= 8">Legalább 8 karakter</p></li>
-            <li><p [class.valid-criteria]="hasUpperCase(this.form.controls.password.value)">Legalább egy nagybetű</p></li>
-            <li><p [class.valid-criteria]="hasNumber(this.form.controls.password.value)">Legalább egy szám</p></li>
-            <li><p [class.valid-criteria]="hasSpecialCharacter(this.form.controls.password.value)">Legalább egy speciális karakter</p></li>
-        </ul>
-        
-        @if((this.form.controls.email.invalid && this.form.controls.email.touched) || (this.form.controls.password.invalid && this.form.controls.password.touched)) {
-            <p id="alert">Kérjük töltse ki a kritériumoknak megfelelően!</p>
+        <input type="button" id="show-password" value="Jelszó mutatása" (click)="this.showPassword = !this.showPassword">
+
+        @if(this.form.controls.email.invalid && this.form.controls.email.touched && this.isSubmitted) {
+            <p id="alert">Hibás email!</p>
+        }
+
+        @if(this.form.controls.password.invalid && this.form.controls.password.touched && this.isSubmitted) {
+            <p id="alert">Hibás jelszó!</p>
+        }
+
+        @if(loginError) {
+            <p id="alert">Hibás email vagy jelszó!</p>
         }
         
         <button>Bejelentkezés</button>

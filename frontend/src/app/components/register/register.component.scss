@@ -53,6 +53,10 @@
             font-weight: normal;
         }
 
+        input[type='text'].invalid, input[type='password'].invalid {
+            border: 1px solid red;
+        }
+
         input[type='text']:focus, input[type='number']:focus, input[type='date']:focus{
             border: 1px solid black;
             outline: 1px solid black;
@@ -64,6 +68,21 @@
 
         input[type='file']::file-selector-button, input[type='file']::-webkit-file-selector-button {
             display: none;
+        }
+
+        .criteria {
+            font-size: 15px;
+            margin-left: 25px;
+            margin-bottom: 10px;
+
+            p {
+                color: rgb(168, 168, 168);
+                transition: .3s;
+            }
+            .valid-criteria {
+                color: green;
+                transition: .3s;
+            }
         }
 
         #license-front-label, #license-back-label {
@@ -116,6 +135,10 @@
             #redirect-href:hover {
                 color: #6f8b72;
             }
+        }
+        #alert {
+            color: red;
+            text-align: center;
         }
     }
 }

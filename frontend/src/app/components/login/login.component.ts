@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CustomersService } from '../../services/customers.service';
 
 @Component({
@@ -13,6 +13,7 @@ import { CustomersService } from '../../services/customers.service';
 export class LoginComponent {
   private customersService = inject(CustomersService);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
   showPassword:boolean = false;
 
   form = new FormGroup({
@@ -20,21 +21,9 @@ export class LoginComponent {
       validators: [ Validators.email, Validators.required, Validators.minLength(10), Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/) ]
     }),
     password: new FormControl('', {
-      validators: [ Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/) ]
+      validators: [ Validators.required ]
     })
   })
-
-  hasUpperCase(str: string | null) {
-    return str ? /[A-Z]/.test(str) : false;
-  }
-
-  hasNumber(str: string | null) {
-    return str ? /\d/.test(str) : false;
-  }
-
-  hasSpecialCharacter(str:string | null) {
-    return str ? /[!@#$%^&*]/.test(str) : false
-  }
 
   loginCustomer() {
     return this.customersService.postRequest(
@@ -47,17 +36,22 @@ export class LoginComponent {
     )
   }
 
-  invalidEmail:boolean = false;
-  invalidPassword:boolean = false;
+  isSubmitted=false;
+  loginError=false;
 
   onSubmit() {
+    this.isSubmitted=true;
     if(this.form.controls.email.invalid || this.form.controls.password.invalid) {
       return;
     }
 
     const subscription = this.loginCustomer().subscribe({
       next: (res) => {
+        this.router.navigate(['/'])
         console.log(res)
+      },
+      error: (err) => {
+        this.loginError = true;
       }
     })
 

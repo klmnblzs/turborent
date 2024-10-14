@@ -5,54 +5,74 @@
         <div class="name-container">
             <div>
                 <label for="firstname">Vezetéknév <span id="required">*</span></label>
-                <input type="text" name="firstname" id="firstname" formControlName="firstname">
+                <input type="text" name="firstname" id="firstname" formControlName="firstname" [class.invalid]="this.form.controls.firstname.invalid && this.form.controls.firstname.touched">
             </div>
             <div>
                 <label for="lastname">Keresztnév <span id="required">*</span></label>
-                <input type="text" name="lastname" id="lastname" formControlName="lastname">
+                <input type="text" name="lastname" id="lastname" formControlName="lastname" [class.invalid]="this.form.controls.lastname.invalid && this.form.controls.lastname.touched"> 
             </div>
         </div>
         <label for="email">E-mail <span id="required">*</span></label>
-        <input type="text" name="email" id="email" formControlName="email">
+        <input type="text" name="email" id="email" formControlName="email" [class.invalid]="this.form.controls.email.invalid && this.form.controls.email.touched">
         <label for="phone">Telefonszám <span id="required">*</span></label>
-        <input type="text" name="phone" id="phone" formControlName="phone">
+        <input type="text" name="phone" id="phone" formControlName="phone" [class.invalid]="this.form.controls.phone.invalid && this.form.controls.phone.touched">
         <!-- <label for="phone">Jogosítvány száma <span id="required">*</span></label>
         <input type="text" name="license-number" id="license-number" required> -->
-        <input type="file" accept="image" class="hidden" name="license-picture-front" id="license-picture-front" formControlName="licensePictureFront">
-        <label for="license-picture-front" id="license-front-label">Jogosítvány előlapi kép feltöltése <span id="required">*</span></label>
+        <input type="file" accept="image/*" name="licensePictureFront" id="licensePictureFront" (change)="onFrontFileSelected($event)">
+        <label for="license-picture-front">Jogosítvány előlapi kép feltöltése <span id="required">*</span></label>
 
-        <input type="file" accept="image" name="license-picture-back" id="license-picture-back" formControlName="licensePictureBack">
-        <label for="license-picture-back" id="license-back-label">Jogosítvány hátlapi kép feltöltése <span id="required">*</span></label>
+        <input type="file" accept="image/*" name="licensePictureBack" id="licensePictureBack" (change)="onBackFileSelected($event)">
+        <label for="license-picture-back">Jogosítvány hátlapi kép feltöltése <span id="required">*</span></label>
 
         <div class="address-container">
             <div>
                 <label for="city">Város <span id="required">*</span></label>
-                <input type="text" name="city" id="city" formControlName="city">
+                <input type="text" name="city" id="city" formControlName="city" [class.invalid]="this.form.controls.city.invalid && this.form.controls.city.touched">
             </div>
             <div>
                 <label for="postcode">Irányítószám<span id="required">*</span></label>
-                <input type="number" name="postcode" id="postcode" formControlName="postcode">
+                <input type="number" name="postcode" id="postcode" formControlName="postcode" [class.invalid]="this.form.controls.postcode.invalid && this.form.controls.postcode.touched">
             </div>
         </div>
         <div class="address-container">
             <div>
                 <label for="address">Cím <span id="required">*</span></label>
-                <input type="text" name="address" id="address" formControlName="address">
+                <input type="text" name="address" id="address" formControlName="address" [class.invalid]="this.form.controls.address.invalid && this.form.controls.address.touched">
             </div>
             <div>
                 <label for="housenum">Házszám <span id="required">*</span></label>
-                <input type="number" name="housenum" id="housenum" formControlName="housenum">
+                <input type="number" name="housenum" id="housenum" formControlName="housenum" [class.invalid]="this.form.controls.housenum.invalid && this.form.controls.housenum.touched">
             </div>
         </div>
         
         <label for="dateofbirth">Születési dátum <span id="required">*</span></label>
-        <input type="date" name="dateofbirth" id="dateofbirth" formControlName="dateofbirth">
+        <input type="date" name="dateofbirth" id="dateofbirth" formControlName="dateofbirth" [class.invalid]="this.form.controls.dateofbirth.invalid && this.form.controls.dateofbirth.touched">
 
         <label for="name">Jelszó <span id="required">*</span></label>
         <input type="text" name="password" id="password" formControlName="password">
-
+        <ul class="criteria">
+            <li><p [class.valid-criteria]="this.form.controls.password.value!.length >= 8">Legalább 8 karakter</p></li>
+            <li><p [class.valid-criteria]="hasUpperCase(this.form.controls.password.value)">Legalább egy nagybetű</p></li>
+            <li><p [class.valid-criteria]="hasNumber(this.form.controls.password.value)">Legalább egy szám</p></li>
+            <li><p [class.valid-criteria]="hasSpecialCharacter(this.form.controls.password.value)">Legalább egy speciális karakter</p></li>
+        </ul>
         <label for="password-confirm">Jelszó ismétlése <span id="required">*</span></label>
         <input type="text" name="password-confirm" id="password-confirm" formControlName="passwordConfirm">
+
+        @if((this.form.controls.firstname.invalid && this.form.controls.lastname.touched) || 
+        (this.form.controls.lastname.invalid && this.form.controls.lastname.touched) ||
+        (this.form.controls.email.invalid && this.form.controls.email.touched) ||
+        (this.form.controls.phone.invalid && this.form.controls.phone.touched) ||
+        (this.form.controls.licensePictureFront.invalid && this.form.controls.licensePictureFront.touched) ||
+        (this.form.controls.licensePictureBack.invalid && this.form.controls.licensePictureBack.touched) ||
+        (this.form.controls.dateofbirth.invalid && this.form.controls.dateofbirth.touched) ||
+        (this.form.controls.postcode.invalid && this.form.controls.postcode.touched) ||
+        (this.form.controls.city.invalid && this.form.controls.city.touched) ||
+        (this.form.controls.address.invalid && this.form.controls.address.touched) ||
+        (this.form.controls.housenum.invalid && this.form.controls.housenum.touched) ||
+        (this.form.controls.password.invalid && this.form.controls.password.touched)) {
+            <p id="alert">Kérjük töltse ki a kritériumoknak megfelelően!</p>
+        }
 
         <button>Regisztráció</button>
         <p id="login-redirect">Már van fiókod? <a routerLink="/login" id="redirect-href">kattints ide</a> a bejelentkezéshez!</p>
