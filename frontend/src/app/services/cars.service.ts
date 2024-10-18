@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 
@@ -10,6 +10,19 @@ export class CarsService {
 
   private fetch(url:string, errorMessage:string) {
     return this.httpClient.get(url)
+    .pipe(
+      catchError((err) => throwError(() => {
+        console.log(err)
+        new Error(errorMessage)
+      }))
+    )
+  }
+
+  fetchById(url:string, errorMessage:string, carId:string) {
+    let headers = new HttpHeaders();
+    headers = headers.set('id', carId);
+
+    return this.httpClient.get(url, { headers: headers })
     .pipe(
       catchError((err) => throwError(() => {
         console.log(err)

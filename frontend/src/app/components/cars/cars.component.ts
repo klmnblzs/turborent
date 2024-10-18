@@ -4,6 +4,7 @@ import { AboutComponent } from "../about/about.component";
 import { CarsService } from '../../services/cars.service';
 import { HeaderComponent } from "../header/header.component";
 import { NavbarComponent } from "../navbar/navbar.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cars',
@@ -15,13 +16,14 @@ import { NavbarComponent } from "../navbar/navbar.component";
 export class CarsComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
   private carsService = inject(CarsService)
+  private router = inject(Router);
 
   cars:any;
   brands:any;
   categories:any;
 
   onClick(carId:number) {
-    console.log(this.cars.find( (car:any)=>car.id==carId) )
+    this.router.navigate(["/cars/" + carId])
   }
 
   ngOnInit(): void {

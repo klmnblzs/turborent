@@ -1,63 +1,65 @@
 <header id="image-container"></header>
 
 <div class="container">
-    <h2>Volkswagen Golf V12 Hatchback</h2>
-    <div id="car-additions">
-        <ul>
-            <li><p><i class="ph ph-person-arms-spread"></i>5 férőhely</p></li>
-            <li><p><i class="ph ph-gear"></i>Manuális</p></li>
-            <li><p><i class="ph ph-car"></i>5 ajtó</p></li>
-            <li><p><i class="ph ph-speedometer"></i>542.124 km</p></li>
-            <li><p><i class="ph ph-gas-pump"></i>Benzin</p></li>
-        </ul>
-    </div>
-    <hr>
-    <div class="detail-container">
-        <div id="car-about">
-            <h3>Gépjármű jellemzői</h3>
+    @for(carData of car; track car.id) {
+        <h2>{{ carData.brand }} {{ carData.model }} {{ carData.cc }} </h2>
+        <div id="car-additions">
             <ul>
-                <li><p>Diesel, 1598 cm3, 105 LE</p></li>
-                <li><p>Szervokormány</p></li>
-                <li><p>Elektromos ablakok</p></li>
-                <li><p>Elektromosan állítható, -behajtható és fűthető tükrök</p></li>
-                <li><p>Parkradar</p></li>
-                <li><p>ABS, ASR, ESP</p></li>
-                <li><p>Tempmomat</p></li>
-                <li><p>Klíma</p></li>
-                <li><p>Centrálzár</p></li>
+                <li><p><i class="ph ph-person-arms-spread"></i>{{ carData.seats }} férőhely</p></li>
+                <li><p><i class="ph ph-gear"></i>{{ carData.isManual === 0 ? "Manuális" : "Autómata" }}</p></li>
+                <li><p><i class="ph ph-car"></i>{{ carData.doors }} ajtó</p></li>
+                <li><p><i class="ph ph-speedometer"></i>{{ carData.mileage | number }} km</p></li>
+                <li><p><i class="ph ph-gas-pump"></i>{{ carData.isDiesel === 0 ? "Benzin" : "Dízel" }}</p></li>
             </ul>
         </div>
-        <div id="car-equipment">
-            <h3>Gépjármű felszereltsége</h3>
-            <ul>
-                <li><p>Szervokormány</p></li>
-                <li><p>Elektromosan állítható tükrök</p></li>
-                <li><p>Fűthető tükrök</p></li>
-                <li><p>ABS</p></li>
-                <li><p>ESP</p></li>
-                <li><p>Klíma</p></li>
-                <li><p>Elektromos ablakok</p></li>
-                <li><p>Behajtható tükrök</p></li>
-                <li><p>Parkradar</p></li>
-                <li><p>ASR</p></li>
-                <li><p>Tempomat</p></li>
-                <li><p>Centrálzár</p></li>
-            </ul>
-        </div>
-        <div id="car-rent">
-            <div id="price-container">
-                <h2>7000<span id="car-price">Huf / nap</span></h2>
+        <hr>
+        <div class="detail-container">
+            <div id="car-about">
+                <h3>Gépjármű jellemzői</h3>
+                <ul>
+                    <li><p>Diesel, 1598 cm3, 105 LE</p></li>
+                    <li><p>Szervokormány</p></li>
+                    <li><p>Elektromos ablakok</p></li>
+                    <li><p>Elektromosan állítható, -behajtható és fűthető tükrök</p></li>
+                    <li><p>Parkradar</p></li>
+                    <li><p>ABS, ASR, ESP</p></li>
+                    <li><p>Tempmomat</p></li>
+                    <li><p>Klíma</p></li>
+                    <li><p>Centrálzár</p></li>
+                </ul>
             </div>
-            <div id="form-container">
-                <form action="">
-                    <label for="pickup-date">Felvétel napja</label>
-                    <input type="date" id="pickup-date" name="pickup-date">
-                    <label for="deliver-date">Leadás napja</label>
-                    <input type="date" id="deliver-date" name="deliver-date">
-                    <button>Bérlés</button>
-                    <p id="warning">Figyelem! A bérlés nem minősül érvényes foglalásnak. Várja meg kollégánk visszajelzését. <span id="required">*</span></p>
-                </form>
+            <div id="car-equipment">
+                <h3>Gépjármű felszereltsége</h3>
+                <ul>
+                    <li><p>Szervokormány</p></li>
+                    <li><p>Elektromosan állítható tükrök</p></li>
+                    <li><p>Fűthető tükrök</p></li>
+                    <li><p>ABS</p></li>
+                    <li><p>ESP</p></li>
+                    <li><p>Klíma</p></li>
+                    <li><p>Elektromos ablakok</p></li>
+                    <li><p>Behajtható tükrök</p></li>
+                    <li><p>Parkradar</p></li>
+                    <li><p>ASR</p></li>
+                    <li><p>Tempomat</p></li>
+                    <li><p>Centrálzár</p></li>
+                </ul>
+            </div>
+            <div id="car-rent">
+                <div id="price-container">
+                    <h2>{{ carData.price_per_day | number }}<span id="car-price">Huf / nap</span></h2>
+                </div>
+                <div id="form-container">
+                    <form action="">
+                        <label for="pickup-date">Felvétel napja</label>
+                        <input type="date" id="pickup-date" name="pickup-date">
+                        <label for="deliver-date">Leadás napja</label>
+                        <input type="date" id="deliver-date" name="deliver-date">
+                        <button>Bérlés</button>
+                        <p id="warning">Figyelem! A bérlés nem minősül érvényes foglalásnak. Várja meg kollégánk visszajelzését. <span id="required">*</span></p>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </div>
