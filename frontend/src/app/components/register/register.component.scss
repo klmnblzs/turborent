@@ -11,7 +11,6 @@
     }
 
     form {
-        
         padding: 15px;
         border: 1px solid #DCE0E0;
         border-radius: 10px;
@@ -30,7 +29,7 @@
             flex-direction: row;
             justify-content: space-between;
 
-            input[type='text']{
+            input[type='text'], input[type='password']{
                 width: 220px;
             }
 
@@ -42,7 +41,7 @@
             }
         }
 
-        input[type='text'], input[type='number'], input[type='date'] {
+        input[type='text'], input[type='number'], input[type='date'], input[type='password'] {
             display: block;
             border-radius: 5px;
             border: 1px solid #DCE0E0;
@@ -57,19 +56,11 @@
             border: 1px solid red;
         }
 
-        input[type='text']:focus, input[type='number']:focus, input[type='date']:focus{
+        input[type='text']:focus, input[type='password']:focus input[type='number']:focus, input[type='date']:focus{
             border: 1px solid black;
             outline: 1px solid black;
         }
-
-        input[type='file'] {
-            text-align: center;
-        }
-
-        input[type='file']::file-selector-button, input[type='file']::-webkit-file-selector-button {
-            display: none;
-        }
-
+        
         .criteria {
             font-size: 15px;
             margin-left: 25px;
@@ -85,22 +76,87 @@
             }
         }
 
-        #license-front-label, #license-back-label {
-            padding: 7px;
-            margin-bottom: 15px;
-            border: 1px solid #DCE0E0;
-            border-radius: 5px;
-            display: inline-block;
-            cursor: pointer;
-            padding: 7px;
-            text-align: center;
+        #image-upload {
+            width: 100%;
+            padding: 30px;
+            border-radius: 15px;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
 
-            transition: .3s;
-        }
+            #upload-button {
+                padding: 10px;
+                border: none;
+                outline: none;
+                background-color: #C7F9CC;
+                font-size: 17px;
+                border-radius: 10px;
+                width: 250px;
+                cursor: pointer;
+                transition: .3s;
+            }
+            #upload-button:hover {
+                background-color: #99c09d;
+            }
+            
+            #img-area-front, #img-area-back {
+                position: relative;
+                width: 100%;
+                height: 250px;
+                background: #f7f7f7;
+                margin-bottom: 10px;
+                border-radius: 15px;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
 
-        #license-front-label:hover, #license-back-label:hover {
-            padding: 8px;
-            border: 1px solid black;
+                i {
+                    font-size: 80px;
+                }
+                
+                h3 {
+                    font-size: 19px;
+                    font-weight: 500;
+                    margin-bottom: 6px;
+                }
+                
+                img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    z-index: 100;
+                }
+            }
+
+            #img-area-front::before, #img-area-back::before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, .5);
+                color: #fff;
+                font-weight: 500;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                pointer-events: none;
+                opacity: 0;
+                transition: all .3s ease;
+            }
+
+            #img-area-front.active:hover::before, #img-area-back.active:hover::before  {
+                opacity: 1;
+            }
         }
 
         button {

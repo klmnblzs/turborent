@@ -1,15 +1,17 @@
-<header id="image-container"></header>
+@for(car of carData; track car.id) {
+    <img [src]="car.thumbnail">
+}
 
 <div class="container">
-    @for(carData of car; track car.id) {
-        <h2>{{ carData.brand }} {{ carData.model }} {{ carData.cc }} </h2>
+    @for(car of carData; track car.id) {
+        <h2>{{ car.brand }} {{ car.model }} {{ car.cc }} </h2>
         <div id="car-additions">
             <ul>
-                <li><p><i class="ph ph-person-arms-spread"></i>{{ carData.seats }} férőhely</p></li>
-                <li><p><i class="ph ph-gear"></i>{{ carData.isManual === 0 ? "Manuális" : "Autómata" }}</p></li>
-                <li><p><i class="ph ph-car"></i>{{ carData.doors }} ajtó</p></li>
-                <li><p><i class="ph ph-speedometer"></i>{{ carData.mileage | number }} km</p></li>
-                <li><p><i class="ph ph-gas-pump"></i>{{ carData.isDiesel === 0 ? "Benzin" : "Dízel" }}</p></li>
+                <li><p><i class="ph ph-person-arms-spread"></i>{{ car.seats }} férőhely</p></li>
+                <li><p><i class="ph ph-gear"></i>{{ car.isManual === 0 ? "Manuális" : "Autómata" }}</p></li>
+                <li><p><i class="ph ph-car"></i>{{ car.doors }} ajtó</p></li>
+                <li><p><i class="ph ph-speedometer"></i>{{ car.mileage | number }} km</p></li>
+                <li><p><i class="ph ph-gas-pump"></i>{{ car.isDiesel === 0 ? "Benzin" : "Dízel" }}</p></li>
             </ul>
         </div>
         <hr>
@@ -47,7 +49,7 @@
             </div>
             <div id="car-rent">
                 <div id="price-container">
-                    <h2>{{ carData.price_per_day | number }}<span id="car-price">Huf / nap</span></h2>
+                    <h2>{{ car.price_per_day | number }}<span id="car-price">Huf / nap</span></h2>
                 </div>
                 <div id="form-container">
                     <form action="">

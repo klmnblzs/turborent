@@ -8,6 +8,12 @@ header {
     background-position: center;
 }
 
+img {
+    object-fit: cover;
+    width: 100vw;
+    height: 60vh;
+}
+
 .container {
     padding: 5px;
     margin: auto;

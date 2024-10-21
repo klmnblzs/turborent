@@ -15,15 +15,11 @@
         <label for="email">E-mail <span id="required">*</span></label>
         <input type="text" name="email" id="email" formControlName="email" [class.invalid]="this.form.controls.email.invalid && this.form.controls.email.touched">
         <label for="phone">Telefonszám <span id="required">*</span></label>
-        <input type="text" name="phone" id="phone" formControlName="phone" [class.invalid]="this.form.controls.phone.invalid && this.form.controls.phone.touched">
-        <!-- <label for="phone">Jogosítvány száma <span id="required">*</span></label>
-        <input type="text" name="license-number" id="license-number" required> -->
-        <input type="file" accept="image/*" name="licensePictureFront" id="licensePictureFront" (change)="onFrontFileSelected($event)">
-        <label for="license-picture-front">Jogosítvány előlapi kép feltöltése <span id="required">*</span></label>
+        <input type="text" name="phone" id="phone" formControlName="phone" [class.invalid]="this.form.controls.phone.invalid && this.form.controls.phone.touched">        
 
-        <input type="file" accept="image/*" name="licensePictureBack" id="licensePictureBack" (change)="onBackFileSelected($event)">
-        <label for="license-picture-back">Jogosítvány hátlapi kép feltöltése <span id="required">*</span></label>
-
+        <!-- <input type="file" accept="image/*" name="licensePictureBack" id="licensePictureBack" (change)="onBackFileSelected($event)">
+        <label for="license-picture-back" id="license-picture-front">Jogosítvány hátlapi kép feltöltése <span id="required">*</span></label> -->
+    
         <div class="address-container">
             <div>
                 <label for="city">Város <span id="required">*</span></label>
@@ -49,7 +45,7 @@
         <input type="date" name="dateofbirth" id="dateofbirth" formControlName="dateofbirth" [class.invalid]="this.form.controls.dateofbirth.invalid && this.form.controls.dateofbirth.touched">
 
         <label for="name">Jelszó <span id="required">*</span></label>
-        <input type="text" name="password" id="password" formControlName="password">
+        <input type="password" name="password" id="password" formControlName="password" [class.invalid]="this.form.controls.password.invalid && this.form.controls.password.touched">
         <ul class="criteria">
             <li><p [class.valid-criteria]="this.form.controls.password.value!.length >= 8">Legalább 8 karakter</p></li>
             <li><p [class.valid-criteria]="hasUpperCase(this.form.controls.password.value)">Legalább egy nagybetű</p></li>
@@ -57,7 +53,7 @@
             <li><p [class.valid-criteria]="hasSpecialCharacter(this.form.controls.password.value)">Legalább egy speciális karakter</p></li>
         </ul>
         <label for="password-confirm">Jelszó ismétlése <span id="required">*</span></label>
-        <input type="text" name="password-confirm" id="password-confirm" formControlName="passwordConfirm">
+        <input type="password" name="password-confirm" id="password-confirm" formControlName="passwordConfirm">
 
         @if((this.form.controls.firstname.invalid && this.form.controls.lastname.touched) || 
         (this.form.controls.lastname.invalid && this.form.controls.lastname.touched) ||
@@ -73,6 +69,28 @@
         (this.form.controls.password.invalid && this.form.controls.password.touched)) {
             <p id="alert">Kérjük töltse ki a kritériumoknak megfelelően!</p>
         }
+
+        <div id="image-upload">
+            <div id="img-area-front">
+                <i id="icon-front" class='ph-fill ph-upload-simple'></i>
+                <h3 id="upload-placeholder-front">Jogosítvány előlapi kép feltöltése</h3>
+            </div>
+            <button id="upload-button" type="button" (click)="frontImage.click()">
+                <span>Kép kiválasztása</span>
+                <input #frontImage type="file" accept="image/*" name="licensePictureFront" id="licensePictureFront" type="file" (change)="onFrontFileSelected($event)" style="display:none;" />
+            </button>
+        </div>
+
+        <div id="image-upload">
+            <div id="img-area-back">
+                <i id="icon-back" class='ph-fill ph-upload-simple'></i>
+                <h3 id="upload-placeholder-back">Jogosítvány hátlapi kép feltöltése</h3>
+            </div>
+            <button id="upload-button" type="button" (click)="backImage.click()">
+                <span>Kép kiválasztása</span>
+                <input #backImage type="file" accept="image/*" name="licensePictureFront" id="licensePictureFront" type="file" (change)="onBackFileSelected($event)" style="display:none;" />
+            </button>
+        </div>
 
         <button>Regisztráció</button>
         <p id="login-redirect">Már van fiókod? <a routerLink="/login" id="redirect-href">kattints ide</a> a bejelentkezéshez!</p>

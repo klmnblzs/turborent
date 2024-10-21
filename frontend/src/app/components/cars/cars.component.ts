@@ -30,6 +30,7 @@ export class CarsComponent implements OnInit {
     const subscription = this.carsService.getCarList().subscribe({
       next: (cars) => {
         this.cars=cars
+        console.log(this.cars)
       },
       error: (err) => {
         console.log("ERROR:" + err)

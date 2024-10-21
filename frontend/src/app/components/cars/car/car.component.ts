@@ -10,8 +10,4 @@ import { DecimalPipe } from '@angular/common';
 })
 export class CarComponent {
   carData=input.required<any>()
-
-  onClick() {
-    return false
-  }
 }

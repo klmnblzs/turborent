@@ -15,29 +15,27 @@ export class CarAboutComponent implements OnInit{
   private carsService = inject(CarsService);
   private destroyRef = inject(DestroyRef);
   private activatedRoute = inject(ActivatedRoute);
-  car:any;
+  
   carId:any;
+  carData:any;
 
-  getCarById(id: string) {
-    return this.carsService.fetchById(
-      "http://localhost:3000/cars",
-      "There was an error",
-      id
-    )
-  }
-
-  ngOnInit(): void {
+  ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
-      this.carId = params.get('id');  // "id" matches the ':id' in your route
-      this.getCarById(this.carId);
+      this.carId = params.get('id');
     });
 
-    const subscription = this.getCarById(this.carId).subscribe({
-      next: (res) => {
-        this.car=res;
+    const subscription = this.carsService.getCarById(this.carId).subscribe({
+      next: (res) => { 
+        this.carData = res;
+        console.log(this.carData)
+      },
+      error: (err) => {
+        console.error('Error fetching car:', err);
       }
-    })
+    });
 
-    this.destroyRef.onDestroy(() => subscription.unsubscribe)
+    this.destroyRef.onDestroy(() => { 
+      subscription.unsubscribe()
+    })
   }
 }

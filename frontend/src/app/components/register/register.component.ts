@@ -35,13 +35,61 @@ export class RegisterComponent {
     licensePictureFront: new FormControl('', { validators: [Validators.required], }),
     licensePictureBack: new FormControl('', { validators: [Validators.required]}),
   })
+  
+  imageUrlFront: string | null = null;
+  imageUrlBack: string | null = null;
 
   onFrontFileSelected(event: any) {
     this.licenseFrontFile = event.target.files[0] || null;
+
+    if (this.licenseFrontFile !== null) {
+      console.log(this.licenseFrontFile);
+      this.previewImageFront(this.licenseFrontFile);
+    }
   }
 
   onBackFileSelected(event: any) {
     this.licenseBackFile = event.target.files[0] || null;
+    if (this.licenseBackFile !== null) {
+      console.log(this.licenseBackFile)
+      this.previewImageBack(this.licenseBackFile);
+    }
+
+  }
+
+  previewImageFront(file: File): void {
+    const imgArea = document.querySelector('#img-area-front') as HTMLElement;
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const allImg = imgArea.querySelectorAll('img');
+      allImg.forEach(item => item.remove());
+
+      const imgUrl = reader.result as string; 
+      const img = document.createElement('img');
+			img.src = imgUrl;
+			imgArea.appendChild(img);
+			imgArea.classList.add('active');      
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  previewImageBack(file: File): void {
+    const imgArea = document.querySelector('#img-area-back') as HTMLElement;
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const allImg = imgArea.querySelectorAll('img');
+      allImg.forEach(item => item.remove());
+      const imgUrl = reader.result as string; 
+      const img = document.createElement('img');
+			img.src = imgUrl;
+			imgArea.appendChild(img);
+			imgArea.classList.add('active');
+    };
+
+    reader.readAsDataURL(file);
   }
 
   hasUpperCase(str: string | null) {
@@ -90,4 +138,5 @@ export class RegisterComponent {
       subscription.unsubscribe()
      })
   }
+
 }

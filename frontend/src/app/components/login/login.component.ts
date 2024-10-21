@@ -42,6 +42,7 @@ export class LoginComponent {
   onSubmit() {
     this.isSubmitted=true;
     if(this.form.controls.email.invalid || this.form.controls.password.invalid) {
+      this.loginError = true;
       return;
     }
 

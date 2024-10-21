@@ -18,7 +18,7 @@ export class CarsService {
     )
   }
 
-  fetchById(url:string, errorMessage:string, carId:string) {
+  private fetchById(url:string, errorMessage:string, carId:string) {
     let headers = new HttpHeaders();
     headers = headers.set('id', carId);
 
@@ -49,6 +49,14 @@ export class CarsService {
     return this.fetch(
       "http://localhost:3000/filter/brands",
       "Something went wrong while fetching the categories."
+    )
+  }
+
+  getCarById(id: string) {
+    return this.fetchById(
+      "http://localhost:3000/cars",
+      "There was an error",
+      id
     )
   }
 }

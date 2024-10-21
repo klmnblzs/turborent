@@ -10,6 +10,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     transition: .3s margin;
+    z-index: 999;
 
     img {
         object-fit: fill;
