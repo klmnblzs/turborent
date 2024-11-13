@@ -52,12 +52,16 @@
                     <h2>{{ car.price_per_day | number }}<span id="car-price">Huf / nap</span></h2>
                 </div>
                 <div id="form-container">
-                    <form action="">
+                    <form>
                         <label for="pickup-date">Felvétel napja</label>
                         <input type="date" id="pickup-date" name="pickup-date">
                         <label for="deliver-date">Leadás napja</label>
                         <input type="date" id="deliver-date" name="deliver-date">
-                        <button>Bérlés</button>
+                        @if (isLoggedIn()) {
+                            <button (click)="redirectCustomer()">Bérlés</button>
+                        } @else {
+                            <button (click)="redirectCustomer()">Bejelentkezés</button>
+                        }
                         <p id="warning">Figyelem! A bérlés nem minősül érvényes foglalásnak. Várja meg kollégánk visszajelzését. <span id="required">*</span></p>
                     </form>
                 </div>

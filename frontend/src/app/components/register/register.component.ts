@@ -142,7 +142,7 @@ export class RegisterComponent {
       },
       error: (err) => {
         this.registerError = true;
-        this.errorText = 'Felhasználónév már létezik!';
+        this.errorText = 'Ezt a felhasználót már regisztrálták!';
       }
     })
   }

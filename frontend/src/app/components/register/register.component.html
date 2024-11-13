@@ -80,7 +80,7 @@
             (this.form.controls.address.invalid && this.form.controls.address.touched) ||
             (this.form.controls.housenum.invalid && this.form.controls.housenum.touched) ||
             (this.form.controls.password.invalid && this.form.controls.password.touched)) {
-                <p id="alert">Kérjük töltse ki a kritériumoknak megfelelően!</p>
+                <p id="alert">{{ errorText }}</p>
             }
 
             <button>Regisztráció</button>
