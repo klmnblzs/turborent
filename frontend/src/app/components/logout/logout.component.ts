@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { SnackbarService } from '../shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-logout',
@@ -11,8 +12,9 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './logout.component.scss'
 })
 export class LogoutComponent {
-  authService = inject(AuthService)
-  router = inject(Router)
+  private authService = inject(AuthService)
+  private router = inject(Router)
+  private snackbarService = inject(SnackbarService)
 
   ngOnInit(): void {
     const refreshToken = localStorage.getItem("refreshToken");
@@ -28,6 +30,7 @@ export class LogoutComponent {
         localStorage.removeItem("refreshToken");
         
         this.router.navigate(["/cars"]);
+        this.snackbarService.show("Kijelentkezve!")
       },
       error: (err) => {
         console.error("Error while logging out: " + err);

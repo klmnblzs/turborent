@@ -3,6 +3,7 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { SnackbarService } from '../shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +14,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterComponent {
   private authService = inject(AuthService);
+  private snackbarService = inject(SnackbarService)
 
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
@@ -131,6 +133,7 @@ export class RegisterComponent {
               this.router.navigate(["/login"]);
               this.registerError = false
               this.errorText=""
+              this.snackbarService.show("Sikeres regisztráció!")
             });
           },
           error: (err) => {

@@ -2,6 +2,7 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { SnackbarService } from '../shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent implements OnInit {
   private authService = inject(AuthService)
+  private snackbarService = inject(SnackbarService)
 
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
@@ -52,6 +54,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("refreshToken", res.refreshToken)
         setTimeout(() => {
           this.router.navigate(["/cars"])
+          this.snackbarService.show("Sikeres bejelentkezés!")
         })
       }, error: (err) => {
         this.loginError=true

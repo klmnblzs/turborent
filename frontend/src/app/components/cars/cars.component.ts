@@ -1,10 +1,11 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, NgZone, OnInit } from '@angular/core';
 import { CarComponent } from "./car/car.component";
 import { AboutComponent } from "../about/about.component";
 import { CarsService } from '../../services/cars.service';
 import { HeaderComponent } from "../header/header.component";
 import { NavbarComponent } from "../navbar/navbar.component";
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-cars',
@@ -17,6 +18,7 @@ export class CarsComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
   private carsService = inject(CarsService)
   private router = inject(Router);
+  private zone = inject(NgZone)
 
   cars:any;
   brands:any;
@@ -30,7 +32,6 @@ export class CarsComponent implements OnInit {
     const subscription = this.carsService.getCarList().subscribe({
       next: (cars) => {
         this.cars=cars
-        console.log(this.cars)
       },
       error: (err) => {
         console.log("ERROR:" + err)

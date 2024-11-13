@@ -3,6 +3,7 @@ import { CarsService } from '../../../services/cars.service';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
+import { SnackbarService } from '../../shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-car-about',
@@ -16,6 +17,8 @@ export class CarAboutComponent implements OnInit{
   private destroyRef = inject(DestroyRef);
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router)
+  private snackbarService = inject(SnackbarService)
+
 
   carId:any;
   carData:any;
