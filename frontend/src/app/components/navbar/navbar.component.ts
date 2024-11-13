@@ -10,7 +10,6 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
-  // changeNav:boolean = false;
   imagePath = signal('turborent-nav.png')
   private router = inject(Router)
   private authService = inject(AuthService);
@@ -39,6 +38,10 @@ export class NavbarComponent implements OnInit {
     } else {
       this.placeholder = "Bejelentkezés";
     }
+  }
+
+  onLogoClick() {
+    this.router.navigate(["/cars"])
   }
 
   // @HostListener("window:scroll")

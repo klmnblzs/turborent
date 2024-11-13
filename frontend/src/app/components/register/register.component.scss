@@ -15,29 +15,33 @@
         border: 1px solid #DCE0E0;
         border-radius: 10px;
         margin: 20px;
-        width: 500px;
 
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        gap: 100px;
         
         #required {
             color: red;
         }
 
-        .name-container, .address-container {
+        .seperated-container, .address-container {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
 
             input[type='text'], input[type='password']{
-                width: 220px;
+                width: 250px;
+            }
+
+            input[name='lastname'], label[for='lastname'] {
+                margin-left: 15px;
             }
 
             input[name='postcode'], input[name='housenum'] {
                 width: 110px;
             }
             input[name='city'],input[name='address']{
-                width: 350px;
+                width: 380px;
             }
         }
 
@@ -104,6 +108,7 @@
             #img-area-front, #img-area-back {
                 position: relative;
                 width: 100%;
+                max-width: 340px;
                 height: 250px;
                 background: #f7f7f7;
                 margin-bottom: 10px;
@@ -162,6 +167,7 @@
         button {
             margin-top: 20px;
             padding: 5px;
+            width: 100%;
             border: none;
             outline: none;
             background-color: #C7F9CC;
