@@ -1,7 +1,7 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { CustomersService } from '../../services/customers.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,11 +10,18 @@ import { CustomersService } from '../../services/customers.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
-  private customersService = inject(CustomersService);
+export class LoginComponent implements OnInit {
+  private authService = inject(AuthService)
+
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
   showPassword:boolean = false;
+
+  ngOnInit(): void {
+    if(localStorage.getItem("token") && localStorage.getItem("refreshToken")) {
+      this.router.navigate(["/dashboard"])
+    }
+  }
 
   form = new FormGroup({
     email: new FormControl('', {
@@ -24,17 +31,6 @@ export class LoginComponent {
       validators: [ Validators.required ]
     })
   })
-
-  loginCustomer() {
-    return this.customersService.postRequest(
-      "http://localhost:3000/customers/login",
-      {
-        email: this.form.value.email,
-        password: this.form.value.password
-      },
-      "Could not log in customer"
-    )
-  }
 
   isSubmitted=false;
   loginError=false;
@@ -46,13 +42,19 @@ export class LoginComponent {
       return;
     }
 
-    const subscription = this.loginCustomer().subscribe({
-      next: (res) => {
-        this.router.navigate(['/'])
-        console.log(res)
-      },
-      error: (err) => {
-        this.loginError = true;
+    const subscription = this.authService.loginUser({
+      email: this.form.value.email,
+      password: this.form.value.password
+    }).subscribe({
+      next: (res: any) => {
+        localStorage.setItem("token", res.token)
+        const userid=this.authService.getUserDataFromToken().id
+        localStorage.setItem("refreshToken", res.refreshToken)
+        setTimeout(() => {
+          this.router.navigate(["/cars"])
+        })
+      }, error: (err) => {
+        this.loginError=true
       }
     })
 

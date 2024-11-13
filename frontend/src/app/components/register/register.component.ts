@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { CustomersService } from '../../services/customers.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -12,9 +12,10 @@ import { CustomersService } from '../../services/customers.service';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
+  private authService = inject(AuthService);
+
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
-  private customersService = inject(CustomersService);
   private router = inject(Router);
   
   licenseFrontFile: File | null = null;
@@ -32,8 +33,8 @@ export class RegisterComponent {
     dateofbirth: new FormControl('', { validators: [Validators.required] }),
     password: new FormControl('', { validators: [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/)] }),
     passwordConfirm: new FormControl('', { validators: [Validators.required] }),
-    licensePictureFront: new FormControl('', { validators: [Validators.required], }),
-    licensePictureBack: new FormControl('', { validators: [Validators.required]}),
+    licensePictureFront: new FormControl('', { validators: [Validators.required] }),
+    licensePictureBack: new FormControl('', { validators: [Validators.required] }),
   })
   
   imageUrlFront: string | null = null;
@@ -104,39 +105,45 @@ export class RegisterComponent {
     return str ? /[!@#$%^&*]/.test(str) : false
   }
 
-  registerCustomer(formData: FormData) {
-    return this.customersService.postRequest(
-      "http://localhost:3000/customers/register", 
-      formData, 
-      "Could not register customer"
-    );
-  }
+  registerError=false;
+  errorText:string=""
 
   onSubmit() {
     const formData = new FormData();
-    formData.append('first_name', this.form.get('firstname')?.value!); // Non-null assertion
-    formData.append('last_name', this.form.get('lastname')?.value!); // Non-null assertion
-    formData.append('email', this.form.get('email')?.value!); // Non-null assertion
-    formData.append('phone_number', this.form.get('phone')?.value!); // Non-null assertion
-    formData.append('date_of_birth', this.form.get('dateofbirth')?.value!); // Non-null assertion
-    formData.append('post_code', this.form.get('postcode')?.value!); // Non-null assertion
-    formData.append('city', this.form.get('city')?.value!); // Non-null assertion
-    formData.append('street', this.form.get('address')?.value!); // Non-null assertion
-    formData.append('house_number', this.form.get('housenum')?.value!); // Non-null assertion
-    formData.append('password', this.form.get('password')?.value!); // Non-null assertion
-    formData.append('licensePictureFront', this.licenseFrontFile!); // Non-null assertion
-    formData.append('licensePictureBack', this.licenseBackFile!); // Non-null assertion
+    formData.append('first_name', this.form.get('firstname')?.value!);
+    formData.append('last_name', this.form.get('lastname')?.value!);
+    formData.append('email', this.form.get('email')?.value!);
+    formData.append('phone_number', this.form.get('phone')?.value!);
+    formData.append('date_of_birth', this.form.get('dateofbirth')?.value!);
+    formData.append('post_code', this.form.get('postcode')?.value!);
+    formData.append('city', this.form.get('city')?.value!);
+    formData.append('street', this.form.get('address')?.value!);
+    formData.append('house_number', this.form.get('housenum')?.value!);
+    formData.append('password', this.form.get('password')?.value!);
+    formData.append('licensePictureFront', this.licenseFrontFile!);
+    formData.append('licensePictureBack', this.licenseBackFile!);
 
-    const subscription = this.registerCustomer(formData).subscribe({
-      next: (res) => {
-        this.router.navigate(["/cars"]);
-        this.form.reset()
+    this.authService.checkDuplicate(this.form.get('email')?.value!).subscribe({
+      next: (res: any) => {
+        const subscription = this.authService.registerUser(formData).subscribe({
+          next: (res: any) => {
+            setTimeout(() => {
+              this.router.navigate(["/login"]);
+              this.registerError = false
+              this.errorText=""
+            });
+          },
+          error: (err) => {
+            this.registerError = true;
+            this.errorText = 'Tölts ki minden mezőt!';
+          }
+        });
+        this.destroyRef.onDestroy(() => subscription.unsubscribe());
+      },
+      error: (err) => {
+        this.registerError = true;
+        this.errorText = 'Felhasználónév már létezik!';
       }
-     })
-     
-     this.destroyRef.onDestroy(()=>{
-      subscription.unsubscribe()
-     })
+    })
   }
-
 }
