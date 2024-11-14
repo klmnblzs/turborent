@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute)
  
   userData:any = '';
-  currentPage:string = 'data';
+  currentPage:string = 'history';
 
   // FORM SZERKESZTÉS
 

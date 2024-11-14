@@ -1,9 +1,9 @@
 <div class="container">
     <nav>
         <ul>
-            <a (click)="currentPage = 'data'"><li><i class="ph-fill ph-user"></i>Fiókadatok</li></a>
-            <a (click)="currentPage = 'security'"><li><i class="ph-fill ph-lock"></i>Jelszó & Biztonság</li></a>
-            <a (click)="currentPage = 'history'"><li><i class="ph-fill ph-credit-card"></i>Bérlési előzmények</li></a>
+            <a (click)="currentPage = 'data'"><li [class.active]="currentPage == 'data'"><i class="ph-fill ph-user"></i>Fiókadatok</li></a>
+            <a (click)="currentPage = 'security'"><li [class.active]="currentPage == 'security'"><i class="ph-fill ph-lock"></i>Jelszó & Biztonság</li></a>
+            <a (click)="currentPage = 'history'"><li [class.active]="currentPage == 'history'"><i class="ph-fill ph-credit-card"></i>Bérlési előzmények</li></a>
             <a (click)="logOut()"><li><i class="ph ph-sign-out"></i>Kijelentkezés</li></a>
         </ul>
     </nav>
@@ -62,7 +62,23 @@
         }
 
         @if(currentPage == 'history') {
-
+            <div class="card-container">
+                <div class="card">
+                    <h2>Volkswagen Golf VII</h2>
+                    <p id="date">2022-05-12</p>
+                    <a href="">Részletek</a>
+                </div>
+                <div class="card">
+                    <h2>Volkswagen Golf VII</h2>
+                    <p id="date">2022-05-12</p>
+                    <a href="">Részletek</a>
+                </div>
+                <div class="card">
+                    <h2>Volkswagen Golf VII</h2>
+                    <p id="date">2022-05-12</p>
+                    <a href="">Részletek</a>
+                </div>
+            </div>
         }
     </div>
 </div>
