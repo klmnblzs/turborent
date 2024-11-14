@@ -17,7 +17,7 @@ export const routes: Routes = [
     { path: 'contact', component: ContactComponent, title: header + "Kapcsolat" },
     { path: 'login', component: LoginComponent, title: header + "Bejelentkezés" },
     { path: 'register', component: RegisterComponent, title: header + "Regisztráció"},
-    { path: 'dashboard', component: DashboardComponent, title: header + "Dashboard" },
+    { path: 'dashboard/:userid', component: DashboardComponent, title: header + "Dashboard" },
     { path: 'logout', component: LogoutComponent },
     { path: '**', component: CarsComponent },
     { path: 'about', component: CarAboutComponent }

@@ -1,44 +1,68 @@
 <div class="container">
     <nav>
         <ul>
-            <a><li><i class="ph-fill ph-user"></i>Fiókadatok</li></a>
-            <a><li><i class="ph-fill ph-lock"></i>Jelszó & Biztonság</li></a>
-            <a><li><i class="ph-fill ph-credit-card"></i>Bérlési előzmények</li></a>
+            <a (click)="currentPage = 'data'"><li><i class="ph-fill ph-user"></i>Fiókadatok</li></a>
+            <a (click)="currentPage = 'security'"><li><i class="ph-fill ph-lock"></i>Jelszó & Biztonság</li></a>
+            <a (click)="currentPage = 'history'"><li><i class="ph-fill ph-credit-card"></i>Bérlési előzmények</li></a>
             <a (click)="logOut()"><li><i class="ph ph-sign-out"></i>Kijelentkezés</li></a>
         </ul>
     </nav>
 
     <div class="data-container">
-        <form action="">
-            <h3>Személyes adatok</h3>
-            <div class="name-container">
-                <div>
-                    <label for="firstname">Keresztnév</label>
-                    <input type="text" name="firstname" id="firstname">
+        @if(currentPage == 'data') {
+            <form [formGroup]="dataForm">
+                <h3>Személyes adatok</h3>
+                <div class="name-container">
+                    <div>
+                        <label for="firstname">Keresztnév</label>
+                        <input type="text" name="firstname" id="firstname" formControlName="firstname" [value]="userData==='' ? '' : userData.first_name">
+                    </div>
+                    <div>
+                        <label for="lastname">Vezetéknév</label>
+                        <input type="text" name="lastname" id="lastname" formControlName="lastname" [value]="userData==='' ? '' : userData.last_name">
+                    </div>
                 </div>
-                <div>
-                    <label for="lastname">Vezetéknév</label>
-                    <input type="text" name="lastname" id="lastname">
-                </div>
-            </div>
-            <h3>Lakcím</h3>
-            <div class="address-container">
-                <div>
-                    <label for="postcode">Irányítószám</label>
-                    <input type="text" name="postcode" id="postcode">
-    
-                    <label for="street">Utca</label>
-                    <input type="text" name="street" id="street">
-                </div>
-                <div>
-                    <label for="city">Város</label>
-                    <input type="text" name="city" id="city">
+                <h3>Lakcím</h3>
+                <div class="address-container">
+                    <div>
+                        <label for="postcode">Irányítószám</label>
+                        <input type="text" name="postcode" id="postcode" formControlName="postcode" [value]="userData==='' ? '' : userData.post_code">
         
-                    <label for="housenum">Házszám</label>
-                    <input type="text" name="housenum" id="housenum">
+                        <label for="street">Utca</label>
+                        <input type="text" name="street" id="street" formControlName="street" [value]="userData==='' ? '' : userData.street">
+                    </div>
+                    <div>
+                        <label for="city">Város</label>
+                        <input type="text" name="city" id="city" formControlName="city" [value]="userData==='' ? '' : userData.city">
+            
+                        <label for="housenum">Házszám</label>
+                        <input type="text" name="housenum" id="housenum" formControlName="housenum" [value]="userData==='' ? '' : userData.house_number">
+                    </div>
                 </div>
-            </div>
-            <button>Változtatások elmentése</button>
-        </form>
+                <button>Változtatások elmentése</button>
+            </form>
+        }
+
+        @if(currentPage == 'security') {
+            <form [formGroup]="securityForm">
+                <h3>Jelszó & Biztonság</h3>
+                <div class="security-container">
+                    <div>
+                        <label for="oldpassword">Régi jelszó</label>
+                        <input type="password" name="oldpassword" id="oldpassword" formControlName="oldpassword">
+                        
+                    </div>
+                    <div>
+                        <label for="newpassword">Új jelszó</label>
+                        <input type="password" name="newpassword" id="newpassword" formControlName="newpassword">
+                    </div>
+                </div>
+                <button>Jelszó változtatása</button>
+            </form>
+        }
+
+        @if(currentPage == 'history') {
+
+        }
     </div>
 </div>

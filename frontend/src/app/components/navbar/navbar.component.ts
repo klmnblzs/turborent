@@ -44,6 +44,14 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(["/cars"])
   }
 
+  onClickDashboard() {
+    if(localStorage.getItem("userid")) {
+      this.router.navigate(["/dashboard/" + localStorage.getItem("userid")])
+    } else {
+      this.router.navigate(["/login"])
+    }
+  }
+
   // @HostListener("window:scroll")
   // onScroll(event:any) {
   //   const vert = window.scrollY

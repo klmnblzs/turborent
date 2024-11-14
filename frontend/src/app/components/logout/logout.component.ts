@@ -28,6 +28,7 @@ export class LogoutComponent {
       next: (res) => {
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("userid")
         
         this.router.navigate(["/cars"]);
         this.snackbarService.show("Kijelentkezve!")
