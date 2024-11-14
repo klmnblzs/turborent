@@ -82,9 +82,6 @@
             (this.form.controls.password.invalid && this.form.controls.password.touched)) {
                 <p id="alert">{{ errorText }}</p>
             }
-
-            <button>Regisztráció</button>
-             <p id="login-redirect">Már van fiókod? <a routerLink="/login" id="redirect-href">kattints ide</a> a bejelentkezéshez!</p>
         </div>
 
         <div id="upload-container">
@@ -110,5 +107,7 @@
                 </button>
             </div>
         </div>
+        <button>Regisztráció</button>
+        <p id="login-redirect">Már van fiókod? <a routerLink="/login" id="redirect-href">kattints ide</a> a bejelentkezéshez!</p>
     </form>
 </div>

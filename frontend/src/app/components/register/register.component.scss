@@ -17,9 +17,8 @@
         margin: 20px;
 
         display: flex;
-        flex-direction: row;
-        gap: 100px;
-        
+        flex-direction: column;
+            
         #required {
             color: red;
         }
@@ -30,7 +29,7 @@
             justify-content: space-between;
 
             input[type='text'], input[type='password']{
-                width: 250px;
+                width: 400px;
             }
 
             input[name='lastname'], label[for='lastname'] {
@@ -38,10 +37,10 @@
             }
 
             input[name='postcode'], input[name='housenum'] {
-                width: 110px;
+                width: 200px;
             }
             input[name='city'],input[name='address']{
-                width: 380px;
+                width: 600px;
             }
         }
 
@@ -78,6 +77,11 @@
                 color: green;
                 transition: .3s;
             }
+        }
+
+        #upload-container {
+            display: flex;
+            flex-direction: row;
         }
 
         #image-upload {
