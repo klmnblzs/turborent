@@ -50,9 +50,8 @@ export class LoginComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         localStorage.setItem("token", res.token)
-        localStorage.setItem("userid", res.userid)
-        const userid=this.authService.getUserDataFromToken().id
         localStorage.setItem("refreshToken", res.refreshToken)
+
         setTimeout(() => {
           this.router.navigate(["/dashboard/" + localStorage.getItem("userid")])
           this.snackbarService.show("Sikeres bejelentkezés!")

@@ -2,6 +2,7 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,10 +14,11 @@ import { UserService } from '../../services/user.service';
 export class DashboardComponent implements OnInit {
   private router = inject(Router)
   private userService = inject(UserService)
+  private authService = inject(AuthService)
   private destroyRef = inject(DestroyRef)
   private activatedRoute = inject(ActivatedRoute)
  
-  userData:any = '';
+  userData = this.authService.getUserDataFromToken()
   currentPage:string = 'data';
 
   // FORM SZERKESZTÉS
@@ -37,22 +39,20 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
-      if(params.get("userid") != localStorage.getItem("userid")) {
-        this.router.navigate(['/dashboard/' + localStorage.getItem("userid")])
+      if(params.get("userid") != this.authService.getUserDataFromToken().id) {
+        this.router.navigate(['/dashboard/' + this.authService.getUserDataFromToken().id])
       }
     })
 
-    const subscription = this.userService.getUserData(localStorage.getItem("userid")!).subscribe({
+    const subscription = this.userService.getUserData(this.authService.getUserDataFromToken().id).subscribe({
       next: (res: any) => {
-        this.userData=res
-
         this.dataForm.patchValue({
-          firstname: res.first_name,
-          lastname: res.last_name,
-          postcode: res.post_code,
-          city: res.city,
-          street: res.street,
-          housenum: res.house_number
+          firstname: this.userData.firstname,
+          lastname: this.userData.lastname,
+          postcode: this.userData.postcode,
+          city: this.userData.city,
+          street: this.userData.street,
+          housenum: this.userData.housenumber
         })
       }
     })
