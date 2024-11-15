@@ -81,6 +81,9 @@ backend/.env
 .env.production.local
 .env.local
 
+# etc
+frontend/.angular
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache

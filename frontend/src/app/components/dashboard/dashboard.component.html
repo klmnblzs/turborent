@@ -4,6 +4,12 @@
             <a (click)="currentPage = 'data'"><li [class.active]="currentPage == 'data'"><i class="ph-fill ph-user"></i>Fiókadatok</li></a>
             <a (click)="currentPage = 'security'"><li [class.active]="currentPage == 'security'"><i class="ph-fill ph-lock"></i>Jelszó & Biztonság</li></a>
             <a (click)="currentPage = 'history'"><li [class.active]="currentPage == 'history'"><i class="ph-fill ph-credit-card"></i>Bérlési előzmények</li></a>
+            @if (userData.isAdmin == 1) {
+                <a (click)="currentPage = 'approvals'"><li [class.active]="currentPage == 'approvals'"><i class="ph ph-clipboard"></i>Jóváhagyások</li></a>
+            }
+            @if (userData.isAdmin == 1) {
+                <a (click)="currentPage = 'carupload'"><li [class.active]="currentPage == 'carupload'"><i class="ph ph-car"></i>Autó feltöltése</li></a>
+            }
             <a (click)="logOut()"><li><i class="ph ph-sign-out"></i>Kijelentkezés</li></a>
         </ul>
     </nav>
@@ -79,6 +85,19 @@
                     <a href="">Részletek</a>
                 </div>
             </div>
+        }
+
+        @if(currentPage == 'approvals') {
+            <div class="card-container">
+
+            </div>
+        }
+
+        @if(currentPage == 'carupload') {
+            <app-car-upload></app-car-upload>
+
+            <h2>Autó feltöltése</h2>
+            <button>Új autó feltöltése</button>
         }
     </div>
 </div>

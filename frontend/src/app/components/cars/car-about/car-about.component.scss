@@ -50,6 +50,7 @@ img {
         display: flex;
         flex-direction: row;
         align-items: flex-start;
+        justify-content:space-between;
         padding: 50px;
 
         h3 {
@@ -57,15 +58,17 @@ img {
         }
 
         #car-about {
-            max-width: 30vw;
+            max-width: 25vw;
             min-width: 10vw;
             width: 100%;
+            text-align: justify;
         }
 
         #car-equipment {
             max-width: 30vw;
             min-width: 10vw;
             width: 100%;
+            margin-left: 100px;
             
             ul {
                 list-style: disc;
@@ -104,6 +107,12 @@ img {
 
             #form-container {
                 padding: 20px;
+                
+                h2 {
+                    color: black;
+                    font-weight: bold;
+                    font-size: 18px;
+                }
 
                 form {
                     button {

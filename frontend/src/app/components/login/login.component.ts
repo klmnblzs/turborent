@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
         setTimeout(() => {
           this.router.navigate(["/dashboard/" + localStorage.getItem("userid")])
           this.snackbarService.show("Sikeres bejelentkezés!")
+          console.log(this.authService.isAdmin())
         })
       }, error: (err) => {
         this.loginError=true

@@ -74,6 +74,14 @@ export class AuthService {
     }
   }
 
+  isAdmin() {
+    if(this.getUserDataFromToken().isAdmin == 1) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   checkDuplicate(email: string) {
     return this.httpClient.post('http://localhost:3000/auth/check-duplicate', { email });
   }

@@ -45,8 +45,8 @@ export class NavbarComponent implements OnInit {
   }
 
   onClickDashboard() {
-    if(localStorage.getItem("userid")) {
-      this.router.navigate(["/dashboard/" + localStorage.getItem("userid")])
+    if(localStorage.getItem("token")) {
+      this.router.navigate(["/dashboard/" + this.authService.getUserDataFromToken().id  ])
     } else {
       this.router.navigate(["/login"])
     }

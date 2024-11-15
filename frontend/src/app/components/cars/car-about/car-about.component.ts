@@ -4,11 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { SnackbarService } from '../../shared/snackbar/snackbar.service';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-car-about',
   standalone: true,
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, ReactiveFormsModule],
   templateUrl: './car-about.component.html',
   styleUrl: './car-about.component.scss'
 })
@@ -22,23 +23,35 @@ export class CarAboutComponent implements OnInit{
 
   carId:any;
   carData:any;
+  
 
   isLoggedIn() {
     const token = localStorage.getItem("token")
     if(token) {
-      
       return true
     } 
     return false
   }
 
   redirectCustomer() {
-    if(!this.isLoggedIn()) { /* TODO: Átirányítani a felhasználót a bérlés leadásához */ }
+    if(localStorage.getItem("token")) { /* TODO: Átirányítani a felhasználót a bérlés leadásához */ }
     else {
       // TODO: javítani a redirectet --> most refreshel, redirect helyett
       this.router.navigate(["/login"]) 
     }
   } 
+  
+  carEquipments:any;
+  displayEquipments(carData:Array<any>) {
+    this.carEquipments = carData[0].equipments.split(";")
+  }
+
+  // RENT FORM
+
+  rentForm = new FormGroup({
+    pickupDate: new FormControl(''),
+    deliverDate: new FormControl('')
+  })
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -46,9 +59,9 @@ export class CarAboutComponent implements OnInit{
     });
 
     const subscription = this.carsService.getCarById(this.carId).subscribe({
-      next: (res) => { 
+      next: (res: any) => { 
         this.carData = res;
-        console.log(this.carData)
+        this.displayEquipments(res)
       },
       error: (err) => {
         console.error('Error fetching car:', err);

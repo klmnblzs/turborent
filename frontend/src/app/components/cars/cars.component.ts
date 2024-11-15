@@ -18,7 +18,6 @@ export class CarsComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
   private carsService = inject(CarsService)
   private router = inject(Router);
-  private zone = inject(NgZone)
 
   cars:any;
   brands:any;

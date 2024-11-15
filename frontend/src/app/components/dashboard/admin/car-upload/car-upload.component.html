@@ -1,0 +1,12 @@
+<h2>Jelenlegi autók</h2>
+
+@for (car of cars; track $index) {
+    <div class="card-container">
+        <div class="card">
+            <h2>{{ car.brand }} {{ car.model }} {{ car.cc }}</h2>
+            <a href="">Törlés</a>
+            <br>
+            <a href="">Módosítás</a>
+        </div>
+    </div>
+}
