@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute)
  
   userData = this.authService.getUserDataFromToken()
-  currentPage:string = 'data';
+  currentPage:string = 'carupload';
 
   // FORM SZERKESZTÉS
 

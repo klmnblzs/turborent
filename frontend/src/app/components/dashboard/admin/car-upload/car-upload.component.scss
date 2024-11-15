@@ -10,10 +10,10 @@
     .card {
         border: 1px solid #DCE0E0;
         border-radius: 10px;
-        width: 320px;
+        width: 300px;
         padding: 15px;
         display: inline-block;
-        margin: 15px 0 15px 0;
+        margin: 10px;
         transition: .3s;
 
         h2 {
@@ -32,6 +32,337 @@
 
         a:hover {
             color: #6f8b72;
+        }
+    }
+}
+
+.upload-container {
+    margin-top: 20px;
+
+    button {
+        margin-top: 20px;
+        padding: 5px;
+        border: none;
+        outline: none;
+        background-color: #C7F9CC;
+        font-size: 17px;
+        border-radius: 5px;
+        transition: .3s;
+        width: 100%;
+        
+        &:hover {
+            background-color: #99c09d;
+            cursor: pointer;
+        }
+    }
+}
+
+dialog {
+    background-color: rgba(0,0,0,.5);
+    color: black;
+    display: flex;
+    border: none;
+    visibility: hidden;
+
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    top: 0;
+    position: fixed;
+    align-items: center;
+
+    .panel {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        width: 80vw;
+
+        display: flex;
+        flex-direction: column;
+
+        #error, #required {
+            color: red;
+        }
+
+        input, label {
+            display: block;
+        }
+
+        form {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        #image-upload {
+            width: fit-content;
+            padding: 30px;
+            border-radius: 15px;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            #upload-button {
+                padding: 10px;
+                border: none;
+                outline: none;
+                background-color: #C7F9CC;
+                font-size: 17px;
+                border-radius: 10px;
+                width: 250px;
+                cursor: pointer;
+                transition: .3s;
+            }
+            #upload-button:hover {
+                background-color: #99c09d;
+            }
+            
+            #img-area-front, #img-area-back {
+                position: relative;
+                width: 100%;
+                max-width: 300px;
+                height: 250px;
+                background: #f7f7f7;
+                margin-bottom: 10px;
+                border-radius: 15px;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+
+                i {
+                    font-size: 80px;
+                }
+                
+                h3 {
+                    font-size: 19px;
+                    font-weight: 500;
+                    margin-bottom: 6px;
+                }
+                
+                img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    z-index: 100;
+                }
+            }
+
+            #img-area-front::before, #img-area-back::before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, .5);
+                color: #fff;
+                font-weight: 500;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                pointer-events: none;
+                opacity: 0;
+                transition: all .3s ease;
+            }
+
+            #img-area-front.active:hover::before, #img-area-back.active:hover::before  {
+                opacity: 1;
+            }
+        }
+
+        #title-container {
+            margin-bottom: 20px;
+            h2 {
+                font-size: 18px;
+                text-align: center;
+            }
+            p {
+                text-align: center;
+                font-size: 15px;
+                color: #c9c9c9;
+            }
+        }
+
+        select {
+            width: 100%;
+            padding: 7px;
+            margin-bottom: 15px;
+            background-color: #fff;
+            border: 1px solid #DCE0E0;
+            border-radius: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            outline: none;
+            color: black;
+        }
+
+        input[type='text'], input[type='number'] {
+            display: block;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #DCE0E0;
+            padding: 7px;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 17px;
+            font-weight: normal;
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #DCE0E0;
+            padding: 7px;
+            height: 100px;
+            max-width: 300px;
+            max-height: 200px;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 17px;
+            font-weight: normal;
+        }
+
+        input[type='date'] {
+            display: block;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #DCE0E0;
+            padding: 7px;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 17px;
+            font-weight: normal;
+        }
+
+        input[type='text']::placeholder, input[type='number']::placeholder {
+            color: #c6c6c6;
+        }
+
+        input[type='text'].invalid, input[type='number'].invalid {
+            border: 1px solid red;
+        }
+
+        input[type='text']:focus, input[type='number']:focus {
+            border: 1px solid black;
+            outline: 1px solid black;
+        }
+
+        .required {
+            color: red;
+        }
+
+        button {
+            margin-top: 15px;
+        }
+
+        #nvmBtn {
+            margin-left: 20px;
+            padding: 5px;
+            border: none;
+            outline: none;
+            background-color: #cbcbcb;
+            font-size: 17px;
+            border-radius: 5px;
+            transition: .3s padding, .3s background-color;
+            
+            &:hover {
+                background-color: #a9a9a9;
+                cursor: pointer;
+            }
+        }
+
+        #addBtn {
+            padding: 5px;
+            border: none;
+            outline: none;
+            background-color: #C7F9CC;
+            font-size: 17px;
+            border-radius: 5px;
+            transition: .3s padding, .3s background-color;
+            
+            &:hover {
+                background-color: #99c09d;
+                cursor: pointer;
+            }
+        }
+
+        #checkbox-container {
+            border: 1px solid #DCE0E0;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        #checkbox-info {
+            margin-bottom: 10px;
+        }
+
+        input[type='checkbox'] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            cursor: pointer;
+            font-size: 15px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            
+            &:hover input ~ .checkmark {
+                background-color: #ccc;
+            }
+
+            input:checked ~ .checkmark {
+                background-color: #C7F9CC;
+            }
+
+            input:checked ~ .checkmark:after {
+                display: block;
+            }
+
+            .checkmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 25px;
+                width: 25px;
+                background-color: #eee;
+    
+                &:after {
+                    content: "";
+                    position: absolute;
+                    display: none;
+                }
+            }
+        } 
+        .container:nth-child(1) {
+            margin-bottom: 12px;
+        }
+        .container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
         }
     }
 }
