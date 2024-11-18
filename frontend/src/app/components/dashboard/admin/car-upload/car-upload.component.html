@@ -52,9 +52,9 @@
                 <input type="date" id="lastServiceDate" name="lastServiceDate" formControlName="lastServiceDate">
             </div>
             <div>
-                <label for="description">Leírás</label>
+                <label for="description">Leírás <span id="required">*</span></label>
                 <textarea name="description" id="description" formControlName="description"></textarea>
-                <label for="equipment">Felszereltség (;-el elválasztva)</label>
+                <label for="equipment">Felszereltség (;-el elválasztva) <span id="required">*</span></label>
                 <textarea name="equipments" id="equipments" formControlName="equipments"></textarea>
             </div>
             <div>
@@ -81,13 +81,13 @@
     </div>
 </dialog>
 
-<h2>Jelenlegi autók</h2>
+<h3>Jelenleg elérhető autók</h3>
 
 @for (car of cars; track $index) {
     <div class="card-container">
         <div class="card">
             <h2>{{ car.brand }} {{ car.model }} {{ car.cc }}</h2>
-            <a href="">Törlés</a>
+            <a (click)="onDeleteCar(car)">Törlés</a>
             <br>
             <a href="">Módosítás</a>
         </div>
@@ -95,6 +95,6 @@
 }
 
 <div class="upload-container">
-    <h2>Autó feltöltése</h2>
+    <h3>Új autó feltöltése</h3>
     <button (click)="openAddDialog()">Új autó feltöltése</button>
 </div>

@@ -1,0 +1,15 @@
+<form [formGroup]="securityForm">
+    <h3>Jelszó & Biztonság</h3>
+    <div class="security-container">
+        <div>
+            <label for="oldpassword">Régi jelszó</label>
+            <input type="password" name="oldpassword" id="oldpassword" formControlName="oldpassword">
+            
+        </div>
+        <div>
+            <label for="newpassword">Új jelszó</label>
+            <input type="password" name="newpassword" id="newpassword" formControlName="newpassword">
+        </div>
+    </div>
+    <button>Jelszó változtatása</button>
+</form>

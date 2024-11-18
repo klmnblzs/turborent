@@ -4,11 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { CarUploadComponent } from "./admin/car-upload/car-upload.component";
+import { SnackbarService } from '../shared/snackbar/snackbar.service';
+import { PersonalDataComponent } from "./user/personal-data/personal-data.component";
+import { SecurityComponent } from "./user/security/security.component";
+import { HistoryComponent } from "./user/history/history.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [ReactiveFormsModule, CarUploadComponent],
+  imports: [ReactiveFormsModule, CarUploadComponent, PersonalDataComponent, SecurityComponent, HistoryComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -18,25 +22,14 @@ export class DashboardComponent implements OnInit {
   private authService = inject(AuthService)
   private destroyRef = inject(DestroyRef)
   private activatedRoute = inject(ActivatedRoute)
+  private snackbarService = inject(SnackbarService)
  
   userData = this.authService.getUserDataFromToken()
-  currentPage:string = 'carupload';
+  currentPage:string = 'data';
 
-  // FORM SZERKESZTÉS
-
-  dataForm = new FormGroup({
-    firstname: new FormControl(''),
-    lastname: new FormControl(''),
-    postcode: new FormControl(0),
-    city: new FormControl(''),
-    street: new FormControl(''),
-    housenum: new FormControl('')
-  })
-
-  securityForm = new FormGroup({
-    oldpassword: new FormControl(''),
-    newpassword: new FormControl('')
-  })
+  logOut() {
+    this.router.navigate(["/logout"])
+  }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -44,25 +37,5 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/dashboard/' + this.authService.getUserDataFromToken().id])
       }
     })
-
-    const subscription = this.userService.getUserData(this.authService.getUserDataFromToken().id).subscribe({
-      next: (res: any) => {
-        this.dataForm.patchValue({
-          firstname: this.userData.firstname,
-          lastname: this.userData.lastname,
-          postcode: this.userData.postcode,
-          city: this.userData.city,
-          street: this.userData.street,
-          housenum: this.userData.housenumber
-        })
-      }
-    })
-
-    this.destroyRef.onDestroy(() => subscription.unsubscribe())
-  }
-
-
-  logOut() {
-    this.router.navigate(["/logout"])
   }
 }

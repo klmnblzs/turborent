@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, NgZone, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject , OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CarsService } from '../../../../services/cars.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -30,7 +30,6 @@ export class CarUploadComponent implements OnInit {
   onBackFileSelected(event: any) {
     this.thumbnail = event.target.files[0] || null;
     if (this.thumbnail !== null) {
-      console.log(this.thumbnail)
       this.previewImageBack(this.thumbnail);
     }
   }
@@ -53,6 +52,7 @@ export class CarUploadComponent implements OnInit {
   }
 
   // TODO: ADMIN PRIVILIGE ELLENŐRZÉSE!!!!
+  // TODO: JOBB FORM VALIDATION
   
   // ADD FORM
 
@@ -83,8 +83,9 @@ export class CarUploadComponent implements OnInit {
     seats: new FormControl('', { validators: Validators.required }),
     doors: new FormControl('', { validators: Validators.required }),
     lastServiceDate: new FormControl('', { validators: Validators.required }),
-    description: new FormControl(''),
-    equipments: new FormControl(''),
+    description: new FormControl('', { validators: Validators.required }),
+    equipments: new FormControl('', { validators: Validators.required }),
+    // thumbnail: new FormControl('', { validators: Validators.required })
   })
 
   convertIsDiesel() {
@@ -103,9 +104,37 @@ export class CarUploadComponent implements OnInit {
     }
   }
 
+  loadCars() {
+    const subscription = this.carsService.getCarList().subscribe({
+      next: (cars) => {
+        this.cars=cars
+      },
+      error: (err) => {
+        console.log("ERROR:" + err)
+      }
+    })
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe())
+  }
+
+
+  onDeleteCar(car:any) {
+    console.log(car.id)
+
+    const subscription = this.adminService.deleteCar({ id: car.id }).subscribe({
+      next: (res) => {
+        console.log("Deleted!")
+        this.loadCars()
+      },
+      error: (err) => {
+        console.log("Error while deleting!")
+      }
+    })
+  }
+
   onAddCar() {
     if(this.addCarForm.invalid) {
-      this.errorText="Tölts ki minden kötelező mezőt!"
+      this.errorText="Tölts ki minden kötelező mezőt! (AddCarForm INVALID)"
       this.submitErr = true
       return
     }
@@ -137,7 +166,7 @@ export class CarUploadComponent implements OnInit {
         this.errorText=""
       },
       error: (err) => {
-        this.errorText="Hiba a feltöltés során! Ellenőrizze újból a megadott adatokat."
+        this.errorText="Hiba a feltöltés során! Ellenőrizd újból a megadott adatokat."
         this.submitErr=true
       }
     })
@@ -145,19 +174,11 @@ export class CarUploadComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const subscription = this.carsService.getCarList().subscribe({
-      next: (cars) => {
-        this.cars=cars
-      },
-      error: (err) => {
-        console.log("ERROR:" + err)
-      }
-    })
+    this.loadCars()
 
     const getCategories = this.carsService.getCategoryList().subscribe({
       next: (categories) => {
         this.categories=categories;
-        console.log(categories)
       },
       error: (err) => {
         console.log("ERROR: " + err)
@@ -165,7 +186,6 @@ export class CarUploadComponent implements OnInit {
     })
 
     this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe()
       getCategories.unsubscribe()
     })
 

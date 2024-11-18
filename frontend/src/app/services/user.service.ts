@@ -13,4 +13,8 @@ export class UserService {
       "Error while fetching user data"
     )
   }
+
+  editUserData(body:Object) {
+    return this.requestsService.post("http://localhost:3000/user/edit/", body, "Error while updating user data")
+  }
 }

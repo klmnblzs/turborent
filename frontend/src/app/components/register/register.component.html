@@ -90,7 +90,7 @@
                     <i id="icon-front" class='ph-fill ph-upload-simple'></i>
                     <!-- <h3 id="upload-placeholder-front">Jogosítvány előlapi kép feltöltése</h3> -->
                 </div>
-                <button id="upload-button" type="button" (click)="frontImage.click()">
+                <button id="upload-front-button" type="button" (click)="frontImage.click()">
                     <span>Jogosítvány hátlapi kép kiválasztása</span>
                     <input #frontImage type="file" accept="image/*" name="licensePictureFront" id="licensePictureFront" type="file" (change)="onFrontFileSelected($event)" style="display:none;" />
                 </button>
@@ -101,9 +101,9 @@
                     <i id="icon-back" class='ph-fill ph-upload-simple'></i>
                     <!-- <h3 id="upload-placeholder-back">Jogosítvány hátlapi kép feltöltése</h3> -->
                 </div>
-                <button id="upload-button" type="button" (click)="backImage.click()">
+                <button id="upload-back-button" type="button" (click)="backImage.click()">
                     <span>Jogosítvány előlapi kép kiválasztása</span>
-                    <input #backImage type="file" accept="image/*" name="licensePictureFront" id="licensePictureFront" type="file" (change)="onBackFileSelected($event)" style="display:none;" />
+                    <input #backImage type="file" accept="image/*" name="licensePictureBack" id="licensePictureBack" type="file" (change)="onBackFileSelected($event)" style="display:none;" />
                 </button>
             </div>
         </div>
