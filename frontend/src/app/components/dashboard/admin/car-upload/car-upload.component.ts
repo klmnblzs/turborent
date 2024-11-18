@@ -4,6 +4,7 @@ import { CarsService } from '../../../../services/cars.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminService } from '../../../../services/admin.service';
 import { SnackbarService } from '../../../shared/snackbar/snackbar.service';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-car-upload',
@@ -16,6 +17,7 @@ export class CarUploadComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
   private carsService = inject(CarsService)
   private adminService = inject(AdminService)
+  private authService = inject(AuthService)
   private snackbarService = inject(SnackbarService)
   private router = inject(Router)
 
@@ -105,31 +107,32 @@ export class CarUploadComponent implements OnInit {
   }
 
   loadCars() {
-    const subscription = this.carsService.getCarList().subscribe({
-      next: (cars) => {
-        this.cars=cars
-      },
-      error: (err) => {
-        console.log("ERROR:" + err)
-      }
-    })
-
-    this.destroyRef.onDestroy(() => subscription.unsubscribe())
+    if(this.authService.getUserDataFromToken().isAdmin == 1) {
+      const subscription = this.carsService.getCarList().subscribe({
+        next: (cars) => {
+          this.cars=cars
+        },
+        error: (err) => {
+          console.log("ERROR:" + err)
+        }
+      })
+      
+      this.destroyRef.onDestroy(() => subscription.unsubscribe())
+    }
   }
 
 
   onDeleteCar(car:any) {
-    console.log(car.id)
-
-    const subscription = this.adminService.deleteCar({ id: car.id }).subscribe({
-      next: (res) => {
-        console.log("Deleted!")
-        this.loadCars()
-      },
-      error: (err) => {
-        console.log("Error while deleting!")
-      }
-    })
+    if(this.authService.getUserDataFromToken().isAdmin == 1) {
+      const subscription = this.adminService.deleteCar({ id: car.id }).subscribe({
+        next: (res) => {
+          this.loadCars()
+        },
+        error: (err) => {
+          console.log("Error while deleting!")
+        }
+      })
+    }
   }
 
   onAddCar() {
@@ -157,20 +160,21 @@ export class CarUploadComponent implements OnInit {
     formData.append('thumbnail', this.thumbnail!),
     formData.append('description', this.addCarForm.value.description!),
     formData.append('equipments', this.addCarForm.value.equipments!)
-    
-    const subscription = this.adminService.addCar(formData).subscribe({
-      next: (res) => {
-        this.addCarForm.reset()
-        this.hideAddDialog()
-        this.snackbarService.show("Sikeres feltöltés!")
-        this.errorText=""
-      },
-      error: (err) => {
-        this.errorText="Hiba a feltöltés során! Ellenőrizd újból a megadott adatokat."
-        this.submitErr=true
-      }
-    })
-    this.destroyRef.onDestroy( () => subscription.unsubscribe() )
+    if(this.authService.getUserDataFromToken().isAdmin == 1) {
+      const subscription = this.adminService.addCar(formData).subscribe({
+        next: (res) => {
+          this.addCarForm.reset()
+          this.hideAddDialog()
+          this.snackbarService.show("Sikeres feltöltés!")
+          this.errorText=""
+        },
+        error: (err) => {
+          this.errorText="Hiba a feltöltés során! Ellenőrizd újból a megadott adatokat."
+          this.submitErr=true
+        }
+      })
+      this.destroyRef.onDestroy( () => subscription.unsubscribe() )
+    }
   }
 
   ngOnInit(): void {
