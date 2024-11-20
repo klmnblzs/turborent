@@ -45,3 +45,19 @@ $accent: #fff;
         cursor: pointer;
     }
 }
+
+#denyBtn {
+    padding: 5px;
+    border: none;
+    outline: none;
+    background-color: #f9c7c7;
+    font-size: 17px;
+    border-radius: 5px;
+    transition: .3s padding, .3s background-color;
+    margin-left: 20px;
+    
+    &:hover {
+        background-color: #e3a1a1;
+        cursor: pointer;
+    }
+}

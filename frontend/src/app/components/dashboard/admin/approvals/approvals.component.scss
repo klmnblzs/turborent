@@ -1,5 +1,5 @@
 .card-container {
-    display: inline-flex;
+    display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 
@@ -85,7 +85,8 @@ dialog {
 
                 img {
                     object-fit: cover;
-                    height: 300px;
+                    height: auto;
+                    max-height: 300px;
                 }
             }
         }

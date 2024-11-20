@@ -2,6 +2,7 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { AdminService } from '../../../../services/admin.service';
 import { AuthService } from '../../../../services/auth.service';
 import { DatePipe } from '@angular/common';
+import { SnackbarService } from '../../../shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-approvals',
@@ -14,6 +15,7 @@ export class ApprovalsComponent implements OnInit {
   private adminService = inject(AdminService)
   private authService = inject(AuthService)
   private destroyRef = inject(DestroyRef)
+  private snackbarService = inject(SnackbarService)
 
   approvals:any;
   currentApproval:any = null;
@@ -32,12 +34,11 @@ export class ApprovalsComponent implements OnInit {
     this.submitErr=false
   }
 
-  ngOnInit(): void {
+  loadApprovals() {
     if(this.authService.isAdmin()) {
       const subscription = this.adminService.listApprovals().subscribe({
         next: (res) => {
           this.approvals=res
-          console.log(res)
         }
       })
 
@@ -45,16 +46,62 @@ export class ApprovalsComponent implements OnInit {
     }
   }
 
+  ngOnInit(): void {
+    this.loadApprovals()
+  }
+
   approvalDetails(id:number) {
-    
-    const subscription = this.adminService.getApprovalById(id).subscribe({
-      next: (res:any) => {
-        this.currentApproval=res[0]
-        console.log(res[0])
-      }
-    })
-    this.destroyRef.onDestroy(() => subscription.unsubscribe())
-    
-    this.openApprovalDialog()
+    if(this.authService.isAdmin()) {
+      const subscription = this.adminService.getApprovalById(id).subscribe({
+        next: (res:any) => {
+          this.currentApproval=res[0]
+          console.log(res[0])
+        }
+      })
+      this.destroyRef.onDestroy(() => subscription.unsubscribe())
+
+      this.openApprovalDialog()
+    }
+  }
+
+  approveRequest() {
+    if(this.authService.isAdmin()) {
+      const subscription = this.adminService.approveRequest(
+        {
+          customer_id: this.currentApproval.customer_id,
+          admin_id: this.authService.getUserDataFromToken().id
+        }
+      ).subscribe({
+        next: (res:any) => {  
+          this.snackbarService.show("Kérés elfogadva!")
+          this.hideApprovalDialog()
+          this.loadApprovals()
+        },
+        error: (err) => {
+          this.snackbarService.show("Hiba az elfogadás során", "danger")
+        }
+      })
+      this.destroyRef.onDestroy(() => subscription.unsubscribe())
+    }
+  }
+
+  denyRequest() {
+    if(this.authService.isAdmin()) {
+      const subscription = this.adminService.denyRequest(
+        {
+          customer_id: this.currentApproval.customer_id,
+        }
+      ).subscribe({
+        next: (res:any) => {  
+          this.snackbarService.show("Kérés elutasítva!")
+          this.hideApprovalDialog()
+          this.loadApprovals()
+        },
+        error: (err) => {
+          this.snackbarService.show("Hiba az elutasítás során", "danger")
+        }
+      })
+      this.destroyRef.onDestroy(() => subscription.unsubscribe())
+    }
   }
 }

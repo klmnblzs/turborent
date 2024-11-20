@@ -25,4 +25,20 @@ export class AdminService {
       "Error fetching expense"
     )
   }
+
+  approveRequest(body:Object) {
+    return this.requestsService.post(
+      "http://localhost:3000/admin/approvals/approve",
+      body,
+      "Error while approving request"
+    )
+  }
+
+  denyRequest(body:Object) {
+    return this.requestsService.post(
+      "http://localhost:3000/admin/approvals/deny",
+      body,
+      "Error while denying request"
+    )
+  }
 }

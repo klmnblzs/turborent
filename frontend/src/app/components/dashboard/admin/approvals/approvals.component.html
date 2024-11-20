@@ -14,14 +14,14 @@
           </form> 
       </div>
       <div>
-        <button id="addBtn" (click)="hideApprovalDialog()">Rögzítés</button>
+        <button id="addBtn" (click)="approveRequest()">Jóváhagyás</button>
+        <button id="denyBtn" (click)="denyRequest()">Elutasítás</button>
         <button id="nvmBtn" (click)="hideApprovalDialog()">Mégse</button>
       </div>
     </div>
 </dialog>
 
 <div class="card-container">
-
     @for (approval of approvals; track $index) {
         <div class="card">
             <h2>{{ approval.customer_first_name }} {{ approval.customer_last_name }}</h2>
