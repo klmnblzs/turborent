@@ -18,9 +18,10 @@ export class RequestsService {
       return throwError(() => new Error("No refresh token found"));
     }
   
-    return this.httpClient.post<{ token: string }>('/auth/refresh', { refreshToken }).pipe(
-      tap((res) => {
-        localStorage.setItem("token", res.token);
+    return this.httpClient.post<{ token: string }>('http://localhost:3000/auth/refresh', { refreshToken }).pipe(
+      tap((res:any) => {
+        console.log(res)
+        localStorage.setItem("token", res.accessToken);
       })
     );
   }
@@ -37,7 +38,9 @@ export class RequestsService {
   
     return this.httpClient.post(url, body, { headers: headers }).pipe(
       catchError((err) => {
-        if (err.status === 401 || err.status === 403) {
+        // TODO: KIJAVÍTANI A REFRESH TOKENT
+      
+        if (err.status === 403) {
           return this.refreshToken().pipe(
             switchMap((newToken) => {
               headers = headers.set('Authorization', `Bearer ${newToken}`);

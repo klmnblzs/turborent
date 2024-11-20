@@ -23,13 +23,12 @@ export class DashboardComponent implements OnInit {
   private authService = inject(AuthService)
   private destroyRef = inject(DestroyRef)
   private activatedRoute = inject(ActivatedRoute)
-  private snackbarService = inject(SnackbarService)
  
   userData = this.authService.getUserDataFromToken()
   currentPage:string = 'data';
 
   logOut() {
-    this.router.navigate(["/logout"])
+    this.authService.logOut()
   }
 
   ngOnInit(): void {

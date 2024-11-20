@@ -69,7 +69,7 @@ export class PersonalDataComponent {
     }).subscribe({
       next: (res:any) => {
         this.snackbarService.show("Adatok frissítve! Jelentkezz be újra.")
-        this.router.navigate(["/logout"])
+        this.authService.logOut()
       },
       error: (err) => {
         this.snackbarService.show("Hiba a frissítés során!", "danger")
@@ -86,9 +86,5 @@ export class PersonalDataComponent {
     })
 
     this.loadUserData()
-  }
-
-  logOut() {
-    this.router.navigate(["/logout"])
   }
 }

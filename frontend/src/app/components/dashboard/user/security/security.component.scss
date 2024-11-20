@@ -12,6 +12,26 @@ form {
         justify-content: space-between;
     }
 
+    .security-container {
+        .criteria {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            font-size: 15px;
+            margin-left: 25px;
+            margin-bottom: 10px;
+
+            p {
+                color: rgb(168, 168, 168);
+                transition: .3s;
+            }
+            .valid-criteria {
+                color: green;
+                transition: .3s;
+            }
+        }
+    }
+
     input[type='text'], input[type='number'], input[type='date'], input[type='password'] {
         display: block;
         border-radius: 5px;
@@ -61,5 +81,10 @@ form {
         #redirect-href:hover {
             color: #6f8b72;
         }
+    }
+    
+    #alert {
+        color: red;
+        text-align: center;
     }
 }

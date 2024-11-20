@@ -60,6 +60,11 @@ export class AuthService {
     )
   }
 
+
+  logOut() {
+    this.router.navigate(["/logout"])
+  }
+
   getUserDataFromToken() {
     const token = localStorage.getItem('token');
     if (!token) {
