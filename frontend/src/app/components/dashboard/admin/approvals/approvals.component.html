@@ -1,0 +1,32 @@
+<dialog id="approvalDialog">
+    <div class="panel">
+      <div id="title-container">
+        <h2>Regisztráció jóváhagyása</h2>
+      </div>
+      <div id="formContainer">
+        <form>
+            <div>
+                @if(currentApproval !== null) {
+                    <img [src]="currentApproval.picture_front">
+                    <img [src]="currentApproval.picture_back">
+                } 
+            </div>
+          </form> 
+      </div>
+      <div>
+        <button id="addBtn" (click)="hideApprovalDialog()">Rögzítés</button>
+        <button id="nvmBtn" (click)="hideApprovalDialog()">Mégse</button>
+      </div>
+    </div>
+</dialog>
+
+<div class="card-container">
+
+    @for (approval of approvals; track $index) {
+        <div class="card">
+            <h2>{{ approval.customer_first_name }} {{ approval.customer_last_name }}</h2>
+            <p id="date">{{ approval.submitted_at | date }}</p>
+            <a (click)="approvalDetails(approval.approval_id)">Részletek</a>
+        </div>
+    }
+</div>

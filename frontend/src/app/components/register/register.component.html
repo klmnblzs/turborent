@@ -67,21 +67,6 @@
                 <li><p [class.valid-criteria]="hasNumber(this.form.controls.password.value)">Legalább egy szám</p></li>
                 <li><p [class.valid-criteria]="hasSpecialCharacter(this.form.controls.password.value)">Legalább egy speciális karakter</p></li>
             </ul>
-    
-            @if((this.form.controls.firstname.invalid && this.form.controls.lastname.touched) || 
-            (this.form.controls.lastname.invalid && this.form.controls.lastname.touched) ||
-            (this.form.controls.email.invalid && this.form.controls.email.touched) ||
-            (this.form.controls.phone.invalid && this.form.controls.phone.touched) ||
-            (this.form.controls.licensePictureFront.invalid && this.form.controls.licensePictureFront.touched) ||
-            (this.form.controls.licensePictureBack.invalid && this.form.controls.licensePictureBack.touched) ||
-            (this.form.controls.dateofbirth.invalid && this.form.controls.dateofbirth.touched) ||
-            (this.form.controls.postcode.invalid && this.form.controls.postcode.touched) ||
-            (this.form.controls.city.invalid && this.form.controls.city.touched) ||
-            (this.form.controls.address.invalid && this.form.controls.address.touched) ||
-            (this.form.controls.housenum.invalid && this.form.controls.housenum.touched) ||
-            (this.form.controls.password.invalid && this.form.controls.password.touched)) {
-                <p id="alert">{{ errorText }}</p>
-            }
         </div>
 
         <div id="upload-container">
@@ -107,6 +92,9 @@
                 </button>
             </div>
         </div>
+        @if(registerError) {
+            <p id="alert">{{ errorText }}</p>
+        }
         <button>Regisztráció</button>
         <p id="login-redirect">Már van fiókod? <a routerLink="/login" id="redirect-href">kattints ide</a> a bejelentkezéshez!</p>
     </form>

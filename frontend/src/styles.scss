@@ -14,3 +14,34 @@ $accent: #fff;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
+
+#nvmBtn {
+    margin-left: 20px;
+    padding: 5px;
+    border: none;
+    outline: none;
+    background-color: #cbcbcb;
+    font-size: 17px;
+    border-radius: 5px;
+    transition: .3s padding, .3s background-color;
+    
+    &:hover {
+        background-color: #a9a9a9;
+        cursor: pointer;
+    }
+}
+
+#addBtn {
+    padding: 5px;
+    border: none;
+    outline: none;
+    background-color: #C7F9CC;
+    font-size: 17px;
+    border-radius: 5px;
+    transition: .3s padding, .3s background-color;
+    
+    &:hover {
+        background-color: #99c09d;
+        cursor: pointer;
+    }
+}

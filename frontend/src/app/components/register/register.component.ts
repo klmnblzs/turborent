@@ -46,7 +46,6 @@ export class RegisterComponent {
     this.licenseFrontFile = event.target.files[0] || null;
 
     if (this.licenseFrontFile !== null) {
-      console.log(this.licenseFrontFile);
       this.previewImageFront(this.licenseFrontFile);
     }
   }
@@ -54,7 +53,6 @@ export class RegisterComponent {
   onBackFileSelected(event: any) {
     this.licenseBackFile = event.target.files[0] || null;
     if (this.licenseBackFile !== null) {
-      console.log(this.licenseBackFile)
       this.previewImageBack(this.licenseBackFile);
     }
 
@@ -125,9 +123,9 @@ export class RegisterComponent {
     formData.append('licensePictureFront', this.licenseFrontFile!);
     formData.append('licensePictureBack', this.licenseBackFile!);
 
-    this.authService.checkDuplicate(this.form.get('email')?.value!).subscribe({
+    const subscription = this.authService.registerUser(formData).subscribe({
       next: (res: any) => {
-        const subscription = this.authService.registerUser(formData).subscribe({
+        this.authService.checkDuplicate(this.form.get('email')?.value!).subscribe({
           next: (res: any) => {
             setTimeout(() => {
               this.router.navigate(["/login"]);
@@ -138,15 +136,17 @@ export class RegisterComponent {
           },
           error: (err) => {
             this.registerError = true;
-            this.errorText = 'Tölts ki minden mezőt!';
+            this.errorText = 'Ezt a felhasználót már regisztrálták!';
           }
-        });
-        this.destroyRef.onDestroy(() => subscription.unsubscribe());
+        })
       },
       error: (err) => {
         this.registerError = true;
-        this.errorText = 'Ezt a felhasználót már regisztrálták!';
+        this.errorText = 'Tölts ki minden mezőt!';
       }
-    })
+    });
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
+
+    
   }
 }

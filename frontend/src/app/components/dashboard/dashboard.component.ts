@@ -8,7 +8,7 @@ import { SnackbarService } from '../shared/snackbar/snackbar.service';
 import { PersonalDataComponent } from "./user/personal-data/personal-data.component";
 import { SecurityComponent } from "./user/security/security.component";
 import { HistoryComponent } from "./user/history/history.component";
-import { ApprovalsComponent } from "./user/approvals/approvals.component";
+import { ApprovalsComponent } from "./admin/approvals/approvals.component";
 
 @Component({
   selector: 'app-dashboard',

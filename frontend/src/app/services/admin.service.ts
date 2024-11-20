@@ -12,6 +12,17 @@ export class AdminService {
   }
 
   deleteCar(body:Object) {
-    return this.requestsService.post('http://localhost:3000/admin/car/delete', body, 'Errer while deleting car')
+    return this.requestsService.post('http://localhost:3000/admin/car/delete', body, 'Error while deleting car')
+  }
+
+  listApprovals() {
+    return this.requestsService.fetch('http://localhost:3000/admin/approvals', 'Error while fetching approvals')
+  }
+
+  getApprovalById(id:number) {
+    return this.requestsService.fetch(
+      "http://localhost:3000/admin/approvals/" + id,
+      "Error fetching expense"
+    )
   }
 }
