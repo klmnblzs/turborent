@@ -36,7 +36,10 @@
                 </div>
                 <div id="form-container">
                     <form [formGroup]="rentForm">
-                        @if (isLoggedIn()) {
+                        @if (isLoggedIn() == "unapproved") {
+                            <h2 id="information">A foglalás kezdeményezéséhez várja meg kollégáink visszajelzését!</h2>
+                        }
+                        @else if (isLoggedIn()) {
                             <label for="pickup-date">Felvétel napja</label>
                             <input type="date" id="pickup-date" name="pickup-date" formControlName="pickupDate">
                             <label for="deliver-date">Leadás napja</label>
@@ -47,7 +50,6 @@
                             <h2 id="information">A foglalás kezdeményezéséhez jelentkezzen be!</h2>
                             <button (click)="redirectCustomer()">Bejelentkezés</button>
                         }
-
                         <p id="warning">Figyelem! A bérlés nem minősül érvényes foglalásnak. Várja meg kollégánk visszajelzését. <span id="required">*</span></p>
                     </form>
                 </div>

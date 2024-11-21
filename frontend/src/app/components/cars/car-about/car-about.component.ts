@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { SnackbarService } from '../../shared/snackbar/snackbar.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-car-about',
@@ -17,6 +18,7 @@ export class CarAboutComponent implements OnInit{
   private carsService = inject(CarsService);
   private destroyRef = inject(DestroyRef);
   private activatedRoute = inject(ActivatedRoute);
+  private authService = inject(AuthService)
   private router = inject(Router)
   private snackbarService = inject(SnackbarService)
 
@@ -28,7 +30,11 @@ export class CarAboutComponent implements OnInit{
   isLoggedIn() {
     const token = localStorage.getItem("token")
     if(token) {
-      return true
+      if(this.authService.getUserDataFromToken().isApproved == 1) {
+        return true
+      } else {
+        return "unapproved"
+      }
     } 
     return false
   }

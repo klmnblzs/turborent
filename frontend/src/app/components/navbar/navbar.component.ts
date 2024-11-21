@@ -22,6 +22,22 @@ export class NavbarComponent implements OnInit {
     this.menuOpen = !this.menuOpen;
   }
 
+  isNavbarVisible = true;
+  lastScrollTop = 0;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (currentScrollTop > this.lastScrollTop) {
+      this.isNavbarVisible = false;
+    } else {
+      this.isNavbarVisible = true;
+    }
+
+    // !! Nem mehet negatívba !!
+    this.lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+  }
+
   ngOnInit(): void {
     this.updatePlaceholder()
 
@@ -69,12 +85,3 @@ export class NavbarComponent implements OnInit {
   //   }
   // }
 }
-
-// import { HostListener } from '@angular/core';
-
-// @HostListener("window:scroll", []) onWindowScroll() {
-//     // do some stuff here when the window is scrolled
-//     const verticalOffset = window.pageYOffset 
-//           || document.documentElement.scrollTop 
-//           || document.body.scrollTop || 0;
-// }
