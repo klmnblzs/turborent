@@ -46,7 +46,6 @@ export class RegisterComponent {
     this.licenseFrontFile = event.target.files[0] || null;
 
     if (this.licenseFrontFile !== null) {
-      console.log(this.licenseFrontFile);
       this.previewImageFront(this.licenseFrontFile);
     }
   }
@@ -54,7 +53,6 @@ export class RegisterComponent {
   onBackFileSelected(event: any) {
     this.licenseBackFile = event.target.files[0] || null;
     if (this.licenseBackFile !== null) {
-      console.log(this.licenseBackFile)
       this.previewImageBack(this.licenseBackFile);
     }
 

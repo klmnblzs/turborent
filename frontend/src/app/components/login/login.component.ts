@@ -36,11 +36,13 @@ export class LoginComponent implements OnInit {
 
   isSubmitted=false;
   loginError=false;
+  errorText=""
 
   onSubmit() {
     this.isSubmitted=true;
     if(this.form.controls.email.invalid || this.form.controls.password.invalid) {
       this.loginError = true;
+      this.errorText = "Hibás email vagy jelszó!"
       return;
     }
 
@@ -52,12 +54,29 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("token", res.token)
         localStorage.setItem("refreshToken", res.refreshToken)
 
+        if(this.authService.getUserDataFromToken().isApproved == 0) {
+          this.loginError=true
+          this.errorText = "A regisztrációd jóváhagyásra vár."
+          
+          this.authService.logoutUser({
+            refreshToken: localStorage.getItem("refreshToken")
+          }).subscribe({
+            next: (res) => {
+              localStorage.removeItem("token")
+              localStorage.removeItem("refreshToken")
+            }
+          })
+
+          return;
+        }
+
         setTimeout(() => {
           this.router.navigate(["/dashboard/" + localStorage.getItem("userid")])
           this.snackbarService.show("Sikeres bejelentkezés!")
         })
       }, error: (err) => {
         this.loginError=true
+        this.errorText = "Hiba a bejelentkezés során!"
       }
     })
 

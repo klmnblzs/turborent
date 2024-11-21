@@ -6,7 +6,7 @@
       <div id="formContainer">
         <form>
             <div>
-                @if(currentApproval !== null) {
+                @if(this.currentApproval !== null) {
                     <img [src]="currentApproval.picture_front">
                     <img [src]="currentApproval.picture_back">
                 }
@@ -21,16 +21,54 @@
     </div>
 </dialog>
 
-<h3>Kérelmek</h3>
+<dialog id="rentApprovalDialog">
+  <div class="panel">
+    <div id="title-container">
+      <h2>Foglalás jóváhagyása</h2>
+      @for (data of currentRentApproval; track $index) {
+        <h3 style="margin-top: 20px;">Ki?</h3>
+        <p>{{ data.customer_first_name }} {{ data.customer_last_name }}</p>
+        <h3 style="margin-top: 20px;">Mit?</h3>
+        <p>{{ data.brand }} {{ data.model }} {{ data.cc }}</p>
+        <h3 style="margin-top: 20px;">Mettől - Meddig?</h3>
+        <p>{{ data.rent_from | date }} - {{ data.rent_to | date }}</p>
+      }    
+    </div>
+    <div>
+      <button id="addBtn" (click)="approveRentRequest()">Jóváhagyás</button>
+      <button id="denyBtn" (click)="denyRentRequest()">Elutasítás</button>
+      <button id="nvmBtn" (click)="hideRentApprovalDialog()">Mégse</button>
+    </div>
+  </div>
+</dialog>
+
+<h3>Regisztráció kérelmek</h3>
 <div class="card-container">
-    @if(approvals.length < 1) {
+    @if(this.approvals != null) {
+      @if(this.approvals.length < 1) {
+        <p id="warning">Nincsenek kérelmek.</p>
+      }
+      @for (approval of approvals; track $index) {
+          <div class="card">
+              <h2>{{ approval.customer_first_name }} {{ approval.customer_last_name }}</h2>
+              <p id="date">{{ approval.submitted_at | date }}</p>
+              <a (click)="approvalDetails(approval.approval_id)">Részletek</a>
+          </div>
+      }
+    }
+</div>
+<h3 style="margin-top: 20px;">Bérlési kérelmek</h3>
+<div class="card-container">
+  @if(this.rentApprovals != null) {
+    @if(this.rentApprovals.length < 1) {
       <p id="warning">Nincsenek kérelmek.</p>
     }
-    @for (approval of approvals; track $index) {
+    @for (approval of rentApprovals; track $index) {
         <div class="card">
             <h2>{{ approval.customer_first_name }} {{ approval.customer_last_name }}</h2>
-            <p id="date">{{ approval.submitted_at | date }}</p>
-            <a (click)="approvalDetails(approval.approval_id)">Részletek</a>
+            <p id="date">{{ approval.rent_from | date }} - {{ approval.rent_to | date }}</p>
+            <a (click)="rentApprovalDetails(approval.approval_id)">Részletek</a>
         </div>
     }
+  }
 </div>

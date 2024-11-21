@@ -18,7 +18,9 @@ export class ApprovalsComponent implements OnInit {
   private snackbarService = inject(SnackbarService)
 
   approvals:any = null;
+  rentApprovals:any = null;
   currentApproval:any = null;
+  currentRentApproval:any = null;
   submitErr:boolean=false;
 
   openApprovalDialog() {
@@ -29,6 +31,19 @@ export class ApprovalsComponent implements OnInit {
 
   hideApprovalDialog() {
     const dialog = document.getElementById("approvalDialog") as HTMLElement
+    
+    dialog.style.visibility = "hidden"
+    this.submitErr=false
+  }
+
+  openRentApprovalDialog() {
+    const dialog = document.getElementById("rentApprovalDialog") as HTMLElement
+    
+    dialog.style.visibility = "unset"
+  }
+
+  hideRentApprovalDialog() {
+    const dialog = document.getElementById("rentApprovalDialog") as HTMLElement
     
     dialog.style.visibility = "hidden"
     this.submitErr=false
@@ -46,8 +61,22 @@ export class ApprovalsComponent implements OnInit {
     }
   }
 
+  loadRentApprovals() {
+    if(this.authService.isAdmin()) {
+
+      const subscription = this.adminService.listRentApprovals().subscribe({
+        next: (res) => {
+          this.rentApprovals=res
+        }
+      })
+
+      this.destroyRef.onDestroy(() => subscription.unsubscribe())
+    }
+  }
+
   ngOnInit(): void {
     this.loadApprovals()
+    this.loadRentApprovals()
   }
 
   approvalDetails(id:number) {
@@ -55,7 +84,6 @@ export class ApprovalsComponent implements OnInit {
       const subscription = this.adminService.getApprovalById(id).subscribe({
         next: (res:any) => {
           this.currentApproval=res[0]
-          console.log(res[0])
         }
       })
       this.destroyRef.onDestroy(() => subscription.unsubscribe())
@@ -63,6 +91,61 @@ export class ApprovalsComponent implements OnInit {
       this.openApprovalDialog()
     }
   }
+
+  rentApprovalDetails(id:number) {
+    if(this.authService.isAdmin()) {
+      const subscription = this.adminService.getRentApprovalById(id).subscribe({
+        next: (res:any) => {
+          this.currentRentApproval=res
+        }
+      })
+      this.destroyRef.onDestroy(() => subscription.unsubscribe())
+
+      this.openRentApprovalDialog()
+    }
+  }
+
+  approveRentRequest() {
+    if(this.authService.isAdmin()) {
+      const subscription = this.adminService.approveRentRequest(
+        {
+          rental_id: this.currentRentApproval[0].approval_id,
+          admin_id: this.authService.getUserDataFromToken().id
+        }
+      ).subscribe({
+        next: (res:any) => {  
+          this.snackbarService.show("Foglalás elfogadva!")
+          this.hideRentApprovalDialog()
+          this.loadApprovals()
+        },
+        error: (err) => {
+          this.snackbarService.show("Hiba az elfogadás során", "danger")
+        }
+      })
+      this.destroyRef.onDestroy(() => subscription.unsubscribe())
+    }
+  }
+
+  denyRentRequest() {
+    if(this.authService.isAdmin()) {
+      const subscription = this.adminService.denyRentRequest(
+        {
+          rental_id: this.currentRentApproval.approval_id,
+        }
+      ).subscribe({
+        next: (res:any) => {  
+          this.snackbarService.show("Fogadás elutasítva!")
+          this.hideRentApprovalDialog()
+          this.loadApprovals()
+        },
+        error: (err) => {
+          this.snackbarService.show("Hiba az elutasítás során", "danger")
+        }
+      })
+      this.destroyRef.onDestroy(() => subscription.unsubscribe())
+    }
+  }
+
 
   approveRequest() {
     if(this.authService.isAdmin()) {

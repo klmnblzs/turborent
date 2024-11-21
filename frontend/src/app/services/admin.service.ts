@@ -15,20 +15,22 @@ export class AdminService {
     return this.requestsService.post('http://localhost:3000/admin/car/delete', body, 'Error while deleting car')
   }
 
+  // REGISTRATION APROVAL
+
   listApprovals() {
-    return this.requestsService.fetch('http://localhost:3000/admin/approvals', 'Error while fetching approvals')
+    return this.requestsService.fetch('http://localhost:3000/admin/registration/approvals', 'Error while fetching approvals')
   }
 
   getApprovalById(id:number) {
     return this.requestsService.fetch(
-      "http://localhost:3000/admin/approvals/" + id,
+      "http://localhost:3000/admin/registration/approvals/" + id,
       "Error fetching expense"
     )
   }
 
   approveRequest(body:Object) {
     return this.requestsService.post(
-      "http://localhost:3000/admin/approvals/approve",
+      "http://localhost:3000/admin/registration/approvals/approve",
       body,
       "Error while approving request"
     )
@@ -36,7 +38,36 @@ export class AdminService {
 
   denyRequest(body:Object) {
     return this.requestsService.post(
-      "http://localhost:3000/admin/approvals/deny",
+      "http://localhost:3000/admin/registration/approvals/deny",
+      body,
+      "Error while denying request"
+    )
+  }
+
+  // RENTING APPROVAL
+
+  listRentApprovals() {
+    return this.requestsService.fetch('http://localhost:3000/admin/renting/approvals', 'Error while fetching approvals')
+  }
+
+  getRentApprovalById(id:number) {
+    return this.requestsService.fetch(
+      "http://localhost:3000/admin/renting/approvals/" + id,
+      "Error fetching expense"
+    )
+  }
+
+  approveRentRequest(body:Object) {
+    return this.requestsService.post(
+      "http://localhost:3000/admin/renting/approvals/approve",
+      body,
+      "Error while approving request"
+    )
+  }
+
+  denyRentRequest(body:Object) {
+    return this.requestsService.post(
+      "http://localhost:3000/admin/renting/approvals/deny",
       body,
       "Error while denying request"
     )

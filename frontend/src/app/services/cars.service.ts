@@ -1,12 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
+import { RequestsService } from './requests.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarsService {
   private httpClient = inject(HttpClient)
+  private requestsService = inject(RequestsService)
 
   private fetch(url:string, errorMessage:string) {
     return this.httpClient.get(url)
@@ -57,6 +59,14 @@ export class CarsService {
       "http://localhost:3000/cars",
       "There was an error",
       id
+    )
+  }
+
+  checkAvailable(body:Object) {
+    return this.requestsService.post(
+      "http://localhost:3000/cars/is-available",
+      body,
+      "Error while checking is car is available"
     )
   }
 }

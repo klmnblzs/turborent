@@ -19,7 +19,7 @@
         }
 
         @if(loginError) {
-            <p id="alert">Hibás email vagy jelszó!</p>
+            <p id="alert">{{ errorText }}</p>
         }
         
         <button>Bejelentkezés</button>

@@ -40,15 +40,18 @@
                             <h2 id="information">A foglalás kezdeményezéséhez várja meg kollégáink visszajelzését!</h2>
                         }
                         @else if (isLoggedIn()) {
-                            <label for="pickup-date">Felvétel napja</label>
-                            <input type="date" id="pickup-date" name="pickup-date" formControlName="pickupDate">
-                            <label for="deliver-date">Leadás napja</label>
-                            <input type="date" id="deliver-date" name="deliver-date" formControlNmae="deliverDate">
+                            <label for="pickupDate">Felvétel napja</label>
+                            <input type="date" id="pickupDate" name="pickupDate" formControlName="pickupDate">
+                            <label for="deliverDate">Leadás napja</label>
+                            <input type="date" id="deliverDate" name="deliverDate" formControlName="deliverDate">
                             
-                            <button (click)="redirectCustomer()">Bérlés</button>
+                            @if(rentError) {
+                                <p id="alert">{{ errorText }}</p>
+                            }
+                            <button (click)="rentCar()">Bérlés</button>
                         } @else {
                             <h2 id="information">A foglalás kezdeményezéséhez jelentkezzen be!</h2>
-                            <button (click)="redirectCustomer()">Bejelentkezés</button>
+                            <button (click)="rentCar()">Bejelentkezés</button>
                         }
                         <p id="warning">Figyelem! A bérlés nem minősül érvényes foglalásnak. Várja meg kollégánk visszajelzését. <span id="required">*</span></p>
                     </form>
