@@ -12,7 +12,7 @@
     </div>
 </nav> -->
 
-<nav>
+<!-- <nav>
     <div class="img-container">
         <img [src]="imagePath()" alt="" (click)="onLogoClick()">
     </div>
@@ -23,5 +23,24 @@
             <li><a routerLink="/contact">Kapcsolat</a></li>
             <li><a (click)="onClickDashboard()">{{ this.placeholder }}</a></li>
         </ul>
+    </div>
+</nav> -->
+
+<nav>
+    <div class="img-container">
+        <img [src]="imagePath()" alt="Logo" (click)="onLogoClick()" [class.active]="menuOpen" />
+    </div>
+    <div class="content-container">
+            <button class="toggle-button" (click)="toggleMenu()" [class.active]="menuOpen">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+      <ul [class.active]="menuOpen">
+        <li><a routerLink="/about">Rólunk</a></li>
+        <li><a routerLink="/cars">Gépjárművek</a></li>
+        <li><a routerLink="/contact">Kapcsolat</a></li>
+        <li><a (click)="onClickDashboard()">{{ placeholder }}</a></li>
+      </ul>
     </div>
 </nav>

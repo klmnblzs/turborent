@@ -3,6 +3,11 @@
     justify-content: space-between;
     flex-wrap: wrap;
 
+    #warning {
+        font-style: italic;
+        color: #c4c4c4;
+    }
+
     .card:hover {
         background-color: #DCE0E0;
         cursor: pointer;

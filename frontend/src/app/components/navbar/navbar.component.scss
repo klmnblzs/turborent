@@ -16,6 +16,77 @@ nav {
         object-fit: fill;
         height: 50px;
         cursor: pointer;
+
+        &.active {
+            display: none;
+        }
+    }
+
+    .toggle-button {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        margin-left: 10px;
+        background-color: transparent;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    
+        span {
+          display: block;
+          width: 25px;
+          height: 3px;
+          background-color: #fff;
+          margin: 4px 0;
+          transition: all 0.3s ease;
+        }
+    
+        &.active {        
+          span:nth-child(1) {
+            opacity: 0;
+          }
+    
+          span:nth-child(3) {
+            opacity: 0;
+          }
+        }
+    
+        &:hover {
+          background-color: #444;
+        }
+    }
+
+    .content-container {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-end;
+        
+        ul {
+          display: flex;
+          list-style: none;
+          gap: 20px;
+          margin: 0;
+          padding: 0;
+    
+          li {
+            a {
+              text-decoration: none;
+              color: #fff;
+              font-size: 16px;
+              transition: color 0.3s ease;
+    
+              &:hover {
+                color: #afafaf;
+              }
+            }
+          }
+        }
     }
 
     ul {
@@ -45,6 +116,31 @@ nav {
             }
         }
     }
+
+    
+    @media (max-width: 768px) {
+        flex-wrap: wrap;
+    
+        .toggle-button {
+          display: flex;
+        }
+    
+        .content-container {
+          width: 100%;
+
+          ul {
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+            display: none;
+            padding: 10px 0;
+    
+                &.active {
+                    display: flex;
+                }
+            }
+        }   
+    }
 }
 
 .scrolled {
@@ -64,3 +160,4 @@ nav {
 .changecol:hover {
     opacity: .4 !important;
 }
+

@@ -17,7 +17,7 @@ export class ApprovalsComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
   private snackbarService = inject(SnackbarService)
 
-  approvals:any;
+  approvals:any = null;
   currentApproval:any = null;
   submitErr:boolean=false;
 

@@ -16,6 +16,11 @@ export class NavbarComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
 
   placeholder:string = "";
+  menuOpen:boolean = false;
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
 
   ngOnInit(): void {
     this.updatePlaceholder()

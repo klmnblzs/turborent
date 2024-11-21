@@ -9,7 +9,7 @@
                 @if(currentApproval !== null) {
                     <img [src]="currentApproval.picture_front">
                     <img [src]="currentApproval.picture_back">
-                } 
+                }
             </div>
           </form> 
       </div>
@@ -21,7 +21,11 @@
     </div>
 </dialog>
 
+<h3>Kérelmek</h3>
 <div class="card-container">
+    @if(approvals.length < 1) {
+      <p id="warning">Nincsenek kérelmek.</p>
+    }
     @for (approval of approvals; track $index) {
         <div class="card">
             <h2>{{ approval.customer_first_name }} {{ approval.customer_last_name }}</h2>
