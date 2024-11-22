@@ -29,14 +29,14 @@ export class CarUploadComponent implements OnInit {
   // PICTURE UPLOAD
 
   thumbnail: File | null = null;
-  onBackFileSelected(event: any) {
+  onThumbnailSelected(event: any) {
     this.thumbnail = event.target.files[0] || null;
     if (this.thumbnail !== null) {
-      this.previewImageBack(this.thumbnail);
+      this.previewThumbnail(this.thumbnail);
     }
   }
 
-  previewImageBack(file: File): void {
+  previewThumbnail(file: File): void {
     const imgArea = document.querySelector('#img-area-back') as HTMLElement;
     const reader = new FileReader();
 
@@ -87,22 +87,21 @@ export class CarUploadComponent implements OnInit {
     lastServiceDate: new FormControl('', { validators: Validators.required }),
     description: new FormControl('', { validators: Validators.required }),
     equipments: new FormControl('', { validators: Validators.required }),
-    // thumbnail: new FormControl('', { validators: Validators.required })
   })
 
   convertIsDiesel() {
     if(this.addCarForm.value.isDiesel == "true") {
-      return '0'
-    } else {
       return '1'
+    } else {
+      return '0'
     }
   }
 
   converIsManual() {
     if(this.addCarForm.value.isManual == "true") {
-      return '0'
-    } else {
       return '1'
+    } else {
+      return '0'
     }
   }
 
@@ -165,6 +164,7 @@ export class CarUploadComponent implements OnInit {
         next: (res) => {
           this.addCarForm.reset()
           this.hideAddDialog()
+          this.loadCars()
           this.snackbarService.show("Sikeres feltöltés!")
           this.errorText=""
         },

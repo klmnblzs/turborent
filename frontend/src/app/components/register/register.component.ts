@@ -105,6 +105,10 @@ export class RegisterComponent {
     return str ? /[!@#$%^&*]/.test(str) : false
   }
 
+  isMatchingPassword() {
+    return this.form.value.password === this.form.value.passwordConfirm
+  }
+
   registerError=false;
   errorText:string=""
 
@@ -122,9 +126,14 @@ export class RegisterComponent {
     formData.append('password', this.form.get('password')?.value!);
     formData.append('licensePictureFront', this.licenseFrontFile!);
     formData.append('licensePictureBack', this.licenseBackFile!);
+    if(!this.isMatchingPassword()) {
+      this.errorText = "A két jelszó nem egyezik."
+      this.registerError = true
+      return;
+    }
 
     this.authService.checkDuplicate(this.form.get('email')?.value!).subscribe({
-      next: (res: any) => {
+      next: (res: any) => {    
         const subscription = this.authService.registerUser(formData).subscribe({
           next: (res: any) => {
             setTimeout(() => {

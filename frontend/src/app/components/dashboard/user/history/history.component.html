@@ -1,18 +1,15 @@
 <h3>Bérlési előzmények</h3>
 <div class="card-container">
-    <div class="card">
-        <h2>Volkswagen Golf VII</h2>
-        <p id="date">2022-05-12</p>
-        <a href="">Részletek</a>
-    </div>
-    <div class="card">
-        <h2>Volkswagen Golf VII</h2>
-        <p id="date">2022-05-12</p>
-        <a href="">Részletek</a>
-    </div>
-    <div class="card">
-        <h2>Volkswagen Golf VII</h2>
-        <p id="date">2022-05-12</p>
-        <a href="">Részletek</a>
-    </div>
+    @if(this.getRentHistory != null) {
+        @if(this.getRentHistory.length < 1) {
+            <p id="warning">Nincsenek előzmények.</p>
+        } @else {
+            @for (history of rentalHistory; track $index) {
+                <div class="card">
+                    <h2>{{ history.brand }} {{ history.model }} {{ history.cc }}</h2>
+                    <p id="date">{{ history.start_date | date }} - {{ history.end_date | date }}</p>
+                </div>
+            }
+        }
+    }
 </div>

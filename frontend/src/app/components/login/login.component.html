@@ -1,4 +1,23 @@
-
+<dialog id="resetPasswordDialog">
+    <div class="panel">
+      <div id="title-container">
+        <h2>Jelszó visszaállítása</h2>
+      </div>
+      <div id="formContainer">
+        <form [formGroup]="resetPasswordForm">
+            <label for="email">E-mail címed</label>
+            <input type="email" name="email" id="email" formControlName="email">
+            @if(this.dialogErr != "") {
+                <p id="alert">{{ dialogErr }}</p>
+            }
+        </form> 
+      </div>
+      <div>
+        <button id="addBtn" (click)="resetPassword()">Küldés</button>
+        <button id="nvmBtn" (click)="hideDialog()">Mégse</button>
+      </div>
+    </div>
+</dialog>
 
 <div class="container">
     <h2>Belépés a fiókba</h2>
@@ -10,16 +29,8 @@
         <input [type]="showPassword ? 'text' : 'password'" name="password" id="password" formControlName="password" [class.invalid]="this.form.controls.password.invalid && this.form.controls.password.touched">
         <input type="button" id="show-password" value="Jelszó mutatása" (click)="this.showPassword = !this.showPassword">
 
-        @if(this.form.controls.email.invalid && this.form.controls.email.touched && this.isSubmitted) {
-            <p id="alert">Hibás email!</p>
-        }
-
-        @if(this.form.controls.password.invalid && this.form.controls.password.touched && this.isSubmitted) {
-            <p id="alert">Hibás jelszó!</p>
-        }
-
         @if(loginError) {
-            <p id="alert">{{ errorText }}</p>
+            <p id="alert">{{ errorText }} <br> <a (click)="openDialog()" id="forgot-password">Elfelejtettem a jelszavam</a></p>
         }
         
         <button>Bejelentkezés</button>

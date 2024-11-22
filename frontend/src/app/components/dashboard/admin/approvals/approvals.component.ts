@@ -117,6 +117,7 @@ export class ApprovalsComponent implements OnInit {
           this.snackbarService.show("Foglalás elfogadva!")
           this.hideRentApprovalDialog()
           this.loadApprovals()
+          this.loadRentApprovals()
         },
         error: (err) => {
           this.snackbarService.show("Hiba az elfogadás során", "danger")
@@ -137,6 +138,7 @@ export class ApprovalsComponent implements OnInit {
           this.snackbarService.show("Fogadás elutasítva!")
           this.hideRentApprovalDialog()
           this.loadApprovals()
+          this.loadRentApprovals()
         },
         error: (err) => {
           this.snackbarService.show("Hiba az elutasítás során", "danger")

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { SnackbarService } from '../shared/snackbar/snackbar.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ import { SnackbarService } from '../shared/snackbar/snackbar.service';
 })
 export class LoginComponent implements OnInit {
   private authService = inject(AuthService)
+  private userService = inject(UserService)
   private snackbarService = inject(SnackbarService)
 
   private destroyRef = inject(DestroyRef);
@@ -34,9 +36,46 @@ export class LoginComponent implements OnInit {
     })
   })
 
+  resetPasswordForm = new FormGroup({
+    email: new FormControl('', { validators: [ Validators.email, Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/) ]})
+  })
+
   isSubmitted=false;
   loginError=false;
   errorText=""
+
+  openDialog() {
+    const dialog = document.getElementById("resetPasswordDialog") as HTMLElement
+    
+    dialog.style.visibility = "unset"
+  }
+
+  hideDialog() {
+    const dialog = document.getElementById("resetPasswordDialog") as HTMLElement
+    
+    dialog.style.visibility = "hidden"
+  }
+  
+  dialogErr:string=""
+
+  resetPassword() {
+    if(this.resetPasswordForm.invalid) {
+      this.dialogErr="Hibás email cím."
+      return;
+    }
+
+    const subscription = this.userService.requestResetPassword(
+      { email: this.resetPasswordForm.value.email }).subscribe({
+        next: (res) =>{
+          this.snackbarService.show("Email elküldésre került.")
+          this.resetPasswordForm.reset()
+          this.hideDialog()
+        },
+        error: (err) => {
+          this.dialogErr="Az email cím nem létezik!"
+        }
+    })
+  }
 
   onSubmit() {
     this.isSubmitted=true;
