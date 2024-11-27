@@ -1,17 +1,31 @@
 const express = require('express');
-const mysql = require('mysql2/promise');
-const dotenv = require('dotenv');
 const cors=require('cors')
 const multer = require('multer')
-const jwt = require('jsonwebtoken')
 
+const mysql = require('mysql2/promise');
+const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken')
 const bcrypt=require('bcrypt')
+const nodemailer = require('nodemailer');
+const path = require('path')
+
+const fs = require('fs')
+const crypto = require('crypto')
 
 const app = express();
 
 // FONTOS A BODY PARAMOKHOZ!
 // CORS POLICY AZ ANGULAR MIATT
 app.use(express.json())
+dotenv.config();
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASSWORD,
+    },
+});
 
 app.use(cors({
     origin: '*', // Csak az Angular alkalmazás engedélyezése
@@ -19,7 +33,8 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'id', 'authorization'], // Engedélyezett fejléc
 }));
 
-dotenv.config();
+
+
 
 const pool = mysql.createPool({
     connectionLimit: 10,
@@ -36,9 +51,7 @@ app.listen(3000, (req, res) =>{
     console.log('Server is running on port 3000');
 });
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the API');
-});
+// JSONWEBTOKEN
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
@@ -88,7 +101,105 @@ async function generateRefreshToken(userId) {
     }
 }
 
+// JELSZÓ VISSZAÁLLÍTÁSA
 
+app.post('/user/request-reset-password', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const [results] = await pool.query('SELECT id FROM customers WHERE email = ?', [email] )
+        if(results.length > 0) {
+            const customerId = results[0].id;
+
+            const token = crypto.randomBytes(32).toString('hex');
+            const expiresAt = new Date(Date.now() + 3600000); // 1 ÓRA
+
+            const [saveToken] = await pool.query('CALL SaveResetToken(?, ?, ?)', [customerId, token, expiresAt])
+
+            if(saveToken.affectedRows > 0) {
+                const htmlFilePath = path.join(__dirname, 'reset-password.html');
+                let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+                htmlContent = htmlContent.replace('{{reset_link}}', "http://localhost:4200/reset-password?token=" + token)
+
+                const mailOptions = {  
+                    from: process.env.MAIL_USER,
+                    to: email,
+                    subject: 'TurboRent - Jelszó visszaállítása',
+                    html: htmlContent 
+                };
+
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                        return res.status(400).json({ message:"Email sending failed" })
+                    } else {
+                        console.log(info)
+                        return res.status(200).json({ message: "Email sent" })
+                    }
+                });
+            } else {
+                res.status(500).json({ message: 'Error saving reset token' });
+            }
+        } else {
+            return res.status(401).json({ message: "User not found" });
+        }
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({ message:"Internal server error" })
+    }
+})
+
+app.get('/user/validate-reset-token', async (req, res) => {
+    const { token } = req.query;
+
+    try {
+        const [results] = await pool.query('CALL ValidateResetToken(?)', [ token ])
+        console.log(results)
+        if(results.length > 0) {
+            const token_id = results[0][0].reset_token_id;
+            const customer_id = results[0][0].token_customer_id
+
+            if (!token_id) {
+                return res.status(400).json({ message:'Invalid or expired token.'});
+            } else {
+                res.send({ token_id, customer_id });
+            }
+        } else {
+            return res.status(401).json({ message: "Token invalid" });
+        }
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({ message:"Internal server error" })
+    }
+});
+
+app.post('/user/reset-password', async (req, res) => {
+    const { 
+        token,
+        customer_id,
+        password
+    } = req.body
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    try {
+        const [results] = await pool.query('UPDATE customers SET password = ? WHERE id = ?', [hashedPassword, customer_id])
+
+        if(results.affectedRows > 0) {
+            const [deleteToken] = await pool.query('CALL DeleteResetToken(?)', [token])
+
+            if(deleteToken.affectedRows > 0) {
+                res.status(200).json({ message: "Password reset!" })
+            }
+        } else {
+            return res.status(401).json({ message: "Password update failed" });
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message:"Internal server error" })
+    }
+})
+
+// AUTÓK
 
 app.get('/cars', async (req, res) => {
     const carId = req.headers['id'];
@@ -160,8 +271,37 @@ app.get('/cars/:id', async (req, res) => {
         console.log(err);
         res.status(500).json({ error: err.message });
     }
-    
 })
+
+app.post('/cars/is-available', async (req, res) => {
+    const { car_id, start_date, end_date } = req.body;
+
+    try {
+        const query = `
+            SELECT * 
+            FROM reservations 
+            WHERE car_id = ? 
+              AND (
+                (start_date <= ? AND end_date >= ?)
+                OR
+                (start_date >= ? AND start_date <= ?)
+            );
+        `;
+        
+        const [results] = await pool.query(query, [car_id, start_date, end_date, start_date, end_date]);
+
+        if (results.length > 0) {
+            return res.status(400).json({ message: "The car isn't available" });
+        }
+
+        res.status(200).json({ message: "The car is available" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal server error." });
+    }
+});
+
+// AUTH
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -226,7 +366,25 @@ app.post('/auth/register', upload.fields([ { name:'licensePictureFront' }, { nam
                 const [approval] = await pool.execute('CALL CreateApproval(?,?)', [customerId, pictureId] )
 
                 if (pictures.affectedRows > 0 && approval.affectedRows > 0) {
-                    return res.status(201).json({ message: 'User, approval and license pictures registered successfully' });
+                    const htmlFilePath = path.join(__dirname, 'register-request.html');
+                    let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+                    // htmlContent = htmlContent.replace('{{reset_link}}', "http://localhost:4200/reset-password?token=" + token)
+
+                    const mailOptions = {  
+                        from: process.env.MAIL_USER,
+                        to: email,
+                        subject: 'TurboRent - Regisztráció',
+                        html: htmlContent 
+                    };
+
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                            return res.status(400).json({ message:"Email sending failed" })
+                        } else {
+                            console.log(info)
+                            return res.status(200).json({ message: "Email sent" })
+                        }
+                    });
                 } else {
                     return res.status(500).json({ message: 'Failed to insert user, approval and license pictures' });
                 }
@@ -243,6 +401,80 @@ app.post('/auth/register', upload.fields([ { name:'licensePictureFront' }, { nam
         res.status(500).json({ message: 'Internal server error (második catch)' });
     }
 })
+
+app.post('/auth/login', async (req,res) => {
+    const { email, password } = req.body
+
+    if (!email) return res.status(400).json({ message: 'A valid email is required' });
+    if (!password) return res.status(400).json({ message: 'A valid password is required' });
+
+    try {
+        const [hashedPassword] = await pool.query("SELECT password FROM Customers WHERE email = ?", [email])
+        const validPassword = hashedPassword[0].password.trim()
+        const isPasswordValid = await bcrypt.compare(password, validPassword)
+
+        if(isPasswordValid) {
+            const [results] = await pool.query('CALL Login(?, ?)', [ email, validPassword ])
+
+            if(results[0].length == 0) {
+                res.status(401).json({ error: "Wrong password"})
+            } else {
+                const user = results[0][0];
+                
+                req.body.id=user.id
+                req.body.firstname=user.first_name
+                req.body.lastname=user.last_name
+                req.body.email=user.email
+                req.body.phonenumber=user.phone_number
+                req.body.dateofbirth=user.date_of_birth
+                req.body.postcode=user.post_code
+                req.body.city=user.city
+                req.body.street=user.street
+                req.body.housenumber=user.house_number
+                req.body.password=user.password
+                req.body.isAdmin=user.isAdmin
+                req.body.isApproved=user.isApproved
+
+                const accessToken = generateAccessToken(req.body)
+                const refreshToken = await generateRefreshToken(user.id)
+                res.status(200).json({ token: accessToken, refreshToken: refreshToken, userid: user.id })
+            }
+        } else {
+            res.status(401).json({ error: "Wrong password" })
+        }
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({ message: 'Internal server error' });
+    }
+})
+
+app.post('/auth/logout', authenticateToken, async (req, res) => {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+        return res.status(400).json({ message: "Refresh Token is required" });
+    }
+
+    try {
+        const [rows] = await pool.execute('SELECT * FROM refresh_tokens WHERE token = ?', [refreshToken.replace(/"/g, "")]);
+  
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "Refresh token was not found in the database" });
+        }
+
+        const [result] = await pool.execute('DELETE FROM refresh_tokens WHERE token = ?', [refreshToken.replace(/"/g, "")]);
+
+        if (result.affectedRows > 0) {
+            return res.status(200).json({ message: "Logged out!" });
+        } else {
+            return res.status(500).json({ message: "Token couldn't be deleted" });
+        }
+
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ message: "Error while logging out." });
+    }
+});
 
 app.post('/auth/refresh', async (req, res) => {
     const { refreshToken } = req.body;
@@ -277,6 +509,8 @@ app.post('/auth/refresh', async (req, res) => {
     }
 });
 
+// ADMIN
+
 app.post('/admin/car/delete', authenticateToken, async (req, res) => {
     const {
         id
@@ -295,40 +529,6 @@ app.post('/admin/car/delete', authenticateToken, async (req, res) => {
     } catch (err) {
         console.log(err)
         res.status(500).json({ error: "Internal server error" })
-    }
-})
-
-app.post('/admin/approvals/approve', async (req, res) => {
-    const { customer_id, admin_id } = req.body;
-
-    try {
-        const [results] = await pool.query('CALL ApproveRequest(?, ?)', [ customer_id, admin_id ]);
-
-        if(results.affectedRows > 0) {
-            return res.status(200).json({message:"Request Approved"})
-        } else {
-            return res.status(400).json({message:"Approve failed"})
-        }
-    } catch(err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal server error" });
-    }
-})
-
-app.post('/admin/approvals/deny', async (req, res) => {
-    const { customer_id } = req.body;
-
-    try {
-        const [results] = await pool.query('CALL DenyApproveRequest(?)', [ customer_id ]);
-
-        if(results.affectedRows > 0) {
-            return res.status(200).json({message:"Request Approved"})
-        } else {
-            return res.status(400).json({message:"Approve failed"})
-        }
-    } catch(err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal server error" });
     }
 })
 
@@ -423,13 +623,15 @@ app.post('/admin/car/add', authenticateToken, upload.fields([ { name: 'thumbnail
     }
 })
 
-app.get('/admin/approvals', authenticateToken, async (req, res) => {
+// REGISZTRÁCIÓ JÓVÁHAGYÁS
+
+app.get('/admin/registration/approvals', authenticateToken, async (req, res) => {
     const [results] = await pool.query('CALL ListApprovals()');
 
     res.json(results[0]);
 })
 
-app.get('/admin/approvals/:id', authenticateToken, async (req, res) => {
+app.get('/admin/registration/approvals/:id', authenticateToken, async (req, res) => {
     const id = req.params.id
 
     try {
@@ -460,6 +662,212 @@ app.get('/admin/approvals/:id', authenticateToken, async (req, res) => {
     }
 })
 
+app.post('/admin/registration/approvals/approve', async (req, res) => {
+    const { customer_id, admin_id } = req.body;
+
+    try {
+        const [results] = await pool.query('CALL ApproveRequest(?, ?)', [ customer_id, admin_id ]);
+        customer=results[0][0]
+
+        const htmlFilePath = path.join(__dirname, 'registration-approve.html');
+        let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+
+        const mailOptions = {  
+            from: process.env.MAIL_USER,
+            to: customer.email,
+            subject: 'TurboRent - Regisztráció visszaigazolás',
+            html: htmlContent 
+        };
+
+        if(results.length > 0) {
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    return res.status(400).json({message:"Approve failed"})
+                } else {
+                    return res.status(200).json({message:"Request Approved"})
+                }
+            });
+        } else {
+            return res.status(400).json({message:"Approve failed"})
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+app.post('/admin/registration/approvals/deny', async (req, res) => {
+    const { customer_id } = req.body;
+
+    try {
+        const [results] = await pool.query('CALL DenyApproveRequest(?)', [ customer_id ]);
+        const customer = results[0][0]
+
+        const htmlFilePath = path.join(__dirname, 'registration-deny.html');
+        let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+
+        const mailOptions = {  
+            from: process.env.MAIL_USER,
+            to: customer.email,
+            subject: 'TurboRent - Regisztráció visszaigazolás',
+            html: htmlContent 
+        };
+
+        if(results.length > 0) {
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error)
+                } else {
+                    console.log(info)
+                }
+                return res.status(200).json({message:"Request Approved"})
+            });
+        } else {
+            return res.status(400).json({message:"Approve failed"})
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+// BÉRLÉS JÓVÁHAGYÁS
+
+app.get('/admin/renting/approvals', async (req, res) => {
+    const [results] = await pool.query('CALL ListRentApprovals()');
+
+    res.json(results[0]);
+})
+
+app.get('/admin/renting/approvals/:id', async (req, res) => {
+    const rental_id = req.params.id
+
+    try {
+        const [results] = await pool.query('CALL GetRentApprovalById(?)', [ rental_id ]);
+        if(results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(400).json({ message: "Error while fetching approval" });
+        }
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+app.post('/admin/renting/approvals/approve', async (req, res) => {
+    const { rental_id, admin_id } = req.body;
+
+    try {
+        const [results] = await pool.query('CALL ApproveRentRequest(?, ?)', [ rental_id, admin_id ]);
+        const htmlFilePath = path.join(__dirname, 'renting-approve.html');
+        let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+
+        const mailOptions = {  
+            from: process.env.MAIL_USER,
+            to: results[0][0].customer_email,
+            subject: 'TurboRent - Bérlési visszaigazolás',
+            html: htmlContent 
+        };
+
+        if(results.length > 0) {
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error)
+                } else {
+                    console.log(info)
+                }
+                return res.status(200).json({message:"Request Approved"})
+            });
+        } else {
+            return res.status(400).json({message:"Approve failed"})
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+app.post('/admin/renting/approvals/deny', async (req, res) => {
+    const { rental_id } = req.body;
+
+    try {
+        const [results] = await pool.query('CALL DenyRentRequest(?)', [ rental_id ]);
+
+        const htmlFilePath = path.join(__dirname, 'renting-approve.html');
+        let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+
+        const mailOptions = {  
+            from: process.env.MAIL_USER,
+            to: results[0][0].customer_email,
+            subject: 'TurboRent - Bérlési visszaigazolás',
+            html: htmlContent 
+        };
+
+        if(results.length > 0) {
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error)
+                } else {
+                    console.log(info)
+                }
+                return res.status(200).json({message:"Request Approved"})
+            });
+        } else {
+            return res.status(400).json({message:"Approve failed"})
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+// BÉRLÉS !!
+
+app.post('/user/rent', async (req, res) => {
+    const { 
+        car_id,
+        customer_id,
+        rent_from,
+        rent_to
+     } = req.body;
+
+    try {
+        const [results] = await pool.query('CALL CreateRentApproval(?,?,?,?)', [ car_id, customer_id, rent_from, rent_to ]);
+        const email = results[0][0].email
+        if(results.length > 0) {
+
+            const htmlFilePath = path.join(__dirname, 'registration-reassure.html');
+            let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+            // htmlContent = htmlContent.replace('{{reset_link}}', "http://localhost:4200/reset-password?token=" + token)
+
+            const mailOptions = {  
+                from: process.env.MAIL_USER,
+                to: email,
+                subject: 'TurboRent - Foglalás visszaigazolás',
+                html: htmlContent 
+            };
+
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    return res.status(400).json({ message:"Email sending failed" })
+                } else {
+                    console.log(info)
+                    return res.status(200).json({ message: "Email sent" })
+                }
+            });
+        } else {
+            return res.status(400).json({message:"Request creation failed"})
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+
+// AUTH
+
 app.post('/auth/check-duplicate', async (req, res) => {
     const { email } = req.body;
 
@@ -482,85 +890,24 @@ app.post('/auth/check-duplicate', async (req, res) => {
     }
 });
 
-app.post('/auth/login', async (req,res) => {
-    const { email, password } = req.body
-
-    if (!email) return res.status(400).json({ message: 'A valid email is required' });
-    if (!password) return res.status(400).json({ message: 'A valid password is required' });
-
-    try {
-        const [hashedPassword] = await pool.query("SELECT password FROM Customers WHERE email = ?", [email])
-        const validPassword = hashedPassword[0].password.trim()
-        const isPasswordValid = await bcrypt.compare(password, validPassword)
-
-        if(isPasswordValid) {
-            const [results] = await pool.query('CALL Login(?, ?)', [ email, validPassword ])
-            if(results[0].length == 0) {
-                res.status(401).json({ error: "Wrong password"})
-            } else {
-                const user = results[0][0];
-                
-                req.body.id=user.id
-                req.body.firstname=user.first_name
-                req.body.lastname=user.last_name
-                req.body.email=user.email
-                req.body.phonenumber=user.phone_number
-                req.body.dateofbirth=user.date_of_birth
-                req.body.postcode=user.post_code
-                req.body.city=user.city
-                req.body.street=user.street
-                req.body.housenumber=user.house_number
-                req.body.password=user.password
-                req.body.isApproved=user.isApproved
-                req.body.isAdmin=user.isAdmin
-
-                const accessToken = generateAccessToken(req.body)
-                const refreshToken = await generateRefreshToken(user.id)
-                res.status(200).json({ token: accessToken, refreshToken: refreshToken, userid: user.id })
-            }
-        } else {
-            res.status(401).json({ error: "Wrong password" })
-        }
-    } catch(err) {
-        console.log(err)
-        res.status(500).json({ message: 'Internal server error' });
-    }
-})
-
-app.post('/auth/logout', async (req, res) => {
-    const { refreshToken } = req.body;
-
-    if (!refreshToken) {
-        return res.status(400).json({ message: "Refresh Token is required" });
-    }
-
-    try {
-        const [rows] = await pool.execute('SELECT * FROM refresh_tokens WHERE token = ?', [refreshToken.replace(/"/g, "")]);
-  
-        if (rows.length === 0) {
-            return res.status(404).json({ message: "Refresh token was not found in the database" });
-        }
-
-        const [result] = await pool.execute('DELETE FROM refresh_tokens WHERE token = ?', [refreshToken.replace(/"/g, "")]);
-
-        if (result.affectedRows > 0) {
-            return res.status(200).json({ message: "Logged out!" });
-        } else {
-            return res.status(500).json({ message: "Token couldn't be deleted" });
-        }
-
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ message: "Error while logging out." });
-    }
-});
-
 app.get('/user/data/:id', async (req, res) => {
     const userid = req.params.id
 
     try {
         const [results] = await pool.execute('CALL GetCustomerById(?)', [ userid ])
         res.send(results[0][0])
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Internal server error" })
+    }
+})
+
+app.get('/user/rent-history/:id', async (req, res) => {
+    const userid = req.params.id
+
+    try {
+        const [results] = await pool.execute('CALL GetRentHistory(?)', [ userid ])
+        res.send(results[0])
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Internal server error" })
@@ -633,6 +980,45 @@ app.post('/user/edit/password', authenticateToken, async (req, res) => {
         }
         
     } catch(err) {
+        console.log(err)
+        return res.status(500).json({error: "Internal server error"})
+    }
+})
+
+// CONTACT
+
+app.post('/contact', async (req, res) => {
+    const {
+        email,
+        name,
+        subject,
+        message
+    } = req.body
+
+    try {
+        const htmlFilePath = path.join(__dirname, 'contact.html');
+        let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+        htmlContent = htmlContent.replace('{{email}}', email)
+        htmlContent = htmlContent.replace('{{name}}', name)
+        htmlContent = htmlContent.replace('{{subject}}', subject)
+        htmlContent = htmlContent.replace('{{message}}', message)
+
+        const mailOptions = {  
+            from: process.env.MAIL_USER,
+            to: process.env.MAIL_USER,
+            subject: 'TurboRent - Kapcsolat',
+            html: htmlContent 
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                return res.status(400).json({ message:"Email sending failed" })
+            } else {
+                console.log(info)
+                return res.status(200).json({ message: "Email sent" })
+            }
+        });
+    } catch (err) {
         console.log(err)
         return res.status(500).json({error: "Internal server error"})
     }
