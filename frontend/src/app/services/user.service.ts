@@ -46,4 +46,10 @@ export class UserService {
   resetPassword(body:Object) {
     return this.httpClient.post("http://localhost:3000/user/reset-password", body)
   }
+
+  // KAPCSOLAT
+
+  sendContactEmail(body:Object) {
+    return this.httpClient.post("http://localhost:3000/contact", body)
+  }
 }

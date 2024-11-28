@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-cars',
   standalone: true,
-  imports: [CarComponent, AboutComponent, HeaderComponent, NavbarComponent],
+  imports: [CarComponent, AboutComponent, HeaderComponent],
   templateUrl: './cars.component.html',
   styleUrl: './cars.component.scss'
 })

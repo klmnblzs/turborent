@@ -20,7 +20,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent, title: header + "Bejelentkezés" },
     { path: 'register', component: RegisterComponent, title: header + "Regisztráció"},
     { path: 'dashboard/:userid', component: DashboardComponent, title: header + "Dashboard" },
-    { path: 'about', component: AboutComponent },
     { path: 'logout', component: LogoutComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
     { path: '**', component: CarsComponent },

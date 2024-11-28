@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HeaderComponent } from "../header/header.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { SnackbarService } from '../shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-contact',
@@ -25,7 +27,30 @@ export class ContactComponent {
     })
   })
 
+  private httpClient = inject(HttpClient)
+  private snackbarService = inject(SnackbarService)
+  errorMessage:string="";
+
   onSubmit() {
-    console.log(this.form);
+    if(this.form.valid) {
+      this.httpClient.post('http://localhost:3000/contact', {
+        name: this.form.value.name,
+        email: this.form.value.email,
+        subject: this.form.value.subject,
+        message: this.form.value.message
+      }).subscribe({
+        next: (res) => {
+          this.form.reset()
+          this.snackbarService.show("Sikeres küldés!")
+          this.errorMessage=""
+        },
+        error: (err) => {
+          this.snackbarService.show("Próbálja újra később!", "danger")
+          this.errorMessage = "Hiba a küldés közben!"
+        }
+      })
+    } else {
+      this.errorMessage = "Töltse ki az összes mezőt!"
+    }
   }
 }

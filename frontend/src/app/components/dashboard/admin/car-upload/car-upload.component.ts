@@ -59,13 +59,13 @@ export class CarUploadComponent implements OnInit {
   // ADD FORM
 
   openAddDialog() {
-    const dialog = document.getElementById("addExpenseDialog") as HTMLElement
+    const dialog = document.getElementById("addCarDialog") as HTMLElement
     
     dialog.style.visibility = "unset"
   }
 
   hideAddDialog() {
-    const dialog = document.getElementById("addExpenseDialog") as HTMLElement
+    const dialog = document.getElementById("addCarDialog") as HTMLElement
     
     dialog.style.visibility = "hidden"
     this.submitErr=false

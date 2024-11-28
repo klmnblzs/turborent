@@ -97,6 +97,7 @@ export class ApprovalsComponent implements OnInit {
       const subscription = this.adminService.getRentApprovalById(id).subscribe({
         next: (res:any) => {
           this.currentRentApproval=res
+          console.log(res)
         }
       })
       this.destroyRef.onDestroy(() => subscription.unsubscribe())
@@ -131,7 +132,7 @@ export class ApprovalsComponent implements OnInit {
     if(this.authService.isAdmin()) {
       const subscription = this.adminService.denyRentRequest(
         {
-          rental_id: this.currentRentApproval.approval_id,
+          rental_id: this.currentRentApproval[0].approval_id,
         }
       ).subscribe({
         next: (res:any) => {  

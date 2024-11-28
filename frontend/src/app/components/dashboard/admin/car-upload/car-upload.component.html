@@ -1,4 +1,4 @@
-<dialog id="addExpenseDialog">
+<dialog id="addCarDialog">
     <div class="panel">
       <div id="title-container">
         <h2>Új autó feltöltése</h2>
@@ -19,12 +19,13 @@
             </div>
             <div>
                 <label for="category">Kategória <span id="required">*</span></label>
-                <select name="category" id="category" formControlName="category">
+                <input type="text" id="category" name="category" formControlName="category">
+                <!-- <select name="category" id="category" formControlName="category">
                     <option value="" disabled>Válassz kategóriát...</option>
                     @for (category of categories; track $index) {
                       <option [value]="category.category">{{ category.category }}</option>
                     }
-                </select>
+                </select> -->
                 <label for="pricePerDay">Napi bérlési ára <span id="required">*</span></label>
                 <input type="number" id="pricePerDay" name="pricePerDay" formControlName="pricePerDay" placeholder="4500">
                 <label for="mileage">Km. óra állása <span id="required">*</span></label>
