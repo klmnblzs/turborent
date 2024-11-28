@@ -5,12 +5,15 @@ import { CarsService } from '../../services/cars.service';
 import { HeaderComponent } from "../header/header.component";
 import { NavbarComponent } from "../navbar/navbar.component";
 import { Router } from '@angular/router';
+import { CarFilterPipe } from '../../Pipes/car-filter.pipe';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
   selector: 'app-cars',
   standalone: true,
-  imports: [CarComponent, AboutComponent, HeaderComponent],
+  imports: [CarComponent, AboutComponent, HeaderComponent, CarFilterPipe, FormsModule],
   templateUrl: './cars.component.html',
   styleUrl: './cars.component.scss'
 })
@@ -18,10 +21,15 @@ export class CarsComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
   private carsService = inject(CarsService)
   private router = inject(Router);
+  private httpClient = inject(HttpClient)
 
   cars:any;
   brands:any;
   categories:any;
+
+  selectedBrand: string = '';
+  selectedType: string = '';
+  selectedOrder: string = 'asc';
 
   onClick(carId:number) {
     this.router.navigate(["/cars/" + carId])
@@ -37,6 +45,8 @@ export class CarsComponent implements OnInit {
       }
     })
 
+    this.destroyRef.onDestroy(() => subscription.unsubscribe())
+
     const getBrands = this.carsService.getBrandList().subscribe({
       next: (brands) => {
         this.brands=brands;
@@ -45,6 +55,8 @@ export class CarsComponent implements OnInit {
         console.log("ERROR: " + err)
       }
     })
+
+    this.destroyRef.onDestroy(() => getBrands.unsubscribe())
 
     const getCategories = this.carsService.getCategoryList().subscribe({
       next: (categories) => {
@@ -55,10 +67,6 @@ export class CarsComponent implements OnInit {
       }
     })
 
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe()
-      getBrands.unsubscribe()
-      getCategories.unsubscribe()
-    })
+    this.destroyRef.onDestroy(() => getCategories.unsubscribe())
   }
 }
