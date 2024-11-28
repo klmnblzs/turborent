@@ -27,7 +27,7 @@ export class RegisterComponent {
     firstname: new FormControl('', { validators: [Validators.required] }),
     lastname: new FormControl('', { validators: [Validators.required] }),
     email: new FormControl('', { validators: [Validators.email, Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)] }),
-    phone: new FormControl('', { validators: [Validators.required] }),
+    phone: new FormControl('', { validators: [Validators.required, Validators.pattern(/^\+?[0-9\s\-()]{7,15}$/) ] }),
     city: new FormControl('', { validators: [Validators.required] }),
     postcode: new FormControl('', { validators: [Validators.required] }),
     address: new FormControl('', { validators: [Validators.required] }),
@@ -126,12 +126,19 @@ export class RegisterComponent {
     formData.append('password', this.form.get('password')?.value!);
     formData.append('licensePictureFront', this.licenseFrontFile!);
     formData.append('licensePictureBack', this.licenseBackFile!);
+
+    if(!this.form.controls.phone.invalid) {
+      this.errorText = "A telefonszám nem valós."
+      this.registerError = true
+      return;
+    }
+    
     if(!this.isMatchingPassword()) {
       this.errorText = "A két jelszó nem egyezik."
       this.registerError = true
       return;
     }
-
+    
     this.authService.checkDuplicate(this.form.get('email')?.value!).subscribe({
       next: (res: any) => {    
         const subscription = this.authService.registerUser(formData).subscribe({

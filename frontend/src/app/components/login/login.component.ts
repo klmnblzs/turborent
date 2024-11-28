@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
   })
 
   resetPasswordForm = new FormGroup({
-    email: new FormControl('', { validators: [ Validators.email, Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/) ]})
+    emailReset: new FormControl('', { validators: [ Validators.email, Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/) ]})
   })
 
   isSubmitted=false;
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
     }
 
     const subscription = this.userService.requestResetPassword(
-      { email: this.resetPasswordForm.value.email }).subscribe({
+      { email: this.resetPasswordForm.value.emailReset }).subscribe({
         next: (res) =>{
           this.snackbarService.show("Email elküldésre került.")
           this.resetPasswordForm.reset()
