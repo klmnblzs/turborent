@@ -21,7 +21,6 @@ export class CarsComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
   private carsService = inject(CarsService)
   private router = inject(Router);
-  private httpClient = inject(HttpClient)
 
   cars:any;
   brands:any;
