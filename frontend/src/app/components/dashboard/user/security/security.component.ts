@@ -13,7 +13,6 @@ import { SnackbarService } from '../../../shared/snackbar/snackbar.service';
   styleUrl: './security.component.scss'
 })
 export class SecurityComponent {
-  private router = inject(Router)
   private userService = inject(UserService)
   private authService = inject(AuthService)
   private destroyRef = inject(DestroyRef)
@@ -57,13 +56,14 @@ export class SecurityComponent {
           this.submitErr=true
         }
       })
-  
-      this.destroyRef.onDestroy(() => subscription.unsubscribe())
-    } 
 
-    this.snackbarService.show("Hiba a jelszó változtatása közben!", "danger")
-    this.errText = "Töltsd ki a kritériumoknak megfelelően!"
-    this.submitErr=true
+      this.destroyRef.onDestroy(() => subscription.unsubscribe())
+    } else {
+      this.snackbarService.show("Hiba a jelszó változtatása közben!", "danger")
+      this.errText = "Töltsd ki a kritériumoknak megfelelően!"
+      this.submitErr=true
+    }
+
   }
 
 }

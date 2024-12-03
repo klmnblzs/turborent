@@ -109,6 +109,17 @@ export class RegisterComponent {
     return this.form.value.password === this.form.value.passwordConfirm
   }
 
+  isOldEnough() {
+    const dateInput = document.getElementById("dateofbirth") as HTMLInputElement
+    const year = dateInput.value.split("-")[0]
+
+    if((2024-Number(year)) > 18) {
+      return true
+    }
+
+    return false
+  }
+
   registerError=false;
   errorText:string=""
 
@@ -127,7 +138,7 @@ export class RegisterComponent {
     formData.append('licensePictureFront', this.licenseFrontFile!);
     formData.append('licensePictureBack', this.licenseBackFile!);
 
-    if(!this.form.controls.phone.invalid) {
+    if(this.form.controls.phone.invalid) {
       this.errorText = "A telefonszám nem valós."
       this.registerError = true
       return;
@@ -135,6 +146,12 @@ export class RegisterComponent {
     
     if(!this.isMatchingPassword()) {
       this.errorText = "A két jelszó nem egyezik."
+      this.registerError = true
+      return;
+    }
+
+    if(!this.isOldEnough()) {
+      this.errorText = "18. életkor betöltése kötelező."
       this.registerError = true
       return;
     }

@@ -32,6 +32,10 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(!localStorage.getItem("token") || !localStorage.getItem("refreshToken")) {
+      this.router.navigate(['/cars'])
+    }
+    
     this.activatedRoute.paramMap.subscribe(params => {
       if(params.get("userid") != this.authService.getUserDataFromToken().id) {
         this.router.navigate(['/dashboard/' + this.authService.getUserDataFromToken().id])

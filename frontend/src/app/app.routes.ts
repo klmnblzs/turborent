@@ -22,5 +22,6 @@ export const routes: Routes = [
     { path: 'dashboard/:userid', component: DashboardComponent, title: header + "Dashboard" },
     { path: 'logout', component: LogoutComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
+    // 404
     { path: '**', component: CarsComponent },
 ];

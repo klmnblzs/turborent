@@ -21,7 +21,7 @@ export class ResetPasswordComponent implements OnInit {
   private router = inject(Router)
 
   resetPasswordForm = new FormGroup({
-    password: new FormControl('', { validators: [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/)] }),
+    password: new FormControl('', { validators: [ Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/) ] }),
     confirmPassword: new FormControl('')
   })
 
@@ -44,7 +44,6 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit() {
     const token = this.activatedRoute.snapshot.queryParamMap.get('token');
-    console.log(token)
 
     if(!token || this.authService.getUserDataFromToken()) {
       this.router.navigate(["/cars"])
@@ -91,5 +90,7 @@ export class ResetPasswordComponent implements OnInit {
         this.snackbarService.show("Jelszó visszaállítva!")
       }
     })
+
+    this.destroyRef.onDestroy( () => subscription.unsubscribe() )
   }
 } 
