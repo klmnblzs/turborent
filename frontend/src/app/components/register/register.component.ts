@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, DestroyRef, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { SnackbarService } from '../shared/snackbar/snackbar.service';
@@ -19,6 +19,8 @@ export class RegisterComponent {
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
+  
+  showPassword:boolean = false;
   
   licenseFrontFile: File | null = null;
   licenseBackFile: File | null = null;
@@ -113,7 +115,7 @@ export class RegisterComponent {
     const dateInput = document.getElementById("dateofbirth") as HTMLInputElement
     const year = dateInput.value.split("-")[0]
 
-    if((2024-Number(year)) > 18) {
+    if((2024-Number(year)) > 16) {
       return true
     }
 
@@ -151,7 +153,7 @@ export class RegisterComponent {
     }
 
     if(!this.isOldEnough()) {
-      this.errorText = "18. életkor betöltése kötelező."
+      this.errorText = "16. életkor betöltése kötelező."
       this.registerError = true
       return;
     }

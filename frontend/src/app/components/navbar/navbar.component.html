@@ -39,7 +39,7 @@
       <ul [class.active]="menuOpen">
         <li><a routerLink="/cars">Gépjárművek</a></li>
         <li><a routerLink="/contact">Kapcsolat</a></li>
-        <li><a (click)="onClickDashboard()">{{ placeholder }}</a></li>
+        <a (click)="onClickDashboard()"><li class="loginBtn">{{ placeholder }}</li></a>
       </ul>
     </div>
 </nav>

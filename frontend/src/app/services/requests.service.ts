@@ -12,35 +12,36 @@ export class RequestsService {
 
   refreshToken() {
     const refreshToken = localStorage.getItem("refreshToken");
-  
+
     if (!refreshToken) {
       this.router.navigate(["/logout"])
       return throwError(() => new Error("No refresh token found"));
     }
-  
+
     return this.httpClient.post<{ token: string }>('http://localhost:3000/auth/refresh', { refreshToken }).pipe(
-      tap((res:any) => {
-        console.log(res)
-        localStorage.setItem("token", res.accessToken);
+      tap((res: any) => {
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("refreshToken", res.refreshToken)
       })
     );
   }
 
   post(url: string, body: Object, errorMessage: string) {
     const token = localStorage.getItem("token")?.replace(/"/g, "")
-  
+
     if (!token) {
       this.router.navigate(["/logout"])
       return throwError(() => new Error("Token not found"));
     }
-  
+
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  
+
     return this.httpClient.post(url, body, { headers: headers }).pipe(
       catchError((err) => {
         // TODO: KIJAVÍTANI A REFRESH TOKENT
-      
-        if (err.status === 403) {
+
+        if (err.status === 403 || // Forbidden
+          err.status == 401) { // Unauthorized
           return this.refreshToken().pipe(
             switchMap((newToken) => {
               headers = headers.set('Authorization', `Bearer ${newToken}`);
@@ -59,12 +60,13 @@ export class RequestsService {
     if (!token) {
       return throwError(() => new Error("Token not found"));
     }
-  
+
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  
+
     return this.httpClient.get(url, { headers: headers }).pipe(
       catchError((err) => {
-        if (err.status === 401 || err.status === 403) {
+        if (err.status === 403 || // Forbidden
+          err.status === 401) { // Unauthorized
           return this.refreshToken().pipe(
             switchMap((newToken) => {
               headers = headers.set('Authorization', `Bearer ${newToken}`);

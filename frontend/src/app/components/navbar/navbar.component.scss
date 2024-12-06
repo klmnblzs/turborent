@@ -77,6 +77,21 @@ nav {
 
           margin: 0;
           padding: 0;
+
+          .loginBtn {
+            background-color: #C7F9CC;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: .3s;
+
+            &:hover {
+              opacity: .8;
+            }
+      
+            a {
+              color: black;
+            }
+          }
     
           li {
             a {
@@ -84,10 +99,6 @@ nav {
               color: #fff;
               font-size: 16px;
               transition: color 0.3s ease;
-    
-              &:hover {
-                color: #afafaf;
-              }
             }
           }
         }

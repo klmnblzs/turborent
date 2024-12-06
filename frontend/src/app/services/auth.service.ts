@@ -68,11 +68,13 @@ export class AuthService {
   getUserDataFromToken() {
     const token = localStorage.getItem('token');
     if (!token) {
+      console.log("NINCSEN TOKEN")
       return null;
     }
 
     try {
       const decodedToken = jwtDecode<any>(token);
+
       return decodedToken;
     } catch (err) {
       return err;

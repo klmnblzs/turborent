@@ -23,6 +23,26 @@
             color: red;
         }
 
+        #show-password {
+            margin: 0;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            margin-bottom: 15px;
+            padding: 0;
+            text-align: left;
+            background: none;
+            color: #99c09d;
+            text-decoration: underline;
+            width: fit-content;
+            transition: .3s;
+            cursor: pointer;
+        }
+
+        #show-password:hover {
+            color: #79977c;
+        }
+
         .seperated-container, .address-container {
             display: flex;
             flex-direction: row;

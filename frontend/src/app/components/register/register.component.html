@@ -54,11 +54,12 @@
             <div class="seperated-container">
                 <div>
                     <label for="name">Jelszó <span id="required">*</span></label>
-                    <input type="password" name="password" id="password" formControlName="password" [class.invalid]="this.form.controls.password.invalid && this.form.controls.password.touched">
+                    <input [type]="showPassword ? 'text' : 'password'" name="password" id="password" formControlName="password" [class.invalid]="this.form.controls.password.invalid && this.form.controls.password.touched">
+                    <input type="button" id="show-password" value="Jelszó mutatása" (click)="this.showPassword = !this.showPassword">
                 </div>
                 <div>
                     <label for="password-confirm">Jelszó ismétlése <span id="required">*</span></label>
-                    <input type="password" name="password-confirm" id="password-confirm" formControlName="passwordConfirm">
+                    <input [type]="showPassword ? 'text' : 'password'" name="password-confirm" id="password-confirm" formControlName="passwordConfirm">
                 </div>
             </div>
             <ul class="criteria">
