@@ -63,11 +63,12 @@ function authenticateToken(req, res, next) {
     const token = authHeader.split(' ')[1];
 
     if (token == null) { return res.status(401).json({ message: "Token: null" }); }
-
+    
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) {
-            return res.status(403).json({ message: "Token: Invalid" });
+            return res.status(403).json({ message: "Token is invalid" });
         }
+
         req.user = decoded;
         next();
     });
@@ -120,7 +121,6 @@ app.post('/user/request-reset-password', async (req, res) => {
                 const htmlFilePath = path.join(__dirname, 'reset-password.html');
                 let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
                 htmlContent = htmlContent.replace('{{reset_link}}', "http://localhost:4200/reset-password?token=" + token)
-
                 const mailOptions = {  
                     from: process.env.MAIL_USER,
                     to: email,
@@ -130,6 +130,7 @@ app.post('/user/request-reset-password', async (req, res) => {
 
                 transporter.sendMail(mailOptions, function(error, info){
                     if (error) {
+                        console.log(error)
                         return res.status(400).json({ message:"Email sending failed" })
                     } else {
                         console.log(info)
@@ -431,7 +432,7 @@ app.post('/auth/login', async (req,res) => {
                 req.body.city=user.city
                 req.body.street=user.street
                 req.body.housenumber=user.house_number
-                req.body.password=user.password
+                req.body.password=hashedPassword
                 req.body.isAdmin=user.isAdmin
                 req.body.isApproved=user.isApproved
 
@@ -448,7 +449,7 @@ app.post('/auth/login', async (req,res) => {
     }
 })
 
-app.post('/auth/logout', authenticateToken, async (req, res) => {
+app.post('/auth/logout', async (req, res) => {
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
@@ -485,6 +486,26 @@ app.post('/auth/refresh', async (req, res) => {
 
     try {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
+            
+            const [customerData] = await pool.execute("SELECT * FROM customers WHERE id = ?", [user.userId])
+            customer=customerData[0]
+
+            req.body.id=user.userId
+            req.body.firstname=customer.first_name
+            req.body.lastname=customer.last_name
+            req.body.email=customer.email
+            req.body.phonenumber=customer.phone_number
+            req.body.dateofbirth=customer.date_of_birth
+            req.body.postcode=customer.post_code
+            req.body.city=customer.city
+            req.body.street=customer.street
+            req.body.housenumber=customer.house_number
+            req.body.password=customer.password
+            req.body.isAdmin=customer.isAdmin
+            req.body.isApproved=customer.isApproved
+
+            // console.log(req.body)
+
             if (err) return res.status(403).json({ message: "Érvénytelen refresh token" });
 
             const [rows] = await pool.execute('SELECT * FROM refresh_tokens WHERE token = ?', [refreshToken]);
@@ -496,9 +517,9 @@ app.post('/auth/refresh', async (req, res) => {
             await pool.execute('DELETE FROM refresh_tokens WHERE token = ?', [refreshToken]);
 
             const newRefreshToken = await generateRefreshToken(user.userId);
-            const newAccessToken = generateAccessToken({ id: user.userId }); 
+            const newToken = generateAccessToken(req.body); 
 
-            res.json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
+            res.json({ token: newToken, refreshToken: newRefreshToken });
         });
     } catch (err) {
         if (err.name === "JsonWebTokenError") {
@@ -662,7 +683,7 @@ app.get('/admin/registration/approvals/:id', authenticateToken, async (req, res)
     }
 })
 
-app.post('/admin/registration/approvals/approve', async (req, res) => {
+app.post('/admin/registration/approvals/approve', authenticateToken, async (req, res) => {
     const { customer_id, admin_id } = req.body;
 
     try {
@@ -696,7 +717,7 @@ app.post('/admin/registration/approvals/approve', async (req, res) => {
     }
 })
 
-app.post('/admin/registration/approvals/deny', async (req, res) => {
+app.post('/admin/registration/approvals/deny', authenticateToken, async (req, res) => {
     const { customer_id } = req.body;
 
     try {
@@ -733,7 +754,7 @@ app.post('/admin/registration/approvals/deny', async (req, res) => {
 
 // BÉRLÉS JÓVÁHAGYÁS
 
-app.get('/admin/renting/approvals', async (req, res) => {
+app.get('/admin/renting/approvals', authenticateToken, async (req, res) => {
     const [results] = await pool.query('CALL ListRentApprovals()');
 
     res.json(results[0]);
@@ -755,7 +776,7 @@ app.get('/admin/renting/approvals/:id', async (req, res) => {
     }
 })
 
-app.post('/admin/renting/approvals/approve', async (req, res) => {
+app.post('/admin/renting/approvals/approve', authenticateToken, async (req, res) => {
     const { rental_id, admin_id } = req.body;
 
     try {
@@ -788,7 +809,7 @@ app.post('/admin/renting/approvals/approve', async (req, res) => {
     }
 })
 
-app.post('/admin/renting/approvals/deny', async (req, res) => {
+app.post('/admin/renting/approvals/deny', authenticateToken, async (req, res) => {
     const { rental_id } = req.body;
 
     try {
