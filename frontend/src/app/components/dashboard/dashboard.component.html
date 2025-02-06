@@ -1,37 +1,24 @@
 <div class="container">
-    <nav>
-        <ul>
-            <a (click)="currentPage = 'data'"><li [class.active]="currentPage == 'data'"><i class="ph-fill ph-user"></i>Fiókadatok</li></a>
-            <a (click)="currentPage = 'security'"><li [class.active]="currentPage == 'security'"><i class="ph-fill ph-lock"></i>Jelszó & Biztonság</li></a>
-            <a (click)="currentPage = 'history'"><li [class.active]="currentPage == 'history'"><i class="ph-fill ph-credit-card"></i>Bérlési előzmények</li></a>
-            @if (userData.isAdmin == 1) {
-                <a (click)="currentPage = 'approvals'"><li [class.active]="currentPage == 'approvals'"><i class="ph ph-clipboard"></i>Jóváhagyások</li></a>
-            }
-            @if (userData.isAdmin == 1) {
-                <a (click)="currentPage = 'carupload'"><li [class.active]="currentPage == 'carupload'"><i class="ph ph-car"></i>Autók kezelése</li></a>
-            }
-            <a (click)="logOut()"><li><i class="ph ph-sign-out"></i>Kijelentkezés</li></a>
-        </ul>
-    </nav>
-
+    <app-navbar></app-navbar>
+    
     <div class="data-container">
         @if(currentPage == 'data') {
             <app-personal-data></app-personal-data>
         }
 
-        @if(currentPage == 'security') {
+        @else if(currentPage == 'security') {
             <app-security></app-security>
         }
 
-        @if(currentPage == 'history') {
+        @else if(currentPage == 'history') {
             <app-history></app-history>
         }
 
-        @if(currentPage == 'approvals') {
+        @else if(currentPage == 'approvals') {
             <app-approvals></app-approvals>
         }
 
-        @if(currentPage == 'carupload') {
+        @else if(currentPage == 'carupload') {
             <app-car-upload></app-car-upload>
         }
     </div>

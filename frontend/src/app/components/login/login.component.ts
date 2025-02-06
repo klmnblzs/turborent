@@ -67,6 +67,7 @@ export class LoginComponent implements OnInit {
     const subscription = this.userService.requestResetPassword(
       { email: this.resetPasswordForm.value.emailReset }).subscribe({
         next: (res) =>{
+          console.log(res)
           this.snackbarService.show("Email elküldésre került.")
           this.resetPasswordForm.reset()
           this.hideDialog()
@@ -75,6 +76,8 @@ export class LoginComponent implements OnInit {
           this.dialogErr="Az email cím nem létezik!"
         }
     })
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe())
   }
 
   onSubmit() {

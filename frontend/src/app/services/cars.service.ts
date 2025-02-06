@@ -35,7 +35,7 @@ export class CarsService {
 
   getCarList() {
     return this.fetch(
-      "http://localhost:3000/cars",
+      "http://localhost:3000/cars/get",
       "Something went wrong while fetching the cars."
     )
   }
@@ -56,7 +56,7 @@ export class CarsService {
 
   getCarById(id: string) {
     return this.fetchById(
-      "http://localhost:3000/cars",
+      "http://localhost:3000/cars/get",
       "There was an error",
       id
     )

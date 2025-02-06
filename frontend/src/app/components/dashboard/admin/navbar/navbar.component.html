@@ -1,0 +1,14 @@
+<nav>
+    <ul>
+        <a (click)="navigateMenu('data')"><li [class.active]="currentPage == 'data'"><i class="ph-fill ph-user"></i>Fiókadatok</li></a>
+        <a (click)="navigateMenu('security')"><li [class.active]="currentPage == 'security'"><i class="ph-fill ph-lock"></i>Jelszó & Biztonság</li></a>
+        <a (click)="navigateMenu('history')"><li [class.active]="currentPage == 'history'"><i class="ph-fill ph-credit-card"></i>Bérlési előzmények</li></a>
+        @if (userData.isAdmin == 1) {
+            <a (click)="navigateMenu('approvals')"><li [class.active]="currentPage == 'approvals'"><i class="ph ph-clipboard"></i>Jóváhagyások</li></a>
+        }
+        @if (userData.isAdmin == 1) {
+            <a (click)="navigateMenu('carupload')"><li [class.active]="currentPage == 'carupload'"><i class="ph ph-car"></i>Autók kezelése</li></a>
+        }
+        <a (click)="logOut()"><li><i class="ph ph-sign-out"></i>Kijelentkezés</li></a>
+    </ul>
+</nav>

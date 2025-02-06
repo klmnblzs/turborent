@@ -9,6 +9,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { AboutComponent } from './components/about/about.component';
 import { ResetPasswordComponent } from './components/dashboard/user/reset-password/reset-password.component';
+import { PersonalDataComponent } from './components/dashboard/user/personal-data/personal-data.component';
 
 const header:string = "TurboRent | "
 
@@ -22,6 +23,9 @@ export const routes: Routes = [
     { path: 'dashboard/:userid', component: DashboardComponent, title: header + "Dashboard" },
     { path: 'logout', component: LogoutComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
+
+    { path: 'dashboard/:userid/:page', component: DashboardComponent },
+
     // 404
     { path: '**', component: CarsComponent },
 ];

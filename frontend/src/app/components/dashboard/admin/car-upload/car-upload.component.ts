@@ -126,9 +126,10 @@ export class CarUploadComponent implements OnInit {
       const subscription = this.adminService.deleteCar({ id: car.id }).subscribe({
         next: (res) => {
           this.loadCars()
+          this.snackbarService.show("Sikeres törlés!")
         },
         error: (err) => {
-          console.log("Error while deleting!")
+          this.snackbarService.show("Sikertelen törlés!", "alert")
         }
       })
     }
