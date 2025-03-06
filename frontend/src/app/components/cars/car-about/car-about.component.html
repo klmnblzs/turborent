@@ -53,7 +53,10 @@
                             <h2 id="information">A foglalás kezdeményezéséhez jelentkezzen be!</h2>
                             <button (click)="rentCar()">Bejelentkezés</button>
                         }
-                        <p id="warning">Figyelem! A bérlés nem minősül érvényes foglalásnak. Várja meg kollégánk visszajelzését. <span id="required">*</span></p>
+
+                        @if(!isLoggedIn() || isLoggedIn() !== "unapproved") {
+                            <p id="warning">Figyelem! A bérlés nem minősül érvényes foglalásnak. Várja meg kollégánk visszajelzését. <span id="required">*</span></p>
+                        }
                     </form>
                 </div>
             </div>

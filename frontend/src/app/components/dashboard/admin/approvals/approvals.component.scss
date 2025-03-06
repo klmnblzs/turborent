@@ -47,7 +47,7 @@ dialog {
     color: black;
     display: flex;
     border: none;
-    visibility: hidden;
+    // visibility: hidden;
 
     height: 100vh;
     width: 100vw;
@@ -84,7 +84,8 @@ dialog {
 
             div {
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
+                gap: 25px;
                 justify-content: space-between;
                 width: 100%;
 

@@ -14,7 +14,6 @@ export class CarsService {
     return this.httpClient.get(url)
     .pipe(
       catchError((err) => throwError(() => {
-        console.log(err)
         new Error(errorMessage)
       }))
     )

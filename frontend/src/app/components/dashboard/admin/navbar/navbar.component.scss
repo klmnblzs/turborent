@@ -22,17 +22,17 @@ nav {
                     margin-right: 10px;
                     transform: translateY(px);
                 }
+
+                &:hover {
+                    background-color: #DCDCDC;
+                    cursor: pointer;
+                }
+    
+                &.active {
+                    background-color: #DCDCDC;
+                }
             }
 
-            li:hover {
-                background-color: #DCDCDC;
-                cursor: pointer;
-            }
-
-            li.active {
-                background-color: #DCDCDC;
-            }
         }
-        
     }
 }

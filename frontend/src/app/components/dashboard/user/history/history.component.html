@@ -1,7 +1,7 @@
 <h3>Bérlési előzmények</h3>
 <div class="card-container">
-    @if(this.getRentHistory != null) {
-        @if(this.getRentHistory.length < 1) {
+    @if(this.rentalHistory != null) {
+        @if(this.rentalHistory.length == 0) {
             <p id="warning">Nincsenek előzmények.</p>
         } @else {
             @for (history of rentalHistory; track $index) {

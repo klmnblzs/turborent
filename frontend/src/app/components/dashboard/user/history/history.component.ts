@@ -1,6 +1,5 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { CarsService } from '../../../../services/cars.service';
-import { AdminService } from '../../../../services/admin.service';
 import { AuthService } from '../../../../services/auth.service';
 import { UserService } from '../../../../services/user.service';
 import { DatePipe } from '@angular/common';

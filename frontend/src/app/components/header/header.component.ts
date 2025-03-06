@@ -8,5 +8,7 @@ import { Component, input } from '@angular/core';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-
+  scroll(el: HTMLElement) {
+    el.scrollIntoView();
+  }
 }

@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(!localStorage.getItem("token") || !localStorage.getItem("refreshToken")) {
+    if(!localStorage.getItem("token")) {
       this.router.navigate(['/cars'])
     }
     

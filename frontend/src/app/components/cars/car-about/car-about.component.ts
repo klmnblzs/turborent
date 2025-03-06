@@ -15,7 +15,7 @@ import { UserService } from '../../../services/user.service';
   templateUrl: './car-about.component.html',
   styleUrl: './car-about.component.scss'
 })
-export class CarAboutComponent implements OnInit{
+export class CarAboutComponent implements OnInit {
   private carsService = inject(CarsService);
   private destroyRef = inject(DestroyRef);
   private activatedRoute = inject(ActivatedRoute);
@@ -25,8 +25,8 @@ export class CarAboutComponent implements OnInit{
   private userService = inject(UserService)
 
 
-  carId:any;
-  carData:any;
+  carId: any;
+  carData: any;
 
   // RENT FORM
 
@@ -37,22 +37,22 @@ export class CarAboutComponent implements OnInit{
 
   isLoggedIn() {
     const token = localStorage.getItem("token")
-    if(token) {
-      if(this.authService.getUserDataFromToken().isApproved == 1) {
+    if (token) {
+      if (this.authService.getUserDataFromToken().isApproved == 1) {
         return true
       } else {
         return "unapproved"
       }
-    } 
+    }
     return false
   }
 
-  rentError:boolean=false;
-  errorText:string="";
+  rentError: boolean = false;
+  errorText: string = "";
 
   rentCar() {
-    if(localStorage.getItem("token")) { 
-      if(this.rentForm.valid) {
+    if (localStorage.getItem("token")) {
+      if (this.rentForm.valid) {
         const checkAvailable = this.carsService.checkAvailable({
           car_id: this.carId,
           start_date: this.rentForm.value.pickupDate,
@@ -74,25 +74,25 @@ export class CarAboutComponent implements OnInit{
           },
           error: (err) => {
             this.snackbarService.show("Hiba a kérés leadása során!", "danger")
-            this.errorText="Erre az időpontra már lefoglalták az autót."
-            this.rentError=true
+            this.errorText = "Erre az időpontra már lefoglalták az autót."
+            this.rentError = true
           }
         })
         this.destroyRef.onDestroy(() => checkAvailable.unsubscribe())
       } else {
         this.snackbarService.show("Hiba a kérés leadása során!", "danger")
-        this.errorText="Tölts ki minden mezőt!"
-        this.rentError=true
+        this.errorText = "Tölts ki minden mezőt!"
+        this.rentError = true
       }
 
     } else {
       // TODO: javítani a redirectet --> most refreshel, redirect helye
-      this.router.navigate(["/login"]) 
+      this.router.navigate(["/login"])
     }
-  } 
-  
-  carEquipments:any;
-  displayEquipments(carData:Array<any>) {
+  }
+
+  carEquipments: any;
+  displayEquipments(carData: Array<any>) {
     this.carEquipments = carData[0].equipments.split(";")
   }
 
@@ -102,7 +102,7 @@ export class CarAboutComponent implements OnInit{
     });
 
     const subscription = this.carsService.getCarById(this.carId).subscribe({
-      next: (res: any) => { 
+      next: (res: any) => {
         this.carData = res;
         this.displayEquipments(res)
       },
@@ -111,7 +111,7 @@ export class CarAboutComponent implements OnInit{
       }
     });
 
-    this.destroyRef.onDestroy(() => { 
+    this.destroyRef.onDestroy(() => {
       subscription.unsubscribe()
     })
   }

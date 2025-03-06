@@ -19,70 +19,69 @@ export class LoginComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
-  showPassword:boolean = false;
+  showPassword: boolean = false;
 
   ngOnInit(): void {
-    if(localStorage.getItem("token") && localStorage.getItem("refreshToken")) {
+    if (localStorage.getItem("token")) {
       this.router.navigate(["/dashboard"])
     }
   }
 
   form = new FormGroup({
     email: new FormControl('', {
-      validators: [ Validators.email, Validators.required, Validators.minLength(10), Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/) ]
+      validators: [Validators.email, Validators.required, Validators.minLength(10), Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)]
     }),
     password: new FormControl('', {
-      validators: [ Validators.required ]
+      validators: [Validators.required]
     })
   })
 
   resetPasswordForm = new FormGroup({
-    emailReset: new FormControl('', { validators: [ Validators.email, Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/) ]})
+    emailReset: new FormControl('', { validators: [Validators.email, Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)] })
   })
 
-  isSubmitted=false;
-  loginError=false;
-  errorText=""
+  isSubmitted = false;
+  loginError = false;
+  errorText = ""
 
   openDialog() {
     const dialog = document.getElementById("resetPasswordDialog") as HTMLElement
-    
+
     dialog.style.visibility = "unset"
   }
 
   hideDialog() {
     const dialog = document.getElementById("resetPasswordDialog") as HTMLElement
-    
+
     dialog.style.visibility = "hidden"
   }
-  
-  dialogErr:string=""
+
+  dialogErr: string = ""
 
   resetPassword() {
-    if(this.resetPasswordForm.invalid) {
-      this.dialogErr="Hibás email cím."
+    if (this.resetPasswordForm.invalid) {
+      this.dialogErr = "Hibás email cím."
       return;
     }
 
     const subscription = this.userService.requestResetPassword(
       { email: this.resetPasswordForm.value.emailReset }).subscribe({
-        next: (res) =>{
-          console.log(res)
+        next: (res) => {
           this.snackbarService.show("Email elküldésre került.")
           this.resetPasswordForm.reset()
           this.hideDialog()
         },
         error: (err) => {
-          this.dialogErr="Az email cím nem létezik!"
+          this.dialogErr = "Az email cím nem létezik!"
         }
-    })
+      })
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe())
   }
 
   onSubmit() {
-    this.isSubmitted=true;
-    if(this.form.controls.email.invalid || this.form.controls.password.invalid) {
+    this.isSubmitted = true;
+    if (this.form.controls.email.invalid || this.form.controls.password.invalid) {
       this.loginError = true;
       this.errorText = "Hibás email vagy jelszó!"
       return;
@@ -94,37 +93,37 @@ export class LoginComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         localStorage.setItem("token", res.token)
-        localStorage.setItem("refreshToken", res.refreshToken)
+        // localStorage.setItem("refreshToken", res.refreshToken)
 
-        if(this.authService.getUserDataFromToken().isApproved == 0) {
-          this.loginError=true
-          this.errorText = "A regisztrációd jóváhagyásra vár."
-          
-          this.authService.logoutUser({
-            refreshToken: localStorage.getItem("refreshToken")
-          }).subscribe({
-            next: (res) => {
-              localStorage.removeItem("token")
-              localStorage.removeItem("refreshToken")
-            }
-          })
+        // if (this.authService.getUserDataFromToken().isApproved == 0) {
+        //   this.loginError = true
+        //   this.errorText = "A regisztrációd jóváhagyásra vár."
 
-          return;
-        }
+        //   this.authService.logoutUser({
+        //     refreshToken: localStorage.getItem("refreshToken")
+        //   }).subscribe({
+        //     next: (res) => {
+        //       localStorage.removeItem("token")
+        //       localStorage.removeItem("refreshToken")
+        //     }
+        //   })
+
+        //   return;
+        // }
 
         setTimeout(() => {
           this.router.navigate(["/dashboard/" + localStorage.getItem("userid")])
           this.snackbarService.show("Sikeres bejelentkezés!")
         })
       }, error: (err) => {
-        this.loginError=true
+        this.loginError = true
         this.errorText = "Hiba a bejelentkezés során!"
       }
     })
 
-    this.destroyRef.onDestroy(()=>{
+    this.destroyRef.onDestroy(() => {
       subscription.unsubscribe()
     })
-  
+
   }
 }

@@ -17,18 +17,14 @@ export class LogoutComponent {
   private snackbarService = inject(SnackbarService)
 
   ngOnInit(): void {
-    const refreshToken = localStorage.getItem("refreshToken");
-    if (!refreshToken) {
-      console.log("No refresh token");
+    const token = localStorage.getItem("token");
+    if (!token) {
       this.router.navigate(["/login"]);
       return;
     }
-
-    this.authService.logoutUser({ refreshToken }).subscribe({
+    this.authService.logoutUser({}).subscribe({
       next: (res) => {
         localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
-        
         this.router.navigate(["/cars"]);
         this.snackbarService.show("Kijelentkezve!")
       },

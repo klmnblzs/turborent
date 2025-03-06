@@ -29,10 +29,11 @@ header {
     }
 
     button {
-        padding: 20px;
+        padding: 12px;
         border: none;
         outline: none;
-        background-color: #fff;
+        background-color: rgba(0,0,0,0);
+        color: white;
         border-radius: 50px;
         font-size: 17px;
         text-transform: uppercase;
@@ -42,11 +43,11 @@ header {
     }
 
     button:hover {
-        padding: 20px 30px 20px 15px;
+        font-size: 19px;
     }
 
     button:after {
-        content: '»';
+        content: '🚀';
         margin-left: 10px;
         position: absolute;
         opacity: 0;
@@ -55,5 +56,6 @@ header {
 
     button:hover:after {
         opacity: 1;
+        margin-left: 15px;
     }
 }

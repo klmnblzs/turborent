@@ -129,7 +129,7 @@ export class CarUploadComponent implements OnInit {
           this.snackbarService.show("Sikeres törlés!")
         },
         error: (err) => {
-          this.snackbarService.show("Sikertelen törlés!", "alert")
+          this.snackbarService.show("Sikertelen törlés!", "danger")
         }
       })
     }

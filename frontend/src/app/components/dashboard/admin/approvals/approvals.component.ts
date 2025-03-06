@@ -23,30 +23,14 @@ export class ApprovalsComponent implements OnInit {
   currentRentApproval:any = null;
   submitErr:boolean=false;
 
-  openApprovalDialog() {
-    const dialog = document.getElementById("approvalDialog") as HTMLElement
-    
-    dialog.style.visibility = "unset"
+  userApprovalDialogShown = false;
+  manageUserApprovalDialog() {
+    this.userApprovalDialogShown = !this.userApprovalDialogShown
   }
 
-  hideApprovalDialog() {
-    const dialog = document.getElementById("approvalDialog") as HTMLElement
-    
-    dialog.style.visibility = "hidden"
-    this.submitErr=false
-  }
-
-  openRentApprovalDialog() {
-    const dialog = document.getElementById("rentApprovalDialog") as HTMLElement
-    
-    dialog.style.visibility = "unset"
-  }
-
-  hideRentApprovalDialog() {
-    const dialog = document.getElementById("rentApprovalDialog") as HTMLElement
-    
-    dialog.style.visibility = "hidden"
-    this.submitErr=false
+  rentApprovalDialogShown = false;
+  manageRentApprovalDialog() {
+    this.rentApprovalDialogShown = !this.rentApprovalDialogShown
   }
 
   loadApprovals() {
@@ -88,7 +72,7 @@ export class ApprovalsComponent implements OnInit {
       })
       this.destroyRef.onDestroy(() => subscription.unsubscribe())
 
-      this.openApprovalDialog()
+      this.manageUserApprovalDialog()
     }
   }
 
@@ -97,12 +81,11 @@ export class ApprovalsComponent implements OnInit {
       const subscription = this.adminService.getRentApprovalById(id).subscribe({
         next: (res:any) => {
           this.currentRentApproval=res
-          console.log(res)
         }
       })
       this.destroyRef.onDestroy(() => subscription.unsubscribe())
 
-      this.openRentApprovalDialog()
+      this.manageRentApprovalDialog()
     }
   }
 
@@ -116,7 +99,7 @@ export class ApprovalsComponent implements OnInit {
       ).subscribe({
         next: (res:any) => {  
           this.snackbarService.show("Foglalás elfogadva!")
-          this.hideRentApprovalDialog()
+          this.manageRentApprovalDialog()
           this.loadApprovals()
           this.loadRentApprovals()
         },
@@ -137,7 +120,7 @@ export class ApprovalsComponent implements OnInit {
       ).subscribe({
         next: (res:any) => {  
           this.snackbarService.show("Fogadás elutasítva!")
-          this.hideRentApprovalDialog()
+          this.manageRentApprovalDialog()
           this.loadApprovals()
           this.loadRentApprovals()
         },
@@ -160,7 +143,7 @@ export class ApprovalsComponent implements OnInit {
       ).subscribe({
         next: (res:any) => {  
           this.snackbarService.show("Kérés elfogadva!")
-          this.hideApprovalDialog()
+          this.manageUserApprovalDialog()
           this.loadApprovals()
         },
         error: (err) => {
@@ -180,7 +163,7 @@ export class ApprovalsComponent implements OnInit {
       ).subscribe({
         next: (res:any) => {  
           this.snackbarService.show("Kérés elutasítva!")
-          this.hideApprovalDialog()
+          this.manageUserApprovalDialog()
           this.loadApprovals()
         },
         error: (err) => {

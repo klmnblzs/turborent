@@ -10,18 +10,26 @@ export class RequestsService {
   private httpClient = inject(HttpClient)
   private router = inject(Router);
 
+  // refreshToken() {
+  //   const refreshToken = localStorage.getItem("refreshToken");
+
+  //   if (!refreshToken) {
+  //     this.router.navigate(["/logout"])
+  //     return throwError(() => new Error("No refresh token found"));
+  //   }
+
+  //   return this.httpClient.post<{ token: string }>('http://localhost:3000/auth/refresh', { refreshToken }).pipe(
+  //     tap((res: any) => {
+  //       localStorage.setItem("token", res.token);
+  //       localStorage.setItem("refreshToken", res.refreshToken)
+  //     })
+  //   );
+  // }
+
   refreshToken() {
-    const refreshToken = localStorage.getItem("refreshToken");
-
-    if (!refreshToken) {
-      this.router.navigate(["/logout"])
-      return throwError(() => new Error("No refresh token found"));
-    }
-
-    return this.httpClient.post<{ token: string }>('http://localhost:3000/auth/refresh', { refreshToken }).pipe(
+    return this.httpClient.post<{ token: string }>('http://localhost:3000/auth/refresh', {}, { withCredentials: true } ).pipe(
       tap((res: any) => {
         localStorage.setItem("token", res.token);
-        localStorage.setItem("refreshToken", res.refreshToken)
       })
     );
   }
@@ -36,15 +44,16 @@ export class RequestsService {
 
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.httpClient.post(url, body, { headers: headers }).pipe(
+    return this.httpClient.post(url, body, { headers: headers, withCredentials: true }).pipe(
       catchError((err) => {
         // TODO: KIJAVÍTANI A REFRESH TOKENT
 
         if (err.status === 403 || // Forbidden
           err.status == 401) { // Unauthorized
           return this.refreshToken().pipe(
-            switchMap((newToken) => {
-              headers = headers.set('Authorization', `Bearer ${newToken}`);
+            switchMap((res) => {
+              localStorage.setItem("token", res.token);
+              headers = headers.set('Authorization', `Bearer ${res.token}`);
               return this.httpClient.get(url, { headers });
             })
           );
@@ -63,13 +72,14 @@ export class RequestsService {
 
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.httpClient.get(url, { headers: headers }).pipe(
+    return this.httpClient.get(url, { headers: headers, withCredentials: true }).pipe(
       catchError((err) => {
         if (err.status === 403 || // Forbidden
           err.status === 401) { // Unauthorized
           return this.refreshToken().pipe(
-            switchMap((newToken) => {
-              headers = headers.set('Authorization', `Bearer ${newToken}`);
+            switchMap((res) => {
+              localStorage.setItem("token", res.token);
+              headers = headers.set('Authorization', `Bearer ${res.token}`);
               return this.httpClient.get(url, { headers });
             })
           );

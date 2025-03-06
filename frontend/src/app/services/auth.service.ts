@@ -12,7 +12,7 @@ export class AuthService {
   private router = inject(Router)
 
   private post(url:string, body:Object, errorMessage:string) {
-    return this.httpClient.post(url, body)
+    return this.httpClient.post(url, body, { withCredentials: true })
     .pipe(
       catchError((err) => throwError(() => {
         console.log(err)
@@ -29,7 +29,7 @@ export class AuthService {
     }
   
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.post(url, body, { headers: headers }).pipe(
+    return this.httpClient.post(url, body, { headers: headers, withCredentials: true }).pipe(
       catchError((err) => {
         return throwError(() => new Error(err));
       })
@@ -68,7 +68,6 @@ export class AuthService {
   getUserDataFromToken() {
     const token = localStorage.getItem('token');
     if (!token) {
-      console.log("NINCSEN TOKEN")
       return null;
     }
 
