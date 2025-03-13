@@ -15,7 +15,6 @@ export class AuthService {
     return this.httpClient.post(url, body, { withCredentials: true })
     .pipe(
       catchError((err) => throwError(() => {
-        console.log(err)
         new Error(errorMessage)
       }))
     )
