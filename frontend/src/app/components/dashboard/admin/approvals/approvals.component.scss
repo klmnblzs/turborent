@@ -102,3 +102,25 @@ dialog {
         }
     }
 }
+
+@media only screen and (max-width: 768px) {
+    dialog {
+        z-index: 9999999;
+
+        .panel {
+            height: 90vh;
+            width: 90vw;
+            justify-content: space-between;
+
+
+            form {
+                div {
+                    img {
+                        object-fit: scale-down;
+                        height: 180px;
+                    }
+                }
+            }
+        }
+    }
+}
