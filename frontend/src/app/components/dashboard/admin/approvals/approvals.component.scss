@@ -103,7 +103,7 @@ dialog {
     }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1028px) {
     dialog {
         z-index: 9999999;
 
@@ -123,4 +123,16 @@ dialog {
             }
         }
     }
+
+    .card-container {
+        width: 100%;
+        flex-direction: column;
+
+        flex-wrap: wrap;
+
+        .card {
+            width: 98%;
+        }
+    }
+    
 }

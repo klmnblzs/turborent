@@ -39,7 +39,7 @@ export class NavbarComponent {
 
   @HostListener('window:resize')
   isMobileView() {
-    if(window.innerWidth >= 900) {
+    if(window.innerWidth >= 801) {
       return true;
     } else {
       return false;
