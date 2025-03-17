@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { CarsComponent } from './components/cars/cars.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { LoginComponent } from './components/login/login.component';
@@ -7,9 +6,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { CarAboutComponent } from './components/cars/car-about/car-about.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LogoutComponent } from './components/logout/logout.component';
-import { AboutComponent } from './components/about/about.component';
 import { ResetPasswordComponent } from './components/dashboard/user/reset-password/reset-password.component';
-import { PersonalDataComponent } from './components/dashboard/user/personal-data/personal-data.component';
 
 const header:string = "TurboRent | "
 

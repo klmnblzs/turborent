@@ -1,4 +1,4 @@
-nav {
+menu {
     border: 1px solid #DCE0E0;
     border-radius: 15px;
     margin-right: 15px;
@@ -20,7 +20,6 @@ nav {
                 i {
                     font-size: 20px;
                     margin-right: 10px;
-                    transform: translateY(px);
                 }
 
                 &:hover {
@@ -30,6 +29,41 @@ nav {
     
                 &.active {
                     background-color: #DCDCDC;
+                }
+            }
+
+        }
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    menu {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        border-radius: 0;
+        margin: 0;
+        width: 100vw;
+        background-color: #DCE0E0;
+        padding: 0;
+        z-index: 99999;
+
+        ul {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            a {
+                width: 100%;
+                text-align: center;
+
+                li {
+                    border-left: 1px solid #DCDCDC;
+                    border-right: 1px solid #DCDCDC;
+                    width: 100%;
+                    i {
+                        margin: 0;
+                    }
                 }
             }
 

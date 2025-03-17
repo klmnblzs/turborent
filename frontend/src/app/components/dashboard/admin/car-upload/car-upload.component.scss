@@ -36,6 +36,19 @@
     }
 }
 
+@media only screen and (max-width: 768px) {
+    .card-container {
+        width: 100%;
+        flex-direction: column;
+
+        flex-wrap: wrap;
+
+        .card {
+            width: 98%;
+        }
+    }
+}
+
 .upload-container {
     margin-top: 20px;
 
@@ -335,4 +348,23 @@
         transform: rotate(45deg);
     }
 }
-// }
+
+@media only screen and (max-width:768px) {
+    .panel {
+        width: 95vw;
+        input[type='text'], input[type='number'] {
+            width: 100%;
+        }
+        textarea {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        form {
+            .row {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+}

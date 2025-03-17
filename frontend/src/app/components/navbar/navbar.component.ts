@@ -38,8 +38,19 @@ export class NavbarComponent implements OnInit {
     this.lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
   }
 
+  @HostListener('window:resize')
+  getNavPicture() {
+    if(window.innerWidth <= 463) {
+      this.imagePath.set("turborent-small-navbar-white.png")
+    } else {
+      this.imagePath.set("turborent-nav.png")
+    }
+  }
+
   ngOnInit(): void {
     this.updatePlaceholder()
+
+    this.getNavPicture();
 
     const subscription = this.router.events.subscribe((e) => {
       if(e instanceof NavigationEnd) {

@@ -2,7 +2,7 @@ nav {
     position: fixed;
     // background-color: #242424;
     background-color: #262626;
-    width: 100%;
+    width: 100vw;
     padding: 10px;
     text-align: right;
     display: flex;
@@ -175,4 +175,3 @@ nav {
 .changecol:hover {
     opacity: .4 !important;
 }
-

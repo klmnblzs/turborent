@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, HostListener, inject, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 
@@ -28,10 +28,21 @@ export class NavbarComponent {
   }
 
   ngOnInit() {
+    this.isMobileView();
+
     this.activatedRoute.paramMap.subscribe(params => {
       if(params.get("page")) {
         this.currentPage = params.get("page")!;
       }
     })
+  }
+
+  @HostListener('window:resize')
+  isMobileView() {
+    if(window.innerWidth >= 900) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

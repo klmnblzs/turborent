@@ -1,5 +1,6 @@
 header {
     height: 100vh;
+    width: 100%;
     // background-color: #242424;
     background-image: url('../../../../public/image-2.jpg');
     background-repeat: no-repeat;
@@ -57,5 +58,29 @@ header {
     button:hover:after {
         opacity: 1;
         margin-left: 15px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    header {
+        h1 {
+            font-size: 80px;
+        }
+
+        p {
+            font-size: 20px;
+        }
+    }
+}
+
+@media only screen and (max-width: 392px){
+    header {
+        h1 {
+            font-size: 50px;
+        }
+        p {
+            margin-top: 15px;
+            font-size: 15px;
+        }
     }
 }
