@@ -1,5 +1,5 @@
 .card-container {
-    display: inline-flex;
+    display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 
@@ -41,6 +41,18 @@
     }
 }
 
+@media only screen and (max-width: 1028px) {
+    .card-container {
+        width: 100%;
+        flex-direction: column;
+
+        flex-wrap: wrap;
+
+        .card {
+            width: 98%;
+        }
+    }
+}
 
 form {
     display: flex;
