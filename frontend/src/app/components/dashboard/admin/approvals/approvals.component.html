@@ -1,53 +1,3 @@
-@if(userApprovalDialogShown) {
-  <dialog id="approvalDialog">
-      <div class="panel">
-        <div id="title-container">
-          <h2>Regisztráció jóváhagyása</h2>
-        </div>
-        <div id="formContainer">
-          <form>
-              <div>
-                  @if(this.currentApproval !== null) {
-                    <h3>Jogosítvány előlapi képe</h3>
-                    <img [src]="currentApproval.picture_front">
-                    <h3>Jogosítvány hátlapi képe</h3>
-                    <img [src]="currentApproval.picture_back">
-                  }
-              </div>
-            </form> 
-        </div>
-        <div>
-          <button id="addBtn" (click)="approveRequest()">Jóváhagyás</button>
-          <button id="denyBtn" (click)="denyRequest()">Elutasítás</button>
-          <button id="nvmBtn" (click)="manageUserApprovalDialog()">Mégse</button>
-        </div>
-      </div>
-  </dialog>
-}
-
-@if(this.rentApprovalDialogShown) {
-  <dialog id="rentApprovalDialog">
-    <div class="panel">
-      <div id="title-container">
-        <h2>Foglalás jóváhagyása</h2>
-        @for (data of currentRentApproval; track $index) {
-          <h3 style="margin-top: 20px;">Ki?</h3>
-          <p>{{ data.customer_first_name }} {{ data.customer_last_name }}</p>
-          <h3 style="margin-top: 20px;">Mit?</h3>
-          <p>{{ data.brand }} {{ data.model }} {{ data.cc }}</p>
-          <h3 style="margin-top: 20px;">Mettől - Meddig?</h3>
-          <p>{{ data.rent_from | date }} - {{ data.rent_to | date }}</p>
-        }    
-      </div>
-      <div>
-        <button id="addBtn" (click)="approveRentRequest()">Jóváhagyás</button>
-        <button id="denyBtn" (click)="denyRentRequest()">Elutasítás</button>
-        <button id="nvmBtn" (click)="manageRentApprovalDialog()">Mégse</button>
-      </div>
-    </div>
-  </dialog>
-}
-
 <h3>Regisztráció kérelmek</h3>
 <div class="card-container">
     @if(this.approvals != null) {
@@ -58,7 +8,8 @@
           <div class="card">
               <h2>{{ approval.customer_first_name }} {{ approval.customer_last_name }}</h2>
               <p id="date">{{ approval.submitted_at | date }}</p>
-              <a (click)="approvalDetails(approval.approval_id)">Részletek</a>
+              <!-- <a (click)="approvalDetails(approval.approval_id)">Részletek</a> -->
+               <a (click)="approvalDetails(approval.approval_id)">Részletek</a>
           </div>
       }
     }

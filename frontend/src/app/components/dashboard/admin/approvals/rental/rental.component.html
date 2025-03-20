@@ -1,0 +1,16 @@
+<div id="title-container">
+    <h2>Foglalás jóváhagyása</h2>
+    @for (data of currentRentApproval; track $index) {
+      <h3 style="margin-top: 20px;">Ki?</h3>
+      <p>{{ data.customer_first_name }} {{ data.customer_last_name }}</p>
+      <h3 style="margin-top: 20px;">Mit?</h3>
+      <p>{{ data.brand }} {{ data.model }} {{ data.cc }}</p>
+      <h3 style="margin-top: 20px;">Mettől - Meddig?</h3>
+      <p>{{ data.rent_from | date }} - {{ data.rent_to | date }}</p>
+    }    
+</div>
+<div>
+    <button id="addBtn" (click)="approveRentRequest()">Jóváhagyás</button>
+    <button id="denyBtn" (click)="denyRentRequest()">Elutasítás</button>
+    <button id="nvmBtn" (click)="routeBack()">Mégse</button>
+</div>

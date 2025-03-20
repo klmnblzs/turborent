@@ -15,7 +15,13 @@
         }
 
         @else if(currentPage == 'approvals') {
-            <app-approvals></app-approvals>
+            @if(this.currentCustomerId !== null) {
+                <app-customer></app-customer>
+            } @else if(this.currentRentalId !== null) {
+                <app-rental></app-rental>
+            } @else {
+                <app-approvals></app-approvals>
+            }
         }
 
         @else if(currentPage == 'carupload') {

@@ -1,7 +1,6 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { CarsService } from '../../../services/cars.service';
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { SnackbarService } from '../../shared/snackbar/snackbar.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';

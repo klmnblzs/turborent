@@ -52,24 +52,8 @@ export class CarUploadComponent implements OnInit {
 
     reader.readAsDataURL(file);
   }
-
-  // TODO: ADMIN PRIVILIGE ELLENŐRZÉSE!!!!
-  // TODO: JOBB FORM VALIDATION
   
   // ADD FORM
-
-  openAddDialog() {
-    const dialog = document.getElementById("addCarDialog") as HTMLElement
-    
-    dialog.style.visibility = "unset"
-  }
-
-  hideAddDialog() {
-    const dialog = document.getElementById("addCarDialog") as HTMLElement
-    
-    dialog.style.visibility = "hidden"
-    this.submitErr=false
-  }
 
   addCarForm = new FormGroup({
     brand: new FormControl('', { validators: Validators.required }),
@@ -164,7 +148,6 @@ export class CarUploadComponent implements OnInit {
       const subscription = this.adminService.addCar(formData).subscribe({
         next: (res) => {
           this.addCarForm.reset()
-          this.hideAddDialog()
           this.loadCars()
           this.snackbarService.show("Sikeres feltöltés!")
           this.errorText=""
