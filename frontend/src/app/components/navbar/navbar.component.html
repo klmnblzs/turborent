@@ -37,8 +37,8 @@
                 <span></span>
             </button>
       <ul [class.active]="menuOpen">
-        <li><a routerLink="/cars">Gépjárművek</a></li>
-        <li><a routerLink="/contact">Kapcsolat</a></li>
+        <li><a routerLink="/cars" (click)="toggleMenu()">Gépjárművek</a></li>
+        <li><a routerLink="/contact" (click)="toggleMenu()">Kapcsolat</a></li>
         <a (click)="onClickDashboard()"><li class="loginBtn">{{ placeholder }}</li></a>
       </ul>
     </div>

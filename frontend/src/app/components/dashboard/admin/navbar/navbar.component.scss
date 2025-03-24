@@ -44,9 +44,12 @@ menu {
         border-radius: 0;
         margin: 0;
         width: 100vw;
-        background-color: #DCE0E0;
+        background-color: #262626;
         padding: 0;
         z-index: 99999;
+        border: none;
+        border-top: 1px solid #7f7f7f;
+
 
         ul {
             display: flex;
@@ -56,17 +59,24 @@ menu {
             a {
                 width: 100%;
                 text-align: center;
+                color: white;
 
                 li {
-                    border-left: 1px solid #DCDCDC;
-                    border-right: 1px solid #DCDCDC;
                     width: 100%;
+                    
                     i {
                         margin: 0;
                     }
+
+                    &.active {
+                        background-color: #4c4c4c;
+                    }
+
+                    &:hover {
+                        background-color: #4c4c4c;
+                    }
                 }
             }
-
         }
     }
 }
