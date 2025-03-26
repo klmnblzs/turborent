@@ -1,0 +1,24 @@
+<form [formGroup]="securityForm">
+    <h3>Jelszó & Biztonság</h3>
+    <div class="security-container">
+        <div>
+            <label for="oldpassword">Jelenlegi jelszó</label>
+            <input type="password" name="oldpassword" id="oldpassword" formControlName="oldpassword">
+            
+        </div>
+        <div>
+            <label for="newpassword">Új jelszó</label>
+            <input type="password" name="newpassword" id="newpassword" formControlName="newpassword">
+            <ul class="criteria">
+                <li><p [class.valid-criteria]="this.securityForm.controls.newpassword.value!.length >= 8">Legalább 8 karakter</p></li>
+                <li><p [class.valid-criteria]="hasUpperCase(this.securityForm.controls.newpassword.value)">Legalább egy nagybetű</p></li>
+                <li><p [class.valid-criteria]="hasNumber(this.securityForm.controls.newpassword.value)">Legalább egy szám</p></li>
+                <li><p [class.valid-criteria]="hasSpecialCharacter(this.securityForm.controls.newpassword.value)">Legalább egy speciális karakter</p></li>
+            </ul>
+        </div>
+    </div>
+    @if(submitErr) {
+        <p id="alert">Tölts ki mindent a kritériumoknak megfelelően!</p>     
+    }
+    <button (click)="onEditPassword()">Jelszó változtatása</button>
+</form>

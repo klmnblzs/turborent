@@ -1,0 +1,45 @@
+<!-- <nav class="scrolled" (scroll)="onScroll($event)" [class.scrolled]="changeNav === true">
+    <div class="img-container">
+        <img [src]="imagePath()" alt="">
+    </div>
+    <div class="content-container">
+        <ul>
+            <li><a [class.changecol]="changeNav === true">Rólunk</a></li>
+            <li><a routerLink="/cars" [class.changecol]="changeNav === true">Gépjárművek</a></li>
+            <li><a routerLink="/contact" href="" [class.changecol]="changeNav === true">Kapcsolat</a></li>
+            <li><a routerLink="/login" [class.changecol]="changeNav === true" id="username">Bejelentkezés</a></li>
+        </ul>
+    </div>
+</nav> -->
+
+<!-- <nav>
+    <div class="img-container">
+        <img [src]="imagePath()" alt="" (click)="onLogoClick()">
+    </div>
+    <div class="content-container">
+        <ul>
+            <li><a routerLink="/about">Rólunk</a></li>
+            <li><a routerLink="/cars">Gépjárművek</a></li>
+            <li><a routerLink="/contact">Kapcsolat</a></li>
+            <li><a (click)="onClickDashboard()">{{ this.placeholder }}</a></li>
+        </ul>
+    </div>
+</nav> -->
+
+<nav [class.hidden]="!isNavbarVisible">
+    <div class="img-container">
+        <img [src]="imagePath()" alt="Logo" (click)="onLogoClick()" [class.active]="menuOpen" />
+    </div>
+    <div class="content-container">
+            <button class="toggle-button" (click)="toggleMenu()" [class.active]="menuOpen">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+      <ul [class.active]="menuOpen">
+        <li><a routerLink="/cars" (click)="toggleMenu()">Gépjárművek</a></li>
+        <li><a routerLink="/contact" (click)="toggleMenu()">Kapcsolat</a></li>
+        <a (click)="onClickDashboard()"><li class="loginBtn">{{ placeholder }}</li></a>
+      </ul>
+    </div>
+</nav>

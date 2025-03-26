@@ -1,0 +1,31 @@
+<h3>Regisztráció kérelmek</h3>
+<div class="card-container">
+    @if(this.approvals != null) {
+      @if(this.approvals.length < 1) {
+        <p id="warning">Nincsenek kérelmek.</p>
+      }
+      @for (approval of approvals; track $index) {
+          <div class="card">
+              <h2>{{ approval.customer_first_name }} {{ approval.customer_last_name }}</h2>
+              <p id="date">{{ approval.submitted_at | date }}</p>
+              <!-- <a (click)="approvalDetails(approval.approval_id)">Részletek</a> -->
+               <a (click)="approvalDetails(approval.approval_id)">Részletek</a>
+          </div>
+      }
+    }
+</div>
+<h3 style="margin-top: 20px;">Bérlési kérelmek</h3>
+<div class="card-container">
+  @if(this.rentApprovals != null) {
+    @if(this.rentApprovals.length < 1) {
+      <p id="warning">Nincsenek kérelmek.</p>
+    }
+    @for (approval of rentApprovals; track $index) {
+        <div class="card">
+            <h2>{{ approval.customer_first_name }} {{ approval.customer_last_name }}</h2>
+            <p id="date">{{ approval.rent_from | date }} - {{ approval.rent_to | date }}</p>
+            <a (click)="rentApprovalDetails(approval.approval_id)">Részletek</a>
+        </div>
+    }
+  }
+</div>

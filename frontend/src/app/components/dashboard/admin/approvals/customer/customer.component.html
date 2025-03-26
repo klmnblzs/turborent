@@ -1,0 +1,26 @@
+<div id="title-container">
+    <h2>Regisztráció jóváhagyása</h2>
+    <form>
+        <div>
+            @if(this.currentApproval !== null) {
+                <div>
+                    <h3>Ki?</h3>
+                    <p>{{ currentApproval.customer_first_name }} {{ currentApproval.customer_last_name }} ({{currentApproval.customer_email}})</p>
+                </div>
+                <div>
+                    <h3>Jogosítvány előlapi képe</h3>
+                    <img [src]="currentApproval.picture_front" />
+                </div>
+                <div>
+                    <h3>Jogosítvány hátlapi képe</h3>
+                    <img [src]="currentApproval.picture_back" />
+                </div>
+            }
+        </div>
+    </form>
+</div>
+<div>
+    <button id="addBtn" (click)="approveRequest()">Jóváhagyás</button>
+    <button id="denyBtn" (click)="denyRequest()">Elutasítás</button>
+    <button id="nvmBtn" (click)="routeBack()">Mégse</button>
+</div>

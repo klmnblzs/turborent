@@ -15,3 +15,49 @@ $accent: #fff;
     font-family: "Poppins", sans-serif;
 }
 
+#nvmBtn {
+    margin-left: 20px;
+    padding: 5px;
+    border: none;
+    outline: none;
+    background-color: #cbcbcb;
+    font-size: 17px;
+    border-radius: 5px;
+    transition: .3s padding, .3s background-color;
+    
+    &:hover {
+        background-color: #a9a9a9;
+        cursor: pointer;
+    }
+}
+
+#addBtn {
+    padding: 5px;
+    border: none;
+    outline: none;
+    background-color: #C7F9CC;
+    font-size: 17px;
+    border-radius: 5px;
+    transition: .3s padding, .3s background-color;
+    
+    &:hover {
+        background-color: #99c09d;
+        cursor: pointer;
+    }
+}
+
+#denyBtn {
+    padding: 5px;
+    border: none;
+    outline: none;
+    background-color: #f9c7c7;
+    font-size: 17px;
+    border-radius: 5px;
+    transition: .3s padding, .3s background-color;
+    margin-left: 20px;
+    
+    &:hover {
+        background-color: #e3a1a1;
+        cursor: pointer;
+    }
+}

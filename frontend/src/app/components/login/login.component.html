@@ -1,0 +1,39 @@
+<dialog id="resetPasswordDialog">
+    <div class="panel">
+      <div id="title-container">
+        <h2>Jelszó visszaállítása</h2>
+      </div>
+      <div id="formContainer">
+        <form [formGroup]="resetPasswordForm">
+            <label for="emailReset">E-mail címed</label>
+            <input type="email" name="emailReset" id="emailReset" formControlName="emailReset">
+            @if(this.dialogErr != "") {
+                <p id="alert">{{ dialogErr }}</p>
+            }
+        </form> 
+      </div>
+      <div>
+        <button id="addBtn" (click)="resetPassword()">Küldés</button>
+        <button id="nvmBtn" (click)="hideDialog()">Mégse</button>
+      </div>
+    </div>
+</dialog>
+
+<div class="container">
+    <h2>Belépés a fiókba</h2>
+    
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <label for="email">E-mail <span id="required">*</span></label>
+        <input type="email" name="email" id="email" placeholder="peldapeter@gmail.com" formControlName="email" [class.invalid]="this.form.controls.email.invalid && this.form.controls.email.touched">
+        <label for="password">Jelszó <span id="required">*</span></label>
+        <input [type]="showPassword ? 'text' : 'password'" name="password" id="password" formControlName="password" [class.invalid]="this.form.controls.password.invalid && this.form.controls.password.touched">
+        <input type="button" id="show-password" value="Jelszó mutatása" (click)="this.showPassword = !this.showPassword">
+
+        @if(loginError) {
+            <p id="alert">{{ errorText }} <br> <a (click)="openDialog()" id="forgot-password">Elfelejtettem a jelszavam</a></p>
+        }
+        
+        <button>Bejelentkezés</button>
+        <p id="registration-redirect">Még nem regisztráltál? <a routerLink="/register" id="redirect-href">kattints ide</a> a regisztrációhoz!</p>
+    </form>
+</div>

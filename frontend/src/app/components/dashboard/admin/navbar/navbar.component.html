@@ -1,0 +1,14 @@
+<menu>
+    <ul>
+        <a (click)="navigateMenu('data')"><li [class.active]="currentPage == 'data'"><i class="ph-fill ph-user"></i>@if(isMobileView()) { <span>Fiókadatok</span> }</li></a>
+        <a (click)="navigateMenu('security')"><li [class.active]="currentPage == 'security'"><i class="ph-fill ph-lock"></i>@if(isMobileView()) {<span>Jelszó & Biztonság</span>}</li></a>
+        <a (click)="navigateMenu('history')"><li [class.active]="currentPage == 'history'"><i class="ph-fill ph-credit-card"></i>@if(isMobileView()) {<span>Bérlési előzmények</span>}</li></a>
+        @if (userData.isAdmin == 1) {
+            <a (click)="navigateMenu('approvals')"><li [class.active]="currentPage == 'approvals'"><i class="ph ph-clipboard"></i>@if(isMobileView()) {<span>Jóváhagyások</span>}</li></a>
+        }
+        @if (userData.isAdmin == 1) {
+            <a (click)="navigateMenu('carupload')"><li [class.active]="currentPage == 'carupload'"><i class="ph ph-car"></i>@if(isMobileView()) {<span>Autók kezelése</span>}</li></a>
+        }
+        <a (click)="logOut()"><li><i class="ph ph-sign-out"></i>@if(isMobileView()) {<span>Kijelentkezés</span>}</li></a>
+    </ul>
+</menu>

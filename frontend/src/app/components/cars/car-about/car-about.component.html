@@ -1,0 +1,65 @@
+@for(car of carData; track car.id) {
+    <img [src]="car.thumbnail">
+}
+
+<div class="container">
+    @for(car of carData; track car.id) {
+        <h2>{{ car.brand }} {{ car.model }} {{ car.cc }} </h2>
+        <div id="car-additions">
+            <ul>
+                <li><p><i class="ph ph-person-arms-spread"></i>{{ car.seats }} férőhely</p></li>
+                <li><p><i class="ph ph-gear"></i>{{ car.isManual === 0 ? "Manuális" : "Automata" }}</p></li>
+                <li><p><i class="ph ph-car"></i>{{ car.doors }} ajtó</p></li>
+                <li><p><i class="ph ph-speedometer"></i>{{ car.mileage | number }} km</p></li>
+                <li><p><i class="ph ph-gas-pump"></i>{{ car.isDiesel === 0 ? "Benzin" : "Dízel" }}</p></li>
+            </ul>
+        </div>
+        <hr>
+        <div class="detail-container">
+            <div id="car-about">
+                <h3>Gépjármű leírása</h3>
+                <ul>
+                    <li><p>{{ car.description }}</p></li>
+                </ul>
+            </div>
+            <div id="car-equipment">
+                <h3>Gépjármű felszereltsége</h3>
+                <ul>
+                    @for (equipment of carEquipments; track $index) {
+                        <li><p>{{ equipment }}</p></li>
+                    }
+                </ul>
+            </div>
+            <div id="car-rent">
+                <div id="price-container">
+                    <h2>{{ car.price_per_day | number }}<span id="car-price">Huf / nap</span></h2>
+                </div>
+                <div id="form-container">
+                    <form [formGroup]="rentForm">
+                        @if (isLoggedIn() == "unapproved") {
+                            <h2 id="information">A foglalás kezdeményezéséhez várja meg kollégáink visszajelzését!</h2>
+                        }
+                        @else if (isLoggedIn()) {
+                            <label for="pickupDate">Felvétel napja</label>
+                            <input type="date" id="pickupDate" name="pickupDate" formControlName="pickupDate">
+                            <label for="deliverDate">Leadás napja</label>
+                            <input type="date" id="deliverDate" name="deliverDate" formControlName="deliverDate">
+                            
+                            @if(rentError) {
+                                <p id="alert">{{ errorText }}</p>
+                            }
+                            <button (click)="rentCar()">Bérlés</button>
+                        } @else {
+                            <h2 id="information">A foglalás kezdeményezéséhez jelentkezzen be!</h2>
+                            <button (click)="rentCar()">Bejelentkezés</button>
+                        }
+
+                        @if(!isLoggedIn() || isLoggedIn() !== "unapproved") {
+                            <p id="warning">Figyelem! A bérlés nem minősül érvényes foglalásnak. Várja meg kollégánk visszajelzését. <span id="required">*</span></p>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

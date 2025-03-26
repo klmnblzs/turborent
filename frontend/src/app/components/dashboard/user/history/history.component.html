@@ -1,0 +1,15 @@
+<h3>Bérlési előzmények</h3>
+<div class="card-container">
+    @if(this.rentalHistory != null) {
+        @if(this.rentalHistory.length == 0) {
+            <p id="warning">Nincsenek előzmények.</p>
+        } @else {
+            @for (history of rentalHistory; track $index) {
+                <div class="card">
+                    <h2>{{ history.brand }} {{ history.model }} {{ history.cc }}</h2>
+                    <p id="date">{{ history.start_date | date }} - {{ history.end_date | date }}</p>
+                </div>
+            }
+        }
+    }
+</div>

@@ -1,0 +1,30 @@
+
+<div class="container">
+    <h2>Lépjen velünk kapcsolatba!</h2>
+    
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        
+        <label for="name">Név <span id="required">*</span></label>
+        <input type="text" name="name" id="name" formControlName="name">
+        <label for="email">E-mail <span id="required">*</span></label>
+        <input type="text" name="email" id="email" formControlName="email">
+        <label for="name">Tárgy <span id="required">*</span></label>
+        <input type="text" name="subject" id="subject" formControlName="subject">
+        <label for="name">Üzenet <span id="required">*</span></label>
+        <textarea name="message" id="message" formControlName="message"></textarea>
+
+        @if(this.errorMessage !== "") {
+            <p id="alert">{{this.errorMessage}}</p>
+        }
+
+        <button type="submit">Elküldés</button>
+    </form>
+
+    <h2 style="margin-top: 20px;">Nyitvatartás</h2>
+    <p>Hétfő - Péntek: 08:00 - 16:00</p>
+    <p>Szombat: 08:00 - 12:00</p>
+    <p>Vasárnap: ZÁRVA!</p>
+
+    <h2 style="margin-top: 20px;">Telefonszám</h2>
+    <p>+36 30 123 4567</p>
+</div>

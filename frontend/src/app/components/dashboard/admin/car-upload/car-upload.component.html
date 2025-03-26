@@ -1,0 +1,87 @@
+<h3>Jelenleg elérhető autók</h3>
+
+@for (car of cars; track $index) {
+    <div class="card-container">
+        <div class="card">
+            <h2>{{ car.brand }} {{ car.model }} {{ car.cc }}</h2>
+            <a (click)="onDeleteCar(car)">Törlés</a>
+        </div>
+    </div>
+}
+
+<div class="upload-container">
+    <h3>Új autó feltöltése</h3>
+    <!-- <button (click)="openAddDialog()">Új autó feltöltése</button> -->
+    <div class="panel">
+        <!-- <div id="title-container">
+          <h2>Új autó feltöltése</h2>
+        </div> -->
+        <div id="formContainer">
+          <form [formGroup]="addCarForm">
+                <label for="brand">Márka <span id="required">*</span></label>
+                <input type="text" id="brand" name="brand" formControlName="brand" placeholder="Volkswagen">
+                <label for="year">Évjárat <span id="required">*</span></label>
+                <input type="number" id="year" name="year" formControlName="year" placeholder="2005">
+                <label for="licensePlate">Rendszám <span id="required">*</span></label>
+                <input type="text" id="licensePlate" name="licensePlate" formControlName="licensePlate" placeholder="ABC123">
+                <label for="model">Model <span id="required">*</span></label>
+                <input type="text" id="model" name="model" formControlName="model" placeholder="IV">
+                <label for="cc">Köbcenti <span id="required">*</span></label>
+                <input type="text" id="cc" name="cc" formControlName="cc" placeholder="1.4">
+                <label for="category">Kategória <span id="required">*</span></label>
+                <input type="text" id="category" name="category" placeholder="Sedan" formControlName="category">
+                <label for="pricePerDay">Napi bérlési ára <span id="required">*</span></label>
+                <input type="number" id="pricePerDay" name="pricePerDay" formControlName="pricePerDay" placeholder="4500">
+                <label for="mileage">Km. óra állása <span id="required">*</span></label>
+                <input type="number" id="mileage" name="mileage" formControlName="mileage" placeholder="252115">
+                <label for="seats">Ülések száma <span id="required">*</span></label>
+                <input type="number" id="seats" name="seats" formControlName="seats" placeholder="5">
+                <label for="doors">Ajtók száma <span id="required">*</span></label>
+                <input type="number" id="doors" name="doors" formControlName="doors" placeholder="5">
+                <div>
+                    <p id="checkbox-info">Egyebek</p>
+                    <div id="checkbox-container">
+                        <label for="isDiesel" class="container">Dízel?
+                            <input type="checkbox" checked="checked" name="isDiesel" id="isDiesel" formControlName="isDiesel">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label for="isManual" class="container">Manuális?
+                            <input type="checkbox" checked="checked" name="isManual" id="isManual" formControlName="isManual">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <label for="lastServiceDate">Utolsó szervíz dátuma <span id="required">*</span></label>
+                    <input type="date" id="lastServiceDate" name="lastServiceDate" formControlName="lastServiceDate">
+                </div>
+                <div class="row">
+                    <div>
+                        <label for="description">Leírás <span id="required">*</span></label>
+                        <textarea name="description" id="description" formControlName="description"></textarea>
+                    </div>
+                    <div>
+                        <label for="equipment">Felszereltség (;-el elválasztva) <span id="required">*</span></label>
+                        <textarea name="equipments" id="equipments" formControlName="equipments"></textarea>
+                    </div>
+                </div>
+                <div>
+                    <div id="image-upload">
+                        <div id="img-area-back">
+                            <i id="icon-back" class='ph-fill ph-upload-simple'></i>
+                            <p>Autó indexképe <span id="required">*</span></p>
+                        </div>
+                        <button id="upload-button" type="button" (click)="thumbnailImage.click()">
+                            <span>Indexkép feltöltése</span>
+                            <input #thumbnailImage type="file" accept="image/*" name="licensePictureFront" id="licensePictureFront" type="file" (change)="onThumbnailSelected($event)" style="display:none;" />
+                        </button>
+                    </div>
+                </div>
+            </form> 
+        </div>
+        <div>
+          @if(submitErr) {
+              <p id="error">{{ errorText }}</p>
+          }
+          <button id="addBtn" (click)="onAddCar()">Rögzítés</button>
+        </div>
+      </div>
+</div>

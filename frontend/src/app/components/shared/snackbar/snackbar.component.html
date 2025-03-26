@@ -1,0 +1,10 @@
+@if (show) {
+    <div 
+        @state
+        [ngClass]="['snackbar-wrap', type]">
+      <p class="snackbar-text">
+        {{message}}
+      </p>
+    </div>
+
+}

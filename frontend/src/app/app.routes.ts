@@ -1,21 +1,30 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { CarsComponent } from './main/cars/cars.component';
-import { ContactComponent } from './main/contact/contact.component';
-import { LoginComponent } from './main/login/login.component';
-import { RegisterComponent } from './main/register/register.component';
-import { CarAboutComponent } from './main/cars/car-about/car-about.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { CarsComponent } from './components/cars/cars.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { CarAboutComponent } from './components/cars/car-about/car-about.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LogoutComponent } from './components/logout/logout.component';
+import { ResetPasswordComponent } from './components/dashboard/user/reset-password/reset-password.component';
 
 const header:string = "TurboRent | "
 
 export const routes: Routes = [
     { path: '', component: CarsComponent, title: header + "Autóink" },
     { path: 'cars', component: CarsComponent, title: header + "Autóink" },
+    { path: 'cars/:id', component: CarAboutComponent, pathMatch: "full", title: header + "Autóink" },
     { path: 'contact', component: ContactComponent, title: header + "Kapcsolat" },
     { path: 'login', component: LoginComponent, title: header + "Bejelentkezés" },
     { path: 'register', component: RegisterComponent, title: header + "Regisztráció"},
-    { path: 'dashboard', component: DashboardComponent, title: header + "Dashboard" },
+    { path: 'dashboard/:userid', component: DashboardComponent, title: header + "Dashboard" },
+    { path: 'logout', component: LogoutComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
 
-    { path: 'about', component: CarAboutComponent }
+    { path: 'dashboard/:userid/:page', component: DashboardComponent },
+    { path: 'dashboard/:userid/:page/customer/:id', component: DashboardComponent },
+    { path: 'dashboard/:userid/:page/rental/:rentalId', component: DashboardComponent },
+
+    // 404
+    { path: '**', component: CarsComponent },
 ];

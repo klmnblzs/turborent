@@ -1,0 +1,30 @@
+<app-header></app-header>
+
+<div class="container">
+    <div class="filter-container">
+        <select name="brand" id="brand" [(ngModel)]="selectedBrand">
+            <option value="">Bármely márka</option>
+            @for (brand of brands; track $index) {
+                <option [value]="brand.brand.toLowerCase()">{{ brand.brand }}</option>
+            }
+        </select>
+        <select name="type" id="type" [(ngModel)]="selectedType" >
+            <option value="">Bármely típus</option>
+            @for (category of categories; track $index) {
+                <option [value]="category.category.toLowerCase()">{{ category.category }}</option>
+            }
+        </select>
+        <select name="order-by" id="order-by" [(ngModel)]="selectedOrder">
+            <option value="asc">Ár szerint növekvő</option>
+            <option value="desc">Ár szerint csökkenő</option>
+        </select>
+    </div>
+
+    <div class="cars-container">
+        @for (car of cars | carFilter:selectedBrand:selectedType:selectedOrder; track car.id) {
+            <app-car [carData]="car" (click)="onClick(car.id)"></app-car>
+        }
+    </div>
+    
+    <app-about></app-about>
+</div>

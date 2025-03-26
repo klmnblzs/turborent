@@ -1,0 +1,31 @@
+<div class="container">
+    <app-navbar></app-navbar>
+    
+    <div class="data-container">
+        @if(currentPage == 'data') {
+            <app-personal-data></app-personal-data>
+        }
+
+        @else if(currentPage == 'security') {
+            <app-security></app-security>
+        }
+
+        @else if(currentPage == 'history') {
+            <app-history></app-history>
+        }
+
+        @else if(currentPage == 'approvals') {
+            @if(this.currentCustomerId !== null) {
+                <app-customer></app-customer>
+            } @else if(this.currentRentalId !== null) {
+                <app-rental></app-rental>
+            } @else {
+                <app-approvals></app-approvals>
+            }
+        }
+
+        @else if(currentPage == 'carupload') {
+            <app-car-upload></app-car-upload>
+        }
+    </div>
+</div>
