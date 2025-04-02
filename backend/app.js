@@ -1,6 +1,7 @@
 const express = require('express');
 const cors=require('cors')
 const dotenv = require('dotenv');
+const cookieParser = require("cookie-parser")
 
 const authRoutes = require('./routes/authRouter');
 const userRoutes = require('./routes/userRouter');
@@ -14,12 +15,18 @@ const app = express();
 // FONTOS A BODY PARAMOKHOZ!
 // CORS POLICY AZ ANGULAR MIATT
 app.use(express.json())
+
+// Hogy tudjuk kezelni a refresh tokent, mint cookie
+app.use(cookieParser())
+
+// Rejtett adatok elérése
 dotenv.config();
 
 app.use(cors({
-    origin: '*', // Csak az Angular alkalmazás engedélyezése
+    origin: 'http://localhost:4200', // Csak az Angular alkalmazás engedélyezése
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Engedélyezett HTTP-módszerek
     allowedHeaders: ['Content-Type', 'id', 'authorization'], // Engedélyezett fejléc
+    credentials: true // Engedélyezi a cookie-k használatát
 }));
 
 app.use('/auth', authRoutes);

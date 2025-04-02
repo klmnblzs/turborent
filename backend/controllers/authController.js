@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const { pool } = require('../utils/dbUtils');
 const { sendEmail } = require('../utils/emailUtils');
 const { generateAccessToken } = require('../utils/generateAccessToken');
@@ -86,7 +87,7 @@ async function register(req, res) {
             }
         } catch (err) {
             console.log(err)
-            res.status(500).json({ message: 'Internal server error (első catch) ' });
+            res.status(500).json({ message: 'Internal server error (első catch)' });
         }
     } catch (err) {
         console.log(err)
@@ -129,6 +130,15 @@ async function login(req, res) {
 
                 const accessToken = generateAccessToken(req.body)
                 const refreshToken = await generateRefreshToken(user.id)
+
+                res.cookie("refreshToken", refreshToken, {
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: "strict",
+                    maxAge: 7 * 24 * 60 * 60 * 1000,
+                    path: "/"
+                })
+
                 res.status(200).json({ token: accessToken, refreshToken: refreshToken, userid: user.id })
             }
         } else {
@@ -141,9 +151,8 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-    const { refreshToken } = req.body;
-
-    if (!refreshToken) {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken || refreshToken === undefined)  {
         return res.status(400).json({ message: "Refresh Token is required" });
     }
 
@@ -157,6 +166,13 @@ async function logout(req, res) {
         const [result] = await pool.execute('DELETE FROM refresh_tokens WHERE token = ?', [refreshToken.replace(/"/g, "")]);
 
         if (result.affectedRows > 0) {
+            res.clearCookie("refreshToken", {
+                httpOnly: true,
+                secure: false,
+                sameSite: "Strict",
+                path: "/",
+            });
+
             return res.status(200).json({ message: "Logged out!" });
         } else {
             return res.status(500).json({ message: "Token couldn't be deleted" });
@@ -169,10 +185,10 @@ async function logout(req, res) {
 }
 
 async function refreshToken(req, res) {
-    const { refreshToken } = req.body;
+    const refreshToken = res.cookies.refreshToken
 
     if (!refreshToken) {
-        return res.status(400).json({ message: "Adj meg egy refresh tokent" });
+        return res.status(400).json({ message: "Provide a refresh token" });
     }
 
     try {
@@ -208,9 +224,17 @@ async function refreshToken(req, res) {
             await pool.execute('DELETE FROM refresh_tokens WHERE token = ?', [refreshToken]);
 
             const newRefreshToken = await generateRefreshToken(user.userId);
-            const newToken = generateAccessToken(req.body); 
+            const newAccessToken = generateAccessToken(req.body); 
 
-            res.json({ token: newToken, refreshToken: newRefreshToken });
+            res.cookie("refreshToken", newRefreshToken, {
+                httpOnly: true,
+                secure: false,
+                sameSite: "Strict",
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                path: "/", 
+            });
+
+            res.json({ token: newAccessToken });
         });
     } catch (err) {
         if (err.name === "JsonWebTokenError") {
