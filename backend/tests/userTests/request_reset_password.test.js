@@ -5,7 +5,6 @@ const { pool } = require('../../utils/dbUtils');
 const { sendEmail } = require('../../utils/emailUtils');
 
 jest.mock('../../utils/dbUtils');
-
 jest.mock('../../utils/emailUtils');
 
 const app = express();
@@ -15,10 +14,6 @@ app.post('/user/request-reset-password', request_reset_password);
 describe('POST /user/request-reset-password', () => {
     const email = 'test@example.com';
     const userId = 1;
-
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
 
     it('should return 200 and send reset password email if user exists', async () => {
         pool.query.mockResolvedValueOnce([[{ id: userId }]]);

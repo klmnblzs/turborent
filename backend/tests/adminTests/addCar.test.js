@@ -2,7 +2,6 @@ const request = require('supertest');
 const express = require('express');
 const multer = require('multer');
 const bodyParser = require('body-parser');
-
 const { addCar } = require('../../controllers/adminController');
 const { pool } = require('../../utils/dbUtils');
 
@@ -10,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
+jest.mock('../../utils/dbUtils');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -18,11 +17,6 @@ const upload = multer({ storage });
 app.post('/admin/car/add', upload.fields([{ name: 'thumbnail', maxCount: 1 }]), addCar);
 
 describe('POST /admin/car/add', () => {
-  beforeEach(() => {
-    
-    pool.execute = jest.fn();
-  });
-
   it('should return 400 if a required field is missing', async () => {
     const carData = {
       model: 'Model S',

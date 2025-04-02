@@ -20,10 +20,6 @@ describe('POST /user/edit', () => {
         id: 1
     };
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
     it('should update user data successfully', async () => {
         pool.execute.mockResolvedValueOnce([{ affectedRows: 1 }]);
 

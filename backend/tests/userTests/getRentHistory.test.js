@@ -17,10 +17,6 @@ describe('GET /user/rent-history/:id', () => {
         { rent_id: 2, car_id: 102, rent_from: '2024-02-15', rent_to: '2024-02-20' }
     ];
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
     it('should return rent history for a valid user ID', async () => {
         pool.execute.mockResolvedValueOnce([[mockRentHistory]]);
 

@@ -12,10 +12,6 @@ app.use(express.json());
 app.post('/admin/registration/approvals/deny', denyRegistrationRequest);
 
 describe('POST /admin/registration/approvals/deny', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   it('should return 200 and email sent message when email sending is successful', async () => {
     const customer = { email: 'test@example.com' };
     pool.query.mockResolvedValueOnce([[ [customer] ]]);

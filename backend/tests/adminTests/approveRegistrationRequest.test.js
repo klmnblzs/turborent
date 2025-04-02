@@ -5,16 +5,13 @@ const { pool } = require('../../utils/dbUtils');
 const { sendEmail } = require('../../utils/emailUtils');
 
 jest.mock('../../utils/emailUtils');
+jest.mock('../../utils/dbUtils');
 
 const app = express();
 app.use(express.json());
 app.post('/admin/registration/approvals/approve', approveRegistrationRequest);
 
 describe('POST /admin/registration/approvals/approve', () => {
-  beforeEach(() => {
-    pool.query = jest.fn();
-  });
-
   it('should return 200 and success message if email is sent', async () => {
     const customer = { email: 'test@example.com' };
     pool.query.mockResolvedValueOnce([ [ [customer] ] ]);

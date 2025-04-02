@@ -5,7 +5,6 @@ const { pool } = require('../../utils/dbUtils');
 const { sendEmail } = require('../../utils/emailUtils');
 
 jest.mock('../../utils/dbUtils');
-
 jest.mock('../../utils/emailUtils');
 
 const app = express();
@@ -18,10 +17,6 @@ describe('POST /user/rent', () => {
     const rentFrom = '2023-01-01';
     const rentTo = '2023-01-10';
     const email = 'test@example.com';
-
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
 
     it('should return 200 and success message when rent request is successful', async () => {
         pool.query.mockResolvedValueOnce([[[{ email }]]]);

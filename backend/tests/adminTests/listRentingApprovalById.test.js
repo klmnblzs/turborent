@@ -3,17 +3,15 @@ const express = require('express');
 const { pool } = require('../../utils/dbUtils'); 
 const { listRentingApprovalById } = require('../../controllers/adminController'); 
 
+jest.mock('../../utils/dbUtils');
+
 const app = express();
 app.get('/admin/renting/approvals/:id', listRentingApprovalById);
 
 app.use(express.json());
 
 describe('GET /admin/renting/approvals/:id', () => {
-    beforeEach(() => {
-        pool.query = jest.fn();
-      });
-
-      it('should return rental approval data if found', async () => {
+    it('should return rental approval data if found', async () => {
         const mockData = [[{ id: 1, approval_status: 'approved' }]]; 
         pool.query.mockResolvedValue(mockData);
     

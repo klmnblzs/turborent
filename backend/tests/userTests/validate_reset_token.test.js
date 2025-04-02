@@ -18,10 +18,6 @@ describe('GET /user/validate-reset-token', () => {
     const mockValidTokenResponse = [{ reset_token_id: 1, token_customer_id: customerId }];
     const mockExpiredTokenResponse = [{ reset_token_id: null, token_customer_id: null }];
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
     it('should return 200 and token details if token is valid', async () => {
         pool.query.mockResolvedValueOnce([[mockValidTokenResponse]]);
 

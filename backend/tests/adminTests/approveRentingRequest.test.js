@@ -13,7 +13,6 @@ app.post('/admin/renting/approvals/approve', approveRentingRequest);
 
 describe('POST /admin/renting/approvals/approve', () => {
     beforeEach(() => {
-        pool.query = jest.fn();
         sendEmail.mockClear();
     });
 

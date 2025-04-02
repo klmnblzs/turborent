@@ -10,10 +10,6 @@ app.use(express.json());
 app.get('/filter/brands', brands);
 
 describe('GET /filter/brands', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
     it('should return all car brands', async () => {
         pool.query.mockResolvedValue([[[{ id: 1, name: 'Toyota' }, { id: 2, name: 'Ford' }]]]);
 

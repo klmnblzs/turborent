@@ -18,13 +18,8 @@ describe('POST /user/reset-password', () => {
     const newPassword = 'newPassword123';
     const hashedPassword = 'hashedPassword123';
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
     it('should reset the password and return success message', async () => {
         bcrypt.hashSync.mockReturnValue(hashedPassword);
-
         pool.query
             .mockResolvedValueOnce([{ affectedRows: 1 }]) 
             .mockResolvedValueOnce([{ affectedRows: 1 }]); 

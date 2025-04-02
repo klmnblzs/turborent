@@ -22,11 +22,6 @@ app.use(upload.fields([
 app.post('/auth/register', register);
 
 describe('POST /auth/register', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    pool.execute = jest.fn();
-  });
-
   it('should return 400 if first_name is missing', async () => {
     const res = await request(app)
       .post('/auth/register')
@@ -70,9 +65,7 @@ describe('POST /auth/register', () => {
     ]]);
     
     pool.execute.mockResolvedValueOnce([{ insertId: 123, affectedRows: 1 }]);
-    
     pool.execute.mockResolvedValueOnce([{ affectedRows: 1 }]);
-    
     sendEmail.mockResolvedValue({ accepted: ['test@example.com'] });
 
     const res = await request(app)

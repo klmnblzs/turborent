@@ -17,10 +17,6 @@ describe('GET /user/data/:id', () => {
         email: 'john.doe@example.com',
     };
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
     it('should return user data when user exists', async () => {
         pool.execute.mockResolvedValueOnce([[[mockUserData]]]);
 

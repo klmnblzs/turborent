@@ -11,7 +11,7 @@ app.post('/cars/is-available', isCarAvailable);
 
 describe('POST /cars/is-available', () => {
     it("should return 200 if the car is available", async () => {
-        pool.query.mockResolvedValue([[]]); // No reservations found
+        pool.query.mockResolvedValue([[]]); 
 
         const res = await request(app)
             .post('/cars/is-available')
@@ -26,7 +26,7 @@ describe('POST /cars/is-available', () => {
     });
 
     it("should return 400 if the car is not available", async () => {
-        pool.query.mockResolvedValue([[{ reservation_id: 1 }]]); // Mock an existing reservation
+        pool.query.mockResolvedValue([[{ reservation_id: 1 }]]);
 
         const res = await request(app)
             .post('/cars/is-available')

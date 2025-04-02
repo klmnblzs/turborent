@@ -16,10 +16,6 @@ describe('POST /user/edit/password', () => {
     const newPassword = 'newpassword456';
     const hashedOldPassword = bcrypt.hashSync(oldPassword, 10);
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
     it('should update password successfully when old password is correct', async () => {
         pool.query.mockResolvedValueOnce([[{ password: hashedOldPassword }]]);
         pool.execute.mockResolvedValueOnce([{ affectedRows: 1 }]);

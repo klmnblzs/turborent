@@ -3,14 +3,12 @@ const express = require('express');
 const { listRegistrationApprovalById } = require('../../controllers/adminController');
 const { pool } = require('../../utils/dbUtils');
 
+jest.mock('../../utils/dbUtils');
+
 const app = express();
 app.get('/admin/registration/approvals/:id', listRegistrationApprovalById);
 
 describe('GET /admin/registration/approvals/:id', () => {
-  beforeEach(() => {
-    pool.query = jest.fn();
-  });
-
   it('should return approval data with base64 encoded images', async () => {
     const approvalData = [{
       id: 1,
@@ -21,8 +19,6 @@ describe('GET /admin/registration/approvals/:id', () => {
       picture_front: Buffer.from('frontimage'),
       picture_back: Buffer.from('backimage')
     }];
-
-    
     pool.query
       .mockResolvedValueOnce([ [approvalData] ])
       .mockResolvedValueOnce([ imageData ]);

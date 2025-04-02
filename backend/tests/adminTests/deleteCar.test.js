@@ -3,15 +3,13 @@ const express = require('express');
 const { deleteCar } = require('../../controllers/adminController');
 const { pool } = require('../../utils/dbUtils');
 
+jest.mock('../../utils/dbUtils');
+
 const app = express();
 app.use(express.json());
 app.post('/admin/car/delete', deleteCar);
 
 describe('POST /admin/car/delete', () => {
-  beforeEach(() => {
-    pool.execute = jest.fn();
-  });
-
   it('should return 400 if car ID is missing', async () => {
     const res = await request(app)
       .post('/admin/car/delete')

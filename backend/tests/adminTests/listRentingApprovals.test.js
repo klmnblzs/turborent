@@ -13,10 +13,6 @@ app.get('/admin/renting/approvals', (req, res, next) => {
 });
 
 describe('GET /admin/renting/approvals', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   it('should return json array of renting approvals with a 200 status code', async () => {
     const approvals = [{ id: 1, name: 'John Doe' }, { id: 2, name: 'Jane Doe' }];
     pool.query.mockResolvedValueOnce([[approvals]]);
