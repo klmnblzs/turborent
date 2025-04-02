@@ -10,6 +10,7 @@ async function brands(req, res) {
     res.json(results[0])
 }
 
+
 module.exports = {
     categories,
     brands

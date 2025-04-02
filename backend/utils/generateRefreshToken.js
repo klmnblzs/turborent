@@ -7,13 +7,8 @@ async function generateRefreshToken(userId) {
     }
 
     const refreshToken = jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
-
-    if (!refreshToken) {
-        res.status(500).json({ error: "Error while generating refresh token!" })
-    }
-
     try {
-        const [result] = await pool.execute(
+        await pool.execute(
             'INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',
             [userId, refreshToken, new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)]
         );
@@ -21,7 +16,7 @@ async function generateRefreshToken(userId) {
         return refreshToken;
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Couldn't add the refresh token to the database!" })
+        throw new Error("Couldn't add the refresh token to the database!");
     }
 }
 

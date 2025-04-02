@@ -24,7 +24,7 @@ async function request_reset_password(req, res) {
                 })
                 
                 if(emailer.accepted.length > 0) {
-                    return res.status(200).json({ message: "Reset password eail sent" })
+                    return res.status(200).json({ message: "Reset password email sent" })
                 } else {
                     return res.status(400).json({ message:"Reset password email sending failed" })
                 }

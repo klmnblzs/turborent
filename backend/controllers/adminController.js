@@ -1,7 +1,5 @@
 const { pool } = require('../utils/dbUtils');
 const { sendEmail } = require('../utils/emailUtils');
-const { generateAccessToken } = require('../utils/generateAccessToken');
-const { generateRefreshToken } = require('../utils/generateRefreshToken');
 
 const multer = require("multer");
 
@@ -190,15 +188,6 @@ async function denyRegistrationRequest(req, res) {
         const customer = results[0][0]
 
         if(results.length > 0) {
-            transporter.sendMail(mailOptions, function(error, info){
-                if (error) {
-                    console.log(error)
-                } else {
-                    console.log(info)
-                }
-                return res.status(200).json({message:"Request Approved"})
-            });
-
             const emailer = await sendEmail(customer.email, 'TurboRent - Reigsztráció visszaigazolás', 'registration-deny')
             
             if(emailer.accepted.length > 0) {
@@ -206,7 +195,7 @@ async function denyRegistrationRequest(req, res) {
             } else {
                 return res.status(400).json({ message:"Deny request email sending failed" })
             }
-        } else {
+        }   else {
             return res.status(400).json({message:"Deny failed"})
         }
     } catch(err) {
